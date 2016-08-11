@@ -36,8 +36,8 @@
             <td>{{ index + 1 }}</td>
             <td>{{ o.date_due }}</td>
             <td>{{ o.name }}</td>
-            <td>{{ o.value }}</td>
-            <td>{{ o.done }}</td>
+            <td>{{ o.value | currency 'R$ ' 2 }}</td>
+            <td>{{ o.done | doneLabel }}</td>
             <td>
                 <a href="#" @click.prevent="loadBill(o)">Editar</a>
             </td>
@@ -64,6 +64,7 @@
 </div>
 
 <script type="text/javascript" src="node_modules/vue/dist/vue.min.js"></script>
+<script type="text/javascript" src="filters.js"></script>
 <script type="text/javascript" src="app.js"></script>
 </body>
 </html>
