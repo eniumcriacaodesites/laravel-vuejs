@@ -36,12 +36,15 @@ var app = new Vue({
     computed: {
         status: function () {
             var count = 0;
+            if (this.bills.length === 0) {
+                return false;
+            }
             for (var i in this.bills) {
                 if (!this.bills[i].done) {
                     count++;
                 }
             }
-            return !count ? "Nenhuma conta a pagar." : "Existem " + count + " contas a serem pagas.";
+            return count;
         }
     },
     methods: {
@@ -67,6 +70,18 @@ var app = new Vue({
             this.bill = bill;
             this.activedView = 1;
             this.formType = 'update';
+        },
+        deleteBill: function (index) {
+            if (confirm('Deseja realmente deletar a conta?')) {
+                this.bills.splice(index, 1);
+            }
+        },
+        payBill: function (bill) {
+            var message = (bill.done == 1) ? "Deseja realmente mudar o status da conta para 'Não paga'?"
+                : "Deseja realmente mudar o status da conta para 'Paga'?";
+            if (confirm(message)) {
+                bill.done = !bill.done;
+            }
         }
     }
 });

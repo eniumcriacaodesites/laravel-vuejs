@@ -6,15 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Code Bills</title>
     <style type="text/css">
-        .pago {
+        .green, .green a {
             color: green;
         }
 
-        .nao-pago {
+        .red, .red a {
             color: red;
         }
 
-        .minha-classe {
+        .gray, .gray a {
+            color: gray;
+        }
+
+        .my-class {
             background-color: burlywood;
         }
     </style>
@@ -22,7 +26,7 @@
 <body id="app">
 
 <h1>{{ title }}</h1>
-<h2>{{ status }}</h2>
+<h2 v-html="status | statusLabel"></h2>
 
 <nav>
     <ul>
@@ -32,7 +36,7 @@
     </ul>
 </nav>
 
-<div v-if="activedView == 0">
+<div v-if="activedView == 0 && bills.length > 0">
     <table border="1" cellpadding="10">
         <thead>
         <tr>
@@ -50,11 +54,17 @@
             <td>{{ o.date_due }}</td>
             <td>{{ o.name }}</td>
             <td>{{ o.value | currency 'R$ ' 2 }}</td>
-            <td class="minha-classe" :class="{'pago': o.done, 'nao-pago': !o.done}">
-                {{ o.done | doneLabel }}
+            <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
+                <div v-if="o.done === 1">
+                    <a href="#" @click.prevent="payBill(o)">{{ o.done | doneLabel }}</a>
+                </div>
+                <div v-else>
+                    <a href="#" @click.prevent="payBill(o)">{{ o.done | doneLabel }}</a>
+                </div>
             </td>
             <td>
-                <a href="#" @click.prevent="loadBill(o)">Editar</a>
+                <a href="#" @click.prevent="loadBill(o)">Editar</a> |
+                <a href="#" @click.prevent="deleteBill(index)">Excluir</a>
             </td>
         </tr>
         </tbody>
