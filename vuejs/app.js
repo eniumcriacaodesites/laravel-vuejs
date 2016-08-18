@@ -76,7 +76,7 @@ var billListComponent = Vue.extend({
     },
     methods: {
         loadBill: function (bill) {
-            this.bill = bill;
+            this.$parent.bill = bill;
             this.$parent.activedView = 1;
             this.$parent.formType = 'update';
         },
@@ -179,7 +179,7 @@ var appComponent = Vue.extend({
         </div>
         
         <div v-show="activedView == 1">
-            <bill-create-component :bill="bill" :form-type="formType"></bill-create-component>
+            <bill-create-component :bill.sync="bill" :form-type="formType"></bill-create-component>
         </div>
     `,
     data: function () {
