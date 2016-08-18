@@ -99,6 +99,58 @@ var billListComponent = Vue.extend({
 
 Vue.component('bill-list-component', billListComponent);
 
+var billCreateComponent = Vue.extend({
+    template: `
+        <form name="form" @submit.prevent="submit">
+            <label>Vencimento:</label>
+            <input type="text" v-model="bill.date_due">
+            <br><br>
+            <label>Nome:</label>
+            <select v-model="bill.name">
+                <option v-for="o in names" :value="o">{{ o }}</option>
+            </select>
+            <br><br>
+            <label>Valor:</label>
+            <input type="text" v-model="bill.value">
+            <br><br>
+            <label>Pago?</label>
+            <input type="checkbox" v-model="bill.done">
+            <br><br>
+            <input type="submit" value="Enviar">
+        </form>
+    `,
+    props: ['bill', 'formType'],
+    data: function () {
+        return {
+            names: [
+                'Conta de luz',
+                'Conta de água',
+                'Conta de telefone',
+                'Supermecado',
+                'Cartão de crédito',
+                'Empréstimo',
+                'Gasolina'
+            ]
+        };
+    },
+    methods: {
+        submit: function () {
+            if (this.formType == 'insert') {
+                this.bills.push(this.bill);
+            }
+            this.bill = {
+                date_due: '',
+                name: '',
+                value: 0,
+                done: false
+            };
+            this.activedView = 0;
+        }
+    }
+});
+
+Vue.component('bill-create-component', billCreateComponent);
+
 var appComponent = Vue.extend({
     template: `
         <style type="text/css">
@@ -128,23 +180,7 @@ var appComponent = Vue.extend({
         </div>
         
         <div v-if="activedView == 1">
-            <form name="form" @submit.prevent="submit">
-                <label>Vencimento:</label>
-                <input type="text" v-model="bill.date_due">
-                <br><br>
-                <label>Nome:</label>
-                <select v-model="bill.name">
-                    <option v-for="o in names" :value="o">{{ o }}</option>
-                </select>
-                <br><br>
-                <label>Valor:</label>
-                <input type="text" v-model="bill.value">
-                <br><br>
-                <label>Pago?</label>
-                <input type="checkbox" v-model="bill.done">
-                <br><br>
-                <input type="submit" value="Enviar">
-            </form>
+            <bill-create-component :bill="bill" :form-type="formType"></bill-create-component>
         </div>
     `,
     data: function () {
@@ -157,16 +193,7 @@ var appComponent = Vue.extend({
                 name: '',
                 value: 0,
                 done: false
-            },
-            names: [
-                'Conta de luz',
-                'Conta de água',
-                'Conta de telefone',
-                'Supermecado',
-                'Cartão de crédito',
-                'Empréstimo',
-                'Gasolina'
-            ]
+            }
         };
     },
     computed: {
@@ -183,20 +210,7 @@ var appComponent = Vue.extend({
             return count;
         }
     },
-    methods: {
-        submit: function () {
-            if (this.formType == 'insert') {
-                this.bills.push(this.bill);
-            }
-            this.bill = {
-                date_due: '',
-                name: '',
-                value: 0,
-                done: false
-            };
-            this.activedView = 0;
-        }
-    }
+    methods: {}
 });
 
 Vue.component('app-component', appComponent);
