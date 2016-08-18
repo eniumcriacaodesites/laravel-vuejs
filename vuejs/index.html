@@ -64,7 +64,7 @@
             </td>
             <td>
                 <a href="#" @click.prevent="loadBill(o)">Editar</a> |
-                <a href="#" @click.prevent="deleteBill(index)">Excluir</a>
+                <a href="#" @click.prevent="deleteBill(o)">Excluir</a>
             </td>
         </tr>
         </tbody>
@@ -83,6 +83,9 @@
         <br><br>
         <label>Valor:</label>
         <input type="text" v-model="bill.value">
+        <br><br>
+        <label>Pago?</label>
+        <input type="checkbox" v-model="bill.done">
         <br><br>
         <input type="submit" value="Enviar">
     </form>
