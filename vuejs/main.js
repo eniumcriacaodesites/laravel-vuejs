@@ -25,35 +25,27 @@ router.map({
         component: billPayComponent,
         subRoutes: {
             '/': {
-                name: 'bill.list',
+                name: 'bill-pay.list',
                 component: billPayListComponent
             },
             '/create': {
-                name: 'bill.create',
+                name: 'bill-pay.create',
                 component: billPayCreateComponent
             },
             '/:index/update': {
-                name: 'bill.update',
+                name: 'bill-pay.update',
                 component: billPayCreateComponent
             }
         }
 
+    },
+    '/bill-receive': {
+        name: 'bill-receive.list',
+        component: billReceiveComponent
+    },
+    '*': {
+        component: billPayListComponent
     }
-    // '/bills': {
-    //     name: 'bill.list',
-    //     component: billPayListComponent
-    // },
-    // '/bill/create': {
-    //     name: 'bill.create',
-    //     component: billPayCreateComponent
-    // },
-    // '/bill/:index/update': {
-    //     name: 'bill.update',
-    //     component: billPayCreateComponent
-    // },
-    // '*': {
-    //     component: billPayListComponent
-    // }
 });
 
 router.start({
@@ -62,6 +54,6 @@ router.start({
     }
 }, '#app');
 
-// router.redirect({
-//     '*': '/bills'
-// });
+router.redirect({
+    '*': '/bill-pays'
+});

@@ -39,7 +39,7 @@ window.billPayCreateComponent = Vue.extend({
         };
     },
     created: function () {
-        if (this.$route.name == 'bill.update') {
+        if (this.$route.name == 'bill-pay.update') {
             this.formType = 'update';
             this.getBill(this.$route.params.index);
         }
@@ -55,7 +55,7 @@ window.billPayCreateComponent = Vue.extend({
                 value: 0,
                 done: false
             };
-            this.$router.go({name: 'bill.list'});
+            this.$router.go({name: 'bill-pay.list'});
         },
         getBill: function (index) {
             this.bill = this.$root.$children[0].billsPay[index];
