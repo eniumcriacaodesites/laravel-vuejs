@@ -1,0 +1,15 @@
+.green, .green a {
+    color: green;
+}
+
+.red, .red a {
+    color: red;
+}
+
+.gray, .gray a {
+    color: gray;
+}
+
+.my-class {
+    background-color: burlywood;
+}
