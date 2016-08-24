@@ -132,7 +132,7 @@ var billCreateComponent = Vue.extend({
     methods: {
         submit: function () {
             if (this.formType == 'insert') {
-                this.$parent.$children[1].bills.push(this.bill);
+                this.$parent.$refs.billListComponent.bills.push(this.bill);
             }
             this.bill = {
                 date_due: '',
@@ -175,7 +175,7 @@ var appComponent = Vue.extend({
         <menu-component></menu-component>
         
         <div v-show="activedView == 0">
-            <bill-list-component></bill-list-component>
+            <bill-list-component v-ref:bill-list-component></bill-list-component>
         </div>
         
         <div v-show="activedView == 1">
@@ -197,12 +197,12 @@ var appComponent = Vue.extend({
     },
     computed: {
         status: function () {
-            var count = 0;
-            if (!this.bills.length) {
+            var count = 0, billListCompoment = this.$refs.billListComponent;
+            if (!billListCompoment.bills.length) {
                 return false;
             }
-            for (var i in this.bills) {
-                if (!this.bills[i].done) {
+            for (var i in billListCompoment.bills) {
+                if (!billListCompoment.bills[i].done) {
                     count++;
                 }
             }
