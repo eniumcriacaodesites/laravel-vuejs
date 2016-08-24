@@ -2,12 +2,12 @@ var router = new VueRouter();
 
 var mainComponent = Vue.extend({
     components: {
-        'app-component': appComponent
+        'bill-component': billComponent
     },
-    template: `<app-component></app-component>`,
+    template: `<bill-component></bill-component>`,
     data: function () {
         return {
-            bills: [
+            billsPay: [
                 {date_due: '11/08/16', name: 'Conta de água', value: 55.99, done: true},
                 {date_due: '11/08/16', name: 'Conta de luz', value: 130.95, done: false},
                 {date_due: '15/08/16', name: 'Conta de telefone', value: 75.95, done: false},
@@ -21,21 +21,39 @@ var mainComponent = Vue.extend({
 });
 
 router.map({
-    '/bills': {
-        name: 'bill.list',
-        component: billListComponent
-    },
-    '/bill/create': {
-        name: 'bill.create',
-        component: billCreateComponent
-    },
-    '/bill/:index/update': {
-        name: 'bill.update',
-        component: billCreateComponent
-    },
-    '*': {
-        component: billListComponent
+    '/bill-pays': {
+        component: billPayComponent,
+        subRoutes: {
+            '/': {
+                name: 'bill.list',
+                component: billPayListComponent
+            },
+            '/create': {
+                name: 'bill.create',
+                component: billPayCreateComponent
+            },
+            '/:index/update': {
+                name: 'bill.update',
+                component: billPayCreateComponent
+            }
+        }
+
     }
+    // '/bills': {
+    //     name: 'bill.list',
+    //     component: billPayListComponent
+    // },
+    // '/bill/create': {
+    //     name: 'bill.create',
+    //     component: billPayCreateComponent
+    // },
+    // '/bill/:index/update': {
+    //     name: 'bill.update',
+    //     component: billPayCreateComponent
+    // },
+    // '*': {
+    //     component: billPayListComponent
+    // }
 });
 
 router.start({
@@ -44,6 +62,6 @@ router.start({
     }
 }, '#app');
 
-router.redirect({
-    '*': '/bills'
-});
+// router.redirect({
+//     '*': '/bills'
+// });

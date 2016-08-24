@@ -1,4 +1,4 @@
-window.billListComponent = Vue.extend({
+window.billPayListComponent = Vue.extend({
     template: `
         <table border="1" cellpadding="10">
             <thead>
@@ -12,7 +12,7 @@ window.billListComponent = Vue.extend({
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(index, o) in bills">
+            <tr v-for="(index, o) in billsPay">
                 <td>{{ index + 1 }}</td>
                 <td>{{ o.date_due }}</td>
                 <td>{{ o.name }}</td>
@@ -35,13 +35,13 @@ window.billListComponent = Vue.extend({
     `,
     data: function () {
         return {
-            bills: this.$root.$children[0].bills
+            billsPay: this.$root.$children[0].billsPay
         };
     },
     methods: {
         deleteBill: function (bill) {
             if (confirm('Deseja excluir está conta?')) {
-                this.$root.$children[0].bills.$remove(bill);
+                this.$root.$children[0].billsPay.$remove(bill);
             }
         },
         payBill: function (bill) {
