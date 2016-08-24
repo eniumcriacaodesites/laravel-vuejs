@@ -1,8 +1,6 @@
 window.appComponent = Vue.extend({
     components: {
-        'menu-component': menuComponent,
-        'bill-list-component': billListComponent,
-        'bill-create-component': billCreateComponent,
+        'menu-component': menuComponent
     },
     template: `
         <style type="text/css">
@@ -46,15 +44,6 @@ window.appComponent = Vue.extend({
                 }
             }
             return count;
-        }
-    },
-    methods: {},
-    events: {
-        'change-form-type': function (formType) {
-            this.$broadcast('change-form-type', formType);
-        },
-        'change-bill': function (bill) {
-            this.$broadcast('change-bill', bill);
         }
     }
 });
