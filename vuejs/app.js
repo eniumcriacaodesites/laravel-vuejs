@@ -1,3 +1,4 @@
+/*
 var menuComponent = Vue.extend({
     template: `
         <nav>
@@ -243,3 +244,27 @@ Vue.component('app-component', appComponent);
 var app = new Vue({
     el: "#app"
 });
+*/
+
+var page1 = Vue.extend({
+    template: 'page 1'
+});
+
+var page2 = Vue.extend({
+    template: 'page 2'
+});
+
+var app = Vue.extend({});
+
+var router = new VueRouter();
+
+router.map({
+    '/page1': {
+        component: page1
+    },
+    '/page2': {
+        component: page2
+    }
+});
+
+router.start(app, '#app');
