@@ -28,19 +28,10 @@ window.appComponent = Vue.extend({
         <menu-component></menu-component>
         
         <router-view></router-view>
-        
-        <!--<div v-show="activedView == 0">
-            <bill-list-component v-ref:bill-list-component></bill-list-component>
-        </div>
-        
-        <div v-show="activedView == 1">
-            <bill-create-component></bill-create-component>
-        </div>-->
     `,
     data: function () {
         return {
-            title: "Contas a pagar",
-            activedView: 0
+            title: "Contas a pagar"
         };
     },
     computed: {
@@ -59,17 +50,11 @@ window.appComponent = Vue.extend({
     },
     methods: {},
     events: {
-        'change-actived-view': function (activedView) {
-            this.activedView = activedView;
-        },
         'change-form-type': function (formType) {
             this.$broadcast('change-form-type', formType);
         },
         'change-bill': function (bill) {
             this.$broadcast('change-bill', bill);
-        },
-        'new-bill': function (bill) {
-            this.$broadcast('new-bill', bill);
         }
     }
 });

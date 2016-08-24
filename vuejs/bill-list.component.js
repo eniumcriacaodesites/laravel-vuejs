@@ -41,7 +41,6 @@ window.billListComponent = Vue.extend({
     methods: {
         loadBill: function (bill) {
             this.$dispatch('change-bill', bill);
-            this.$dispatch('change-actived-view', 1);
             this.$dispatch('change-form-type', 'update');
         },
         deleteBill: function (bill) {
@@ -55,11 +54,6 @@ window.billListComponent = Vue.extend({
             if (confirm(message)) {
                 bill.done = !bill.done;
             }
-        }
-    },
-    events: {
-        'new-bill': function (bill) {
-            this.bills.push(bill);
         }
     }
 });
