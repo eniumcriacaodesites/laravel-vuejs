@@ -34,12 +34,12 @@ window.appComponent = Vue.extend({
     },
     computed: {
         status: function () {
-            var count = 0, billListCompoment = this.$refs.billListComponent;
-            if (!billListCompoment.bills.length) {
+            var count = 0, bills = this.$root.$children[0].bills;
+            if (!bills.length) {
                 return false;
             }
-            for (var i in billListCompoment.bills) {
-                if (!billListCompoment.bills[i].done) {
+            for (var i in bills) {
+                if (!bills[i].done) {
                     count++;
                 }
             }
