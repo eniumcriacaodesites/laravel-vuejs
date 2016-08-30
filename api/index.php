@@ -11,16 +11,15 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 $app = new Silex\Application();
 
-function getBills()
+function getBillsPay()
 {
-    $json = file_get_contents(__DIR__ . '/bills.json');
+    $json = file_get_contents(__DIR__ . '/bills-pay.json');
     $data = json_decode($json, true);
     return $data['bills'];
 }
 
-function findIndexById($id)
+function findIndexById($id, $bills)
 {
-    $bills = getBills();
     foreach ($bills as $key => $bill) {
         if ($bill['id'] == $id) {
             return $key;
@@ -29,11 +28,11 @@ function findIndexById($id)
     return false;
 }
 
-function writeBills($bills)
+function writeBillsPay($bills)
 {
     $data = ['bills' => $bills];
     $json = json_encode($data);
-    file_put_contents(__DIR__ . '/bills.json', $json);
+    file_put_contents(__DIR__ . '/bills-pay.json', $json);
 }
 
 $app->before(function (Request $request) {
@@ -43,13 +42,13 @@ $app->before(function (Request $request) {
     }
 });
 
-$app->get('api/bills', function () use ($app) {
-    $bills = getBills();
+$app->get('api/bills-pay', function () use ($app) {
+    $bills = getBillsPay();
     return $app->json($bills);
 });
 
-$app->get('api/bills/total', function () use ($app) {
-    $bills = getBills();
+$app->get('api/bills-pay/total', function () use ($app) {
+    $bills = getBillsPay();
     $sum = 0;
     foreach ($bills as $value) {
         $sum += (float)$value['value'];
@@ -57,36 +56,36 @@ $app->get('api/bills/total', function () use ($app) {
     return $app->json(['total' => $sum]);
 });
 
-$app->get('api/bills/{id}', function ($id) use ($app) {
-    $bills = getBills();
-    $bill = $bills[findIndexById($id)];
+$app->get('api/bills-pay/{id}', function ($id) use ($app) {
+    $bills = getBillsPay();
+    $bill = $bills[findIndexById($id, $bills)];
     return $app->json($bill);
 });
 
-$app->post('api/bills', function (Request $request) use ($app) {
-    $bills = getBills();
+$app->post('api/bills-pay', function (Request $request) use ($app) {
+    $bills = getBillsPay();
     $data = $request->request->all();
     $data['id'] = rand(100, 100000);
     $bills[] = $data;
-    writeBills($bills);
+    writeBillsPay($bills);
     return $app->json($data);
 });
 
-$app->put('api/bills/{id}', function (Request $request, $id) use ($app) {
-    $bills = getBills();
+$app->put('api/bills-pay/{id}', function (Request $request, $id) use ($app) {
+    $bills = getBillsPay();
     $data = $request->request->all();
-    $index = findIndexById($id);
+    $index = findIndexById($id, $bills);
     $bills[$index] = $data;
     $bills[$index]['id'] = (int)$id;
-    writeBills($bills);
+    writeBillsPay($bills);
     return $app->json($bills[$index]);
 });
 
-$app->delete('api/bills/{id}', function ($id) {
-    $bills = getBills();
-    $index = findIndexById($id);
+$app->delete('api/bills-pay/{id}', function ($id) {
+    $bills = getBillsPay();
+    $index = findIndexById($id, $bills);
     array_splice($bills, $index, 1);
-    writeBills($bills);
+    writeBillsPay($bills);
     return new Response("", 204);
 });
 

@@ -16,13 +16,13 @@ var mainComponent = Vue.extend({
                 {date_due: '20/08/16', name: 'Supermecado', value: 650.45, done: false},
                 {date_due: '20/08/16', name: 'Gasolina', value: 150.25, done: false},
             ],*/
-            billsReceive: [
+            /*billsReceive: [
                 {date_due: '15/08/16', name: 'Freelance', value: 450.85, done: true},
                 {date_due: '27/08/16', name: 'Seguro desemprego', value: 1543.00, done: false},
                 {date_due: '15/09/16', name: 'Freelance', value: 1250.45, done: false},
                 {date_due: '15/10/16', name: 'Freelance', value: 1250.45, done: false},
                 {date_due: '20/10/16', name: 'Outros', value: 250.95, done: false},
-            ]
+            ]*/
         };
     }
 });

@@ -1,4 +1,5 @@
-_bills.json
+bills-pay.json
+bills-receive.json
 vendor/
 .idea/
 .DS_Store
