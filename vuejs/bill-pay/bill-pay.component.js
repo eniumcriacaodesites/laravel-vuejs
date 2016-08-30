@@ -8,9 +8,6 @@ window.billPayComponent = Vue.extend({
         <menu-component></menu-component>
         <router-view></router-view>
     `,
-    http: {
-        root: 'http://192.168.10.10:8000/api'
-    },
     data: function () {
         return {
             title: "Contas a pagar",
@@ -35,9 +32,9 @@ window.billPayComponent = Vue.extend({
             }
         },
         updateStatus: function () {
-            var resource = this.$resource('bills{/id}');
-            resource.query().then(function (response) {
-                this.calculateStatus(response.data);
+            var self = this;
+            BillPay.query().then(function (response) {
+                self.calculateStatus(response.data);
             });
         }
     },
