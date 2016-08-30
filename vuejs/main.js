@@ -43,7 +43,7 @@ router.map({
                 name: 'bill-pay.create',
                 component: billPayCreateComponent
             },
-            '/:index/update': {
+            '/:id/update': {
                 name: 'bill-pay.update',
                 component: billPayCreateComponent
             }

@@ -49,7 +49,8 @@ window.billPayListComponent = Vue.extend({
     methods: {
         deleteBill: function (bill) {
             if (confirm('Deseja excluir está conta?')) {
-                this.$http.delete('bills/' + this.bill.id).then(function (response) {
+                this.$http.delete('bills/' + bill.id).then(function (response) {
+                    this.$dispatch('change-status');
                     this.billsPay.$remove(bill);
                 });
             }
@@ -57,6 +58,9 @@ window.billPayListComponent = Vue.extend({
         payBill: function (bill) {
             if (confirm("Deseja alterar o status desta conta?")) {
                 bill.done = !bill.done;
+                this.$http.put('bills/' + bill.id, bill).then(function (response) {
+                    this.$dispatch('change-status');
+                });
             }
         }
     }

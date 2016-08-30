@@ -8,23 +8,41 @@ window.billPayComponent = Vue.extend({
         <menu-component></menu-component>
         <router-view></router-view>
     `,
+    http: {
+        root: 'http://192.168.10.10:8000/api'
+    },
     data: function () {
         return {
-            title: "Contas a pagar"
+            title: "Contas a pagar",
+            status: false
         };
     },
-    computed: {
-        status: function () {
-            var count = 0, billsPay = this.$root.$children[0].billsPay;
+    created: function () {
+        this.updateStatus();
+    },
+    methods: {
+        calculateStatus: function (billsPay) {
+            var count = 0;
             if (!billsPay.length) {
-                return false;
-            }
-            for (var i in billsPay) {
-                if (!billsPay[i].done) {
-                    count++;
+                this.status = false;
+            } else {
+                for (var i in billsPay) {
+                    if (!billsPay[i].done) {
+                        count++;
+                    }
                 }
+                this.status = count;
             }
-            return count;
+        },
+        updateStatus: function () {
+            this.$http.get('bills').then(function (response) {
+                this.calculateStatus(response.data);
+            });
+        }
+    },
+    events: {
+        'change-status': function () {
+            this.updateStatus();
         }
     }
 });
