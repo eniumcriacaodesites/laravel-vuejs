@@ -1,32 +1,44 @@
 window.dashboardComponent = Vue.extend({
     template: `
         <h1>{{ title }}</h1>
-        <h2>Total a receber: R$ {{ totalReceive }}</h2>
-        <h2>Total a pagar: R$ {{ totalPay }}</h2>
+        <h2>Total a receber: {{ totalReceive | currency 'R$ ' }}</h2>
+        <h2>Total a pagar: {{ totalPay | currency 'R$ ' }}</h2>
     `,
     data: function () {
         return {
-            title: "Dashboard"
+            title: "Dashboard",
+            totalReceive: 0,
+            totalPay: 0
         };
     },
-    computed: {
-        totalReceive: function () {
-            var total = 0, billsReceive = this.$root.$children[0].billsReceive;
-            for (var i in billsReceive) {
-                if (!billsReceive[i].done) {
-                    total += billsReceive[i].value;
+    created: function () {
+        this.totalBillsReceive();
+        this.totalBillsPay();
+    },
+    methods: {
+        totalBillsReceive: function () {
+            var self = this;
+            BillReceive.query().then(function (response) {
+                var total = 0, billsReceive = response.data;
+                for (var i in billsReceive) {
+                    if (!billsReceive[i].done) {
+                        total += billsReceive[i].value;
+                    }
                 }
-            }
-            return total;
+                self.totalReceive = total;
+            });
         },
-        totalPay: function () {
-            var total = 0, billsPay = this.$root.$children[0].billsPay;
-            for (var i in billsPay) {
-                if (!billsPay[i].done) {
-                    total += billsPay[i].value;
+        totalBillsPay: function () {
+            var self = this;
+            BillPay.query().then(function (response) {
+                var total = 0, billsPay = response.data;
+                for (var i in billsPay) {
+                    if (!billsPay[i].done) {
+                        total += billsPay[i].value;
+                    }
                 }
-            }
-            return total;
+                self.totalPay = total;
+            });
         }
     }
 });
