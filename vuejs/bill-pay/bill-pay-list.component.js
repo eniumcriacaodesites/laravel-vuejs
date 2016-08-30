@@ -49,7 +49,7 @@ window.billPayListComponent = Vue.extend({
             var self = this;
             if (confirm('Deseja excluir está conta?')) {
                 BillPay.delete({id: bill.id}).then(function (response) {
-                    self.$dispatch('change-status');
+                    self.$dispatch('change-info');
                     self.billsPay.$remove(bill);
                 });
             }
@@ -59,7 +59,7 @@ window.billPayListComponent = Vue.extend({
             if (confirm("Deseja alterar o status desta conta?")) {
                 bill.done = !bill.done;
                 BillPay.update({id: bill.id}, bill).then(function (response) {
-                    self.$dispatch('change-status');
+                    self.$dispatch('change-info');
                 });
             }
         }
