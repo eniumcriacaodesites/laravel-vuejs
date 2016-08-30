@@ -42,14 +42,16 @@ window.billPayListComponent = Vue.extend({
         };
     },
     created: function () {
-        this.$http.get('bills').then(function (response) {
+        var resource = this.$resource('bills{/id}');
+        resource.query().then(function (response) {
             this.billsPay = response.data;
         });
     },
     methods: {
         deleteBill: function (bill) {
             if (confirm('Deseja excluir está conta?')) {
-                this.$http.delete('bills/' + bill.id).then(function (response) {
+                var resource = this.$resource('bills{/id}');
+                resource.delete({id: bill.id}).then(function (response) {
                     this.$dispatch('change-status');
                     this.billsPay.$remove(bill);
                 });
@@ -57,8 +59,9 @@ window.billPayListComponent = Vue.extend({
         },
         payBill: function (bill) {
             if (confirm("Deseja alterar o status desta conta?")) {
+                var resource = this.$resource('bills{/id}');
                 bill.done = !bill.done;
-                this.$http.put('bills/' + bill.id, bill).then(function (response) {
+                resource.update({id: bill.id}, bill).then(function (response) {
                     this.$dispatch('change-status');
                 });
             }

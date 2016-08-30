@@ -35,7 +35,8 @@ window.billPayComponent = Vue.extend({
             }
         },
         updateStatus: function () {
-            this.$http.get('bills').then(function (response) {
+            var resource = this.$resource('bills{/id}');
+            resource.query().then(function (response) {
                 this.calculateStatus(response.data);
             });
         }
