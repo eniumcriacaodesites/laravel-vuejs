@@ -6,3 +6,10 @@ window.BillPay = Vue.resource('bills-pay{/id}', {}, {
         url: 'bills-pay/total'
     }
 });
+
+window.BillReceive = Vue.resource('bills-receive{/id}', {}, {
+    total: {
+        method: 'GET',
+        url: 'bills-receive/total'
+    }
+});
