@@ -5,7 +5,7 @@ window.billPayComponent = Vue.extend({
     template: `
         <h1>{{ title }}</h1>
         <h2 v-html="status | statusBillPay"></h2>
-        <h3>{{ total | currency 'R$ ' }}</h3>
+        <h3>{{ total | numberFormat }}</h3>
         <menu-component></menu-component>
         <router-view></router-view>
     `,

@@ -16,7 +16,7 @@ window.billPayListComponent = Vue.extend({
                 <td>{{ index + 1 }}</td>
                 <td>{{ o.date_due }}</td>
                 <td>{{ o.name }}</td>
-                <td>{{ o.value | currency 'R$ ' 2 }}</td>
+                <td>{{ o.value | numberFormat }}</td>
                 <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
                     <div v-if="o.done === 1">
                         <a href="#" @click.prevent="payBill(o)">{{ o.done | doneLabel }}</a>

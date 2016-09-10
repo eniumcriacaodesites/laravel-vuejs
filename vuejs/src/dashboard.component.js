@@ -1,8 +1,8 @@
 window.dashboardComponent = Vue.extend({
     template: `
         <h1>{{ title }}</h1>
-        <h2>Total a receber: {{ totalReceive | currency 'R$ ' }}</h2>
-        <h2>Total a pagar: {{ totalPay | currency 'R$ ' }}</h2>
+        <h2>Total a receber: {{ totalReceive | numberFormat }}</h2>
+        <h2>Total a pagar: {{ totalPay | numberFormat }}</h2>
     `,
     data() {
         return {

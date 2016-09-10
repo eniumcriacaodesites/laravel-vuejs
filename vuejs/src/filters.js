@@ -21,3 +21,28 @@ Vue.filter('statusBillReceive', (value) => {
     }
     return '<span class="gray">&raquo; Nenhuma conta cadastrada.</span>';
 });
+
+Vue.filter('numberFormat', {
+    read(value){ // show information in the view
+        let number = 0;
+        if (value && typeof value !== undefined) {
+            number = value.toString().match(/\d+(\.{1}\d{1,2}){0,1}/g)[0] || 0;
+        }
+
+        // ECMAScript 5
+        // return new Number(number).toLocaleString('pt-BR', {
+        //     minimumFractionDigits: 2,
+        //     maximumFractionDigits: 2,
+        //     style: 'currency',
+        //     currency: 'BRL'
+        // });
+
+        // ECMAScript 6
+        return new Intl.NumberFormat('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            style: 'currency',
+            currency: 'BRL'
+        }).format(number);
+    }
+});
