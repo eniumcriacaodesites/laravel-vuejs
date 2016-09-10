@@ -46,13 +46,14 @@ window.billPayCreateComponent = Vue.extend({
     },
     methods: {
         submit() {
+            let bill = Vue.util.extend(this.bill, {date_due: this.getDateDue(this.bill.date_due)});
             if (this.formType == 'insert') {
-                BillPay.save({}, this.bill).then((response) => {
+                BillPay.save({}, bill).then((response) => {
                     this.$dispatch('change-info');
                     this.$router.go({name: 'bill-pay.list'});
                 });
             } else {
-                BillPay.update({id: this.bill.id}, this.bill).then((response) => {
+                BillPay.update({id: this.bill.id}, bill).then((response) => {
                     this.$dispatch('change-info');
                     this.$router.go({name: 'bill-pay.list'});
                 });
@@ -62,6 +63,13 @@ window.billPayCreateComponent = Vue.extend({
             BillPay.get({id: id}).then((response) => {
                 this.bill = response.data;
             });
+        },
+        getDateDue(date_due) {
+            let dateDueObject = date_due;
+            if (!(date_due instanceof Date)) {
+                dateDueObject = new Date(date_due.split('/').reverse().join('-') + "T03:00:00");
+            }
+            return dateDueObject.toISOString().split('T')[0];
         }
     }
 });

@@ -74,6 +74,14 @@ Vue.filter('dateFormat', {
         return value;
     },
     write(value){ // get value of view and convert for storage in model
-        //
+        let dateRegex = value.match(/\d{2}\/\d{2}\/\d{4}/g);
+        if (dateRegex) {
+            let dateString = dateRegex[0];
+            let date = new Date(dateString.split('/').reverse().join('-') + "T03:00:00");
+            if (!isNaN(date.getTime())) {
+                return date;
+            }
+        }
+        return value;
     }
 });
