@@ -1,8 +1,6 @@
-Vue.filter('doneLabel', function (value) {
-    return (value == 1) ? "Sim" : "Não";
-});
+Vue.filter('doneLabel', (value) => (value == 1) ? "Sim" : "Não");
 
-Vue.filter('statusBillPay', function (value) {
+Vue.filter('statusBillPay', (value) => {
     if (value === 0) {
         return '<span class="green">&raquo; Nenhuma conta a pagar.</span>';
     } else if (value === 1) {
@@ -13,7 +11,7 @@ Vue.filter('statusBillPay', function (value) {
     return '<span class="gray">&raquo; Nenhuma conta cadastrada.</span>';
 });
 
-Vue.filter('statusBillReceive', function (value) {
+Vue.filter('statusBillReceive', (value) => {
     if (value === 0) {
         return '<span class="green">&raquo; Nenhuma conta a receber.</span>';
     } else if (value === 1) {
