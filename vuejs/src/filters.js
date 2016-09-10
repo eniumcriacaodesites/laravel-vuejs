@@ -26,7 +26,8 @@ Vue.filter('numberFormat', {
     read(value){ // show information in the view
         let number = 0;
         if (value && typeof value !== undefined) {
-            number = value.toString().match(/\d+(\.{1}\d{1,2}){0,1}/g)[0] || 0;
+            let numberRegex = value.toString().match(/\d+(\.{1}\d{1,2}){0,1}/g);
+            number = numberRegex ? numberRegex[0] : numberRegex;
         }
 
         // ECMAScript 5
@@ -53,5 +54,26 @@ Vue.filter('numberFormat', {
         }
 
         return number;
+    }
+});
+
+Vue.filter('dateFormat', {
+    read(value){ // show information in the view
+        if (value && typeof value !== undefined) {
+            if (!(value instanceof Date)) {
+                let dateRegex = value.match(/\d{4}\-\d{2}\-\d{2}/g);
+                let dateString = dateRegex ? dateRegex[0] : dateRegex;
+                if (dateString) {
+                    value = new Date(dateString + "T03:00:00");
+                } else {
+                    return value;
+                }
+                return new Intl.DateTimeFormat('pt-BR').format(value).split(' ')[0];
+            }
+        }
+        return value;
+    },
+    write(value){ // get value of view and convert for storage in model
+        //
     }
 });

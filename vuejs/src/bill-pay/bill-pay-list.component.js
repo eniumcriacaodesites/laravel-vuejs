@@ -14,7 +14,7 @@ window.billPayListComponent = Vue.extend({
             <tbody>
             <tr v-for="(index, o) in billsPay">
                 <td>{{ index + 1 }}</td>
-                <td>{{ o.date_due }}</td>
+                <td>{{ o.date_due | dateFormat }}</td>
                 <td>{{ o.name }}</td>
                 <td>{{ o.value | numberFormat }}</td>
                 <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
