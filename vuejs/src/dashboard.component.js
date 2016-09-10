@@ -17,10 +17,10 @@ window.dashboardComponent = Vue.extend({
     },
     methods: {
         totalBillsReceive: function () {
-            var self = this;
+            let self = this;
             BillReceive.query().then(function (response) {
-                var total = 0, billsReceive = response.data;
-                for (var i in billsReceive) {
+                let total = 0, billsReceive = response.data;
+                for (let i in billsReceive) {
                     if (!billsReceive[i].done) {
                         total += billsReceive[i].value;
                     }
@@ -29,10 +29,10 @@ window.dashboardComponent = Vue.extend({
             });
         },
         totalBillsPay: function () {
-            var self = this;
+            let self = this;
             BillPay.query().then(function (response) {
-                var total = 0, billsPay = response.data;
-                for (var i in billsPay) {
+                let total = 0, billsPay = response.data;
+                for (let i in billsPay) {
                     if (!billsPay[i].done) {
                         total += billsPay[i].value;
                     }

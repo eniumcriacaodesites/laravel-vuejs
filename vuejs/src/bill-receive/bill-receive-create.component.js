@@ -44,7 +44,7 @@ window.billReceiveCreateComponent = Vue.extend({
     },
     methods: {
         submit: function () {
-            var self = this;
+            let self = this;
             if (this.formType == 'insert') {
                 BillReceive.save({}, this.bill).then(function (response) {
                     self.$dispatch('change-info');
@@ -58,7 +58,7 @@ window.billReceiveCreateComponent = Vue.extend({
             }
         },
         getBill: function (id) {
-            var self = this;
+            let self = this;
             BillReceive.get({id: id}).then(function (response) {
                 self.bill = response.data;
             });

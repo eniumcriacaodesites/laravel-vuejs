@@ -22,11 +22,11 @@ window.billReceiveComponent = Vue.extend({
     },
     methods: {
         calculateStatus: function (billsReceive) {
-            var count = 0;
+            let count = 0;
             if (!billsReceive.length) {
                 this.status = false;
             } else {
-                for (var i in billsReceive) {
+                for (let i in billsReceive) {
                     if (!billsReceive[i].done) {
                         count++;
                     }
@@ -35,13 +35,13 @@ window.billReceiveComponent = Vue.extend({
             }
         },
         updateStatus: function () {
-            var self = this;
+            let self = this;
             BillReceive.query().then(function (response) {
                 self.calculateStatus(response.data);
             });
         },
         updateTotal: function () {
-            var self = this;
+            let self = this;
             BillReceive.total().then(function (response) {
                 self.total = response.data.total;
             })
