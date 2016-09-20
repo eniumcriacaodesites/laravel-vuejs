@@ -68,8 +68,8 @@ Vue.filter('dateFormat', {
                 } else {
                     return value;
                 }
-                return new Intl.DateTimeFormat('pt-BR').format(value).split(' ')[0];
             }
+            return new Intl.DateTimeFormat('pt-BR').format(value).split(' ')[0];
         }
         return value;
     },

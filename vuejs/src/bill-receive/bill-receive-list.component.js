@@ -39,14 +39,14 @@ window.billReceiveListComponent = Vue.extend({
         };
     },
     created() {
-        BillReceive.query().then((response) => {
+        BillReceiveResource.query().then((response) => {
             this.billsReceive = response.data;
         });
     },
     methods: {
         deleteBill(bill) {
             if (confirm('Deseja excluir está conta?')) {
-                BillReceive.delete({id: bill.id}).then((response) => {
+                BillReceiveResource.delete({id: bill.id}).then((response) => {
                     this.$dispatch('change-info');
                     this.billsReceive.$remove(bill);
                 });
@@ -55,7 +55,7 @@ window.billReceiveListComponent = Vue.extend({
         receiveBill(bill) {
             if (confirm("Deseja alterar o status desta conta?")) {
                 bill.done = !bill.done;
-                BillReceive.update({id: bill.id}, bill).then((response) => {
+                BillReceiveResource.update({id: bill.id}, bill).then((response) => {
                     this.$dispatch('change-info');
                 });
             }

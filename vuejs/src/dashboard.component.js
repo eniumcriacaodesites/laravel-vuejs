@@ -17,7 +17,7 @@ window.dashboardComponent = Vue.extend({
     },
     methods: {
         totalBillsReceive() {
-            BillReceive.query().then((response) => {
+            BillReceiveResource.query().then((response) => {
                 let total = 0, billsReceive = response.data;
                 for (let i in billsReceive) {
                     if (!billsReceive[i].done) {
@@ -28,7 +28,7 @@ window.dashboardComponent = Vue.extend({
             });
         },
         totalBillsPay() {
-            BillPay.query().then((response) => {
+            BillPayResource.query().then((response) => {
                 let total = 0, billsPay = response.data;
                 for (let i in billsPay) {
                     if (!billsPay[i].done) {
