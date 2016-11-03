@@ -14,8 +14,8 @@ window.billReceiveListComponent = Vue.extend({
             <tbody>
             <tr v-for="(index, o) in billsReceive">
                 <td>{{ index + 1 }}</td>
-                <td>{{ o.date_due | dateFormat }}</td>
                 <td>{{ o.value | numberFormat }}</td>
+                <td>{{ o.date_due | dateFormat 'pt-br' }}</td>
                 <td>{{ o.name | textFormat }}</td>
                 <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
                     <div v-if="o.done === 1">

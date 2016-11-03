@@ -31,7 +31,7 @@ Vue.filter('numberFormat', {
         }
 
         // ECMAScript 5
-        // return new Number(number).toLocaleString('pt-BR', {
+        // return new Number(number).toLocaleString('pt-br', {
         //     minimumFractionDigits: 2,
         //     maximumFractionDigits: 2,
         //     style: 'currency',
@@ -39,7 +39,7 @@ Vue.filter('numberFormat', {
         // });
 
         // ECMAScript 6
-        return new Intl.NumberFormat('pt-BR', {
+        return new Intl.NumberFormat('pt-br', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'currency',
@@ -58,29 +58,20 @@ Vue.filter('numberFormat', {
 });
 
 Vue.filter('dateFormat', {
-    read(value){ // show information in the view
-        if (value && typeof value !== undefined) {
-            if (!(value instanceof Date)) {
-                let dateRegex = value.match(/\d{4}\-\d{2}\-\d{2}/g);
-                let dateString = dateRegex ? dateRegex[0] : dateRegex;
-                if (dateString) {
-                    value = new Date(dateString + "T03:00:00");
-                } else {
-                    return value;
-                }
-            }
-            return new Intl.DateTimeFormat('pt-BR').format(value).split(' ')[0];
+    read(value, lang){ // show information in the view
+        if (value.length == 10) {
+            let localeData = moment(value, 'YYYY-MM-DD').locale('en');
+            localeData.locale(lang);
+            return localeData.format('L');
         }
         return value;
     },
-    write(value){ // get value of view and convert for storage in model
-        let dateRegex = value.match(/\d{2}\/\d{2}\/\d{4}/g);
-        if (dateRegex) {
-            let dateString = dateRegex[0];
-            let date = new Date(dateString.split('/').reverse().join('-') + "T03:00:00");
-            if (!isNaN(date.getTime())) {
-                return date;
-            }
+    write(value, oldValue, lang){ // get value of view and convert for storage in model
+        if (value.length == 10) {
+            let dateFormat = moment.localeData(lang).longDateFormat('L');
+            let localeData = moment(value, dateFormat).locale(lang);
+            localeData.locale('en');
+            return localeData.format('YYYY-MM-DD');
         }
         return value;
     }
@@ -94,3 +85,34 @@ Vue.filter('textFormat', {
         return value.toLowerCase();
     }
 });
+
+/*
+ // Testing integration with moment.js
+
+ console.log('pt-br -> en');
+
+ var fromDate = 'pt-br';
+ var toDate = 'en';
+ var myDate = '05/11/2016';
+
+ var dateFormat = moment.localeData(fromDate).longDateFormat('L');
+
+ var localeData = moment(myDate, dateFormat).locale(fromDate);
+
+ localeData.locale(toDate);
+ console.log(myDate + ' -> ' + localeData.format('L'));
+
+
+ console.log('en -> pt-br');
+
+ var fromDate = 'en';
+ var toDate = 'pt-br';
+ var myDate = '11/05/2016';
+
+ var dateFormat = moment.localeData(fromDate).longDateFormat('L');
+
+ var localeData = moment(myDate, dateFormat).locale(fromDate);
+
+ localeData.locale(toDate);
+ console.log(myDate + ' -> ' + localeData.format('L'));
+ */
