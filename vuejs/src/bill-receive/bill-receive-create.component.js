@@ -1,22 +1,24 @@
 window.billReceiveCreateComponent = Vue.extend({
     template: `
-        <form name="form" @submit.prevent="submit">
-            <label>Recebimento:</label>
-            <input type="text" v-model="bill.date_due | dateFormat 'pt-br'">
-            <br><br>
-            <label>Nome:</label>
-            <select v-model="bill.name">
-                <option v-for="o in names" :value="o">{{ o | textFormat }}</option>
-            </select>
-            <br><br>
-            <label>Valor:</label>
-            <input type="text" v-model="bill.value | numberFormat 'pt-br'">
-            <br><br>
-            <label>Recebeu?</label>
-            <input type="checkbox" v-model="bill.done">
-            <br><br>
-            <input type="submit" value="Enviar">
-        </form>
+        <div class="container">
+            <form name="form" @submit.prevent="submit">
+                <label>Recebimento:</label>
+                <input type="text" v-model="bill.date_due | dateFormat 'pt-br'">
+                <br><br>
+                <label>Nome:</label>
+                <select v-model="bill.name">
+                    <option v-for="o in names" :value="o">{{ o | textFormat }}</option>
+                </select>
+                <br><br>
+                <label>Valor:</label>
+                <input type="text" v-model="bill.value | numberFormat 'pt-br'">
+                <br><br>
+                <label>Recebeu?</label>
+                <input type="checkbox" v-model="bill.done">
+                <br><br>
+                <input type="submit" value="Enviar">
+            </form>
+        </div>
     `,
     data() {
         return {

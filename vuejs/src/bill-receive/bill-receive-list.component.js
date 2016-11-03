@@ -1,37 +1,39 @@
 window.billReceiveListComponent = Vue.extend({
     template: `
-        <table border="1" cellpadding="10">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Recebimento</th>
-                <th>Nome</th>
-                <th>Valor</th>
-                <th>Recebeu?</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(index, o) in billsReceive">
-                <td>{{ index + 1 }}</td>
-                <td>{{ o.date_due | dateFormat 'pt-br' }}</td>
-                <td>{{ o.name | textFormat }}</td>
-                <td>{{ o.value | numberFormat 'pt-br' }}</td>
-                <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
-                    <div v-if="o.done === 1">
-                        <a href="#" @click.prevent="receiveBill(o)">{{ o.done | doneLabel }}</a>
-                    </div>
-                    <div v-else>
-                        <a href="#" @click.prevent="receiveBill(o)">{{ o.done | doneLabel }}</a>
-                    </div>
-                </td>
-                <td>
-                    <a v-link="{name: 'bill-receive.update', params: {id: o.id}}">Editar</a> |
-                    <a href="#" @click.prevent="deleteBill(o)">Excluir</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="container">
+            <table border="1" cellpadding="10">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Recebimento</th>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Recebeu?</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(index, o) in billsReceive">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ o.date_due | dateFormat 'pt-br' }}</td>
+                    <td>{{ o.name | textFormat }}</td>
+                    <td>{{ o.value | numberFormat 'pt-br' }}</td>
+                    <td class="my-class" :class="{'green': o.done, 'red': !o.done}">
+                        <div v-if="o.done === 1">
+                            <a href="#" @click.prevent="receiveBill(o)">{{ o.done | doneLabel }}</a>
+                        </div>
+                        <div v-else>
+                            <a href="#" @click.prevent="receiveBill(o)">{{ o.done | doneLabel }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <a v-link="{name: 'bill-receive.update', params: {id: o.id}}">Editar</a> |
+                        <a href="#" @click.prevent="deleteBill(o)">Excluir</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     `,
     data() {
         return {

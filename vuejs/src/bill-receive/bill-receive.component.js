@@ -3,10 +3,14 @@ window.billReceiveComponent = Vue.extend({
         'menu-component': billReceiveMenuComponent
     },
     template: `
-        <h1>{{ title }}</h1>
-        <h2 v-html="status | statusBillReceive"></h2>
-        <h3>{{ total | numberFormat 'pt-br' }}</h3>
-        <menu-component></menu-component>
+        <div class="section">
+            <div class="container">
+                <h1>{{ title }}</h1>
+                <h2 v-html="status | statusBillReceive"></h2>
+                <h3>{{ total | numberFormat 'pt-br' }}</h3>
+                <menu-component></menu-component>
+            </div>    
+        </div>
         <router-view></router-view>
     `,
     data() {
