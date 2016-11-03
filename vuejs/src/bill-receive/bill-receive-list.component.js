@@ -1,7 +1,7 @@
 window.billReceiveListComponent = Vue.extend({
     template: `
         <div class="container">
-            <table border="1" cellpadding="10">
+            <table class="bordered centered highlight responsive-table">
                 <thead>
                 <tr>
                     <th>#</th>
