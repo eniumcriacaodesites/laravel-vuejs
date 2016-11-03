@@ -5,7 +5,7 @@ window.billReceiveComponent = Vue.extend({
     template: `
         <h1>{{ title }}</h1>
         <h2 v-html="status | statusBillReceive"></h2>
-        <h3>{{ total | numberFormat }}</h3>
+        <h3>{{ total | numberFormat 'pt-br' }}</h3>
         <menu-component></menu-component>
         <router-view></router-view>
     `,

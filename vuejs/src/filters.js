@@ -23,7 +23,7 @@ Vue.filter('statusBillReceive', (value) => {
 });
 
 Vue.filter('numberFormat', {
-    read(value){ // show information in the view
+    read(value, lang){ // show information in the view
         let number = 0;
         if (value && typeof value !== undefined) {
             let numberRegex = value.toString().match(/\d+(\.{1}\d{1,2}){0,1}/g);
@@ -39,19 +39,33 @@ Vue.filter('numberFormat', {
         // });
 
         // ECMAScript 6
-        return new Intl.NumberFormat('pt-br', {
+        return new Intl.NumberFormat(lang, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'currency',
             currency: 'BRL'
         }).format(number);
     },
-    write(value){ // get value of view and convert for storage in model
-        let number = 0;
-        if (value.length > 0) {
+    write(value, oldValue, lang){ // get value of view and convert for storage in model
+        let number = 0, numberRegex;
+
+        // value == R$9.999.999,99
+        numberRegex = value.toString().match(/(\,+\d{0,2})$/g);
+        if (numberRegex) {
             number = value.replace(/[^\d\,]/g, '').replace(/\,/g, '.');
             number = isNaN(number) ? 0 : parseFloat(number);
         }
+
+        // value == R$9,999,999.99
+        numberRegex = value.toString().match(/(\.+\d{0,2})$/g);
+        if (numberRegex) {
+            value = value.replace(/\,/g, '');
+            number = value.toString().match(/\d+\.\d{1,2}/g);
+            number = isNaN(number) ? 0 : parseFloat(number);
+        }
+
+        // debug
+        // console.log('number: ' + number + ' --- value: ' + value + ' --- oldValue: ' + oldValue + ' --- lang: ' + lang);
 
         return number;
     }

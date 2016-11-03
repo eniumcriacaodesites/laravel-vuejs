@@ -10,7 +10,7 @@ window.billReceiveCreateComponent = Vue.extend({
             </select>
             <br><br>
             <label>Valor:</label>
-            <input type="text" v-model="bill.value | numberFormat">
+            <input type="text" v-model="bill.value | numberFormat 'pt-br'">
             <br><br>
             <label>Recebeu?</label>
             <input type="checkbox" v-model="bill.done">
