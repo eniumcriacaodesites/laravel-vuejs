@@ -85,3 +85,12 @@ Vue.filter('dateFormat', {
         return value;
     }
 });
+
+Vue.filter('textFormat', {
+    read(value){ // show information in the view
+        return value.toUpperCase();
+    },
+    write(value){ // get value of view and convert for storage in model
+        return value.toLowerCase();
+    }
+});

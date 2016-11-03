@@ -6,7 +6,7 @@ window.billReceiveCreateComponent = Vue.extend({
             <br><br>
             <label>Nome:</label>
             <select v-model="bill.name">
-                <option v-for="o in names" :value="o">{{ o }}</option>
+                <option v-for="o in names" :value="o">{{ o | textFormat }}</option>
             </select>
             <br><br>
             <label>Valor:</label>
