@@ -1,14 +1,30 @@
 window.billReceiveComponent = Vue.extend({
-    components: {
-        'menu-component': billReceiveMenuComponent
-    },
     template: `
         <div class="section">
             <div class="container">
-                <h1>{{ title }}</h1>
-                <h2 v-html="status | statusBillReceive"></h2>
-                <h3>{{ total | numberFormat 'pt-br' }}</h3>
-                <menu-component></menu-component>
+                <h4>{{ title }}</h4>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="card z-depth-2" :class="{'green': status === 0, 'red': status >= 1}">
+                            <div class="card-content white-text">
+                                <p class="card-title">
+                                    <i class="material-icons">account_balance</i>
+                                </p>
+                                <h5>{{ status | statusBillReceive }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="card z-depth-2">
+                            <div class="card-content">
+                                <p class="card-title">
+                                    <i class="material-icons">payment</i>
+                                </p>
+                                <h5>{{ total | numberFormat 'pt-br' }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>    
         </div>
         <router-view></router-view>

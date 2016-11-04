@@ -2,24 +2,24 @@ Vue.filter('doneLabel', (value) => (value == 1) ? "Sim" : "Não");
 
 Vue.filter('statusBillPay', (value) => {
     if (value === 0) {
-        return '<span class="green">&raquo; Nenhuma conta a pagar.</span>';
+        return 'Nenhuma conta a pagar.';
     } else if (value === 1) {
-        return '<span class="red">&raquo; Existe ' + value + ' conta a ser paga.</span>';
+        return 'Existe ' + value + ' conta a ser paga.';
     } else if (value > 1) {
-        return '<span class="red">&raquo; Existem ' + value + ' contas a serem pagas.</span>';
+        return 'Existem ' + value + ' contas a serem pagas.';
     }
-    return '<span class="gray">&raquo; Nenhuma conta cadastrada.</span>';
+    return 'Nenhuma conta cadastrada.';
 });
 
 Vue.filter('statusBillReceive', (value) => {
     if (value === 0) {
-        return '<span class="green">&raquo; Nenhuma conta a receber.</span>';
+        return 'Nenhuma conta a receber.';
     } else if (value === 1) {
-        return '<span class="red">&raquo; Existe ' + value + ' conta a receber.</span>';
+        return 'Existe ' + value + ' conta a receber.';
     } else if (value > 1) {
-        return '<span class="red">&raquo; Existem ' + value + ' contas a serem recebidas.</span>';
+        return 'Existem ' + value + ' contas a serem recebidas.';
     }
-    return '<span class="gray">&raquo; Nenhuma conta cadastrada.</span>';
+    return 'Nenhuma conta cadastrada.';
 });
 
 Vue.filter('numberFormat', {
