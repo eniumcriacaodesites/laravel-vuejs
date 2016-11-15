@@ -67,11 +67,13 @@ window.billReceiveCreateComponent = Vue.extend({
             if (this.formType == 'insert') {
                 BillReceiveResource.save({}, bill).then((response) => {
                     this.$dispatch('change-info');
+                    Materialize.toast('Conta cadastrada com sucesso!', 4000);
                     this.$router.go({name: 'bill-receive.list'});
                 });
             } else {
                 BillReceiveResource.update({id: this.bill.id}, bill).then((response) => {
                     this.$dispatch('change-info');
+                    Materialize.toast('Conta alterada com sucesso!', 4000);
                     this.$router.go({name: 'bill-receive.list'});
                 });
             }

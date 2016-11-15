@@ -73,19 +73,23 @@ Vue.filter('numberFormat', {
 
 Vue.filter('dateFormat', {
     read(value, lang){ // show information in the view
-        if (value.length == 10) {
-            let localeData = moment(value, 'YYYY-MM-DD').locale('en');
-            localeData.locale(lang);
-            return localeData.format('L');
+        if (value && typeof value !== undefined) {
+            if (value.length == 10) {
+                let localeData = moment(value, 'YYYY-MM-DD').locale('en');
+                localeData.locale(lang);
+                return localeData.format('L');
+            }
         }
         return value;
     },
     write(value, oldValue, lang){ // get value of view and convert for storage in model
-        if (value.length == 10) {
-            let dateFormat = moment.localeData(lang).longDateFormat('L');
-            let localeData = moment(value, dateFormat).locale(lang);
-            localeData.locale('en');
-            return localeData.format('YYYY-MM-DD');
+        if (value && typeof value !== undefined) {
+            if (value.length == 10) {
+                let dateFormat = moment.localeData(lang).longDateFormat('L');
+                let localeData = moment(value, dateFormat).locale(lang);
+                localeData.locale('en');
+                return localeData.format('YYYY-MM-DD');
+            }
         }
         return value;
     }
