@@ -1,9 +1,33 @@
 window.dashboardComponent = Vue.extend({
     template: `
-        <div class="container">
-            <h1>{{ title }}</h1>
-            <h2>Total a receber: {{ totalReceive | numberFormat 'pt-br' }}</h2>
-            <h2>Total a pagar: {{ totalPay | numberFormat 'pt-br' }}</h2>        
+        <div class="section">
+            <div class="container">
+                <h4>{{ title }}</h4>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="card z-depth-2">
+                            <div class="card-content">
+                                <p class="card-title">
+                                    <i class="material-icons right">call_received</i>
+                                    Total a receber
+                                </p>
+                                <h3>{{ totalReceive | numberFormat 'pt-br' }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="card z-depth-2">
+                            <div class="card-content">
+                                <p class="card-title">
+                                    <i class="material-icons right">call_made</i>
+                                    Total a pagar
+                                </p>
+                                <h3>{{ totalPay | numberFormat 'pt-br' }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
         </div>
     `,
     data() {
