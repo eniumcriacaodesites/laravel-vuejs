@@ -1,6 +1,7 @@
 window.billReceiveCreateComponent = Vue.extend({
     template: `
         <div class="container">
+            <h4>{{ title }}</h4>
             <form name="form" @submit.prevent="submit">
                 <div class="row">
                     <div class="input-field col s6">
@@ -44,6 +45,7 @@ window.billReceiveCreateComponent = Vue.extend({
     `,
     data() {
         return {
+            title: 'Adicionar conta',
             formType: 'insert',
             names: [
                 'Freelance',
@@ -57,6 +59,7 @@ window.billReceiveCreateComponent = Vue.extend({
     },
     created() {
         if (this.$route.name == 'bill-receive.update') {
+            this.title = 'Atualizar conta';
             this.formType = 'update';
             this.getBill(this.$route.params.id);
         }

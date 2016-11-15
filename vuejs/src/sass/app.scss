@@ -1,4 +1,9 @@
 // Material Icons
 @import url("http://fonts.googleapis.com/icon?family=Material+Icons");
-
-@import "node_modules/materialize-css/sass/materialize.scss";
+// Custom layout
+@import "node_modules/materialize-css/sass/components/color";
+@import "variables";
+@import "node_modules/materialize-css/sass/materialize";
+@import "buttons";
+@import "modal";
+@import "global";

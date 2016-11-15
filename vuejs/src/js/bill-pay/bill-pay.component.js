@@ -1,26 +1,26 @@
 window.billPayComponent = Vue.extend({
     template: `
-        <div class="section">
+        <div class="section bill-info">
             <div class="container">
                 <h4>{{ title }}</h4>
                 <div class="row">
-                    <div class="col s6">
-                        <div class="card z-depth-2" :class="{'green': status === 0, 'red': status >= 1}">
-                            <div class="card-content white-text">
-                                <p class="card-title">
+                    <div class="col s12 m6">
+                        <div class="card z-depth-2" :class="{'bg-green': status === 0, 'bg-red': status >= 1}">
+                            <div class="card-content">
+                                <div class="card-title">
                                     <i class="material-icons">account_balance</i>
-                                </p>
-                                <h5>{{ status | statusBillPay }}</h5>
+                                    {{ status | statusBillPay }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col s6">
-                        <div class="card z-depth-2">
+                    <div class="col s12 m6">
+                        <div class="card z-depth-2 bg-orange">
                             <div class="card-content">
-                                <p class="card-title">
+                                <div class="card-title">
                                     <i class="material-icons">payment</i>
-                                </p>
-                                <h5>{{ total | numberFormat 'pt-br' }}</h5>
+                                    {{ total | numberFormat 'pt-br' }}
+                                </div>
                             </div>
                         </div>
                     </div>

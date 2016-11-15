@@ -1,0 +1,14 @@
+.btn-ok {
+  @extend .btn, .btn-flat, .waves-effect, .green, .darken-2;
+  right: 10px;
+  color: #FFFFFF;
+}
+
+.btn-cancel {
+  @extend .btn, .btn-flat, .waves-effect, .orange, .darken-2;
+  color: #FFFFFF;
+}
+
+.btn-send {
+  @extend .btn, .waves-effect, .waves-light, .right;
+}

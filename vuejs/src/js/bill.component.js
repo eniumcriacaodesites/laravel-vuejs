@@ -3,7 +3,7 @@ window.billComponent = Vue.extend({
         <ul v-bind:id="o.id" class="dropdown-content" v-for="o in menusDropdown">
             <li v-for="item in o.items">
                 <a v-link="{name: item.routeName}">{{ item.name }}</a>
-        </li>
+            </li>
         </ul>
         <div class="navbar-fixed">
             <nav>
@@ -29,6 +29,9 @@ window.billComponent = Vue.extend({
             </nav>
         </div>
         <router-view></router-view>
+        <footer>
+            <h6 class="center-align">&copy; 2016 - CodeBills</h6>
+        </footer>
     `,
     created() {
         $(document).ready(function () {

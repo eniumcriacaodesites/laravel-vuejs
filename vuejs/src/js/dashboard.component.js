@@ -4,9 +4,9 @@ window.dashboardComponent = Vue.extend({
             <div class="container">
                 <h4>{{ title }}</h4>
                 <div class="row">
-                    <div class="col s6">
+                    <div class="col s12 m6">
                         <div class="card z-depth-2">
-                            <div class="card-content">
+                            <div class="card-content total-receive">
                                 <p class="card-title">
                                     <i class="material-icons right">call_received</i>
                                     Total a receber
@@ -15,9 +15,9 @@ window.dashboardComponent = Vue.extend({
                             </div>
                         </div>
                     </div>
-                    <div class="col s6">
+                    <div class="col s12 m6">
                         <div class="card z-depth-2">
-                            <div class="card-content">
+                            <div class="card-content total-pay">
                                 <p class="card-title">
                                     <i class="material-icons right">call_made</i>
                                     Total a pagar

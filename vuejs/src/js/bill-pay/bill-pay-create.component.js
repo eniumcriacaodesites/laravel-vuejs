@@ -1,6 +1,7 @@
 window.billPayCreateComponent = Vue.extend({
     template: `
         <div class="container">
+            <h4>{{ title }}</h4>
             <form name="form" @submit.prevent="submit">
                 <div class="row">
                     <div class="input-field col s6">
@@ -34,7 +35,7 @@ window.billPayCreateComponent = Vue.extend({
                 </div>
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-light right" type="submit" name="action">Enviar
+                        <button class="btn-send" type="submit" name="action">Enviar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -44,6 +45,7 @@ window.billPayCreateComponent = Vue.extend({
     `,
     data() {
         return {
+            title: 'Adicionar conta',
             formType: 'insert',
             names: [
                 'Conta de luz',
@@ -59,6 +61,7 @@ window.billPayCreateComponent = Vue.extend({
     },
     created() {
         if (this.$route.name == 'bill-pay.update') {
+            this.title = 'Atualizar conta';
             this.formType = 'update';
             this.getBill(this.$route.params.id);
         }

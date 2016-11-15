@@ -4,6 +4,7 @@ window.billPayListComponent = Vue.extend({
     },
     template: `
         <div class="container">
+            <h4>{{ title }}</h4>
             <table class="bordered centered highlight responsive-table z-depth-1">
                 <thead>
                 <tr>
@@ -21,12 +22,12 @@ window.billPayListComponent = Vue.extend({
                     <td>{{ o.date_due | dateFormat 'pt-br' }}</td>
                     <td>{{ o.name | textFormat }}</td>
                     <td>{{ o.value | numberFormat 'pt-br' }}</td>
-                    <td :class="{'green': o.done, 'red': !o.done}">
+                    <td :class="{'bg-yes': o.done, 'bg-not': !o.done}">
                         <div v-if="o.done === 1">
-                            <a href="#" @click.prevent="openModalPay(o)" class="white-text">{{ o.done | doneLabel }}</a>
+                            <a href="#" @click.prevent="openModalPay(o)">{{ o.done | doneLabel }}</a>
                         </div>
                         <div v-else>
-                            <a href="#" @click.prevent="openModalPay(o)" class="white-text">{{ o.done | doneLabel }}</a>
+                            <a href="#" @click.prevent="openModalPay(o)">{{ o.done | doneLabel }}</a>
                         </div>
                     </td>
                     <td>
@@ -39,35 +40,54 @@ window.billPayListComponent = Vue.extend({
         </div>
         <modal :modal="modalDelete">
             <div slot="content">
-                <h4>Mensagem de confirmação</h4>
-                <p><strong>Deseja excluir esta conta?</strong></p>
-                <div class="divider"></div>
-                <p>Nome: <strong>{{ billToDelete.name }}</strong></p>
-                <p>Valor: <strong>{{ billToDelete.value | numberFormat 'pt-br' }}</strong></p>
-                <p>Vencimento: <strong>{{ billToDelete.date_due | dateFormat 'pt-br' }}</strong></p>
+                <h4>Deseja excluir esta conta?</h4>
+                <table class="bordered">
+                    <tr>
+                        <td>Vencimento:</td>
+                        <td>{{ billToDelete.date_due | dateFormat 'pt-br' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nome:</td>
+                        <td>{{ billToDelete.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Valor:</td>
+                        <td>{{ billToDelete.value | numberFormat 'pt-br' }}</td>
+                    </tr>
+                </table>
             </div>
             <div slot="footer">
-                <button class="btn btn-flat waves-effect waves-red modal-close modal-action">Cancel</button>
-                <button class="btn btn-flat waves-effect green lighten-2 modal-close modal-action" @click="deleteBill()">Ok</button>
+                <button class="btn-cancel modal-close modal-action">Cancel</button>
+                <button class="btn-ok modal-close modal-action" @click="deleteBill()">Ok</button>
             </div>
         </modal>
         <modal :modal="modalPay">
             <div slot="content">
-                <h4>Mensagem de confirmação</h4>
-                <p><strong>Deseja alterar o status desta conta?</strong></p>
-                <div class="divider"></div>
-                <p>Nome: <strong>{{ billToPay.name }}</strong></p>
-                <p>Valor: <strong>{{ billToPay.value | numberFormat 'pt-br' }}</strong></p>
-                <p>Vencimento: <strong>{{ billToPay.date_due | dateFormat 'pt-br' }}</strong></p>
+                <h4>Deseja alterar o status desta conta?</h4>
+                <table class="bordered">
+                    <tr>
+                        <td>Vencimento:</td>
+                        <td>{{ billToPay.date_due | dateFormat 'pt-br' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nome:</td>
+                        <td>{{ billToPay.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Valor:</td>
+                        <td>{{ billToPay.value | numberFormat 'pt-br' }}</td>
+                    </tr>
+                </table>
             </div>
             <div slot="footer">
-                <button class="btn btn-flat waves-effect waves-red modal-close modal-action">Cancel</button>
-                <button class="btn btn-flat waves-effect green lighten-2 modal-close modal-action" @click="payBill()">Ok</button>
+                <button class="btn-cancel modal-close modal-action">Cancel</button>
+                <button class="btn-ok modal-close modal-action" @click="payBill()">Ok</button>
             </div>
         </modal>
     `,
     data() {
         return {
+            title: 'Minhas contas a pagar',
             billsPay: [],
             billToDelete: null,
             billToPay: null,
