@@ -17,3 +17,5 @@ class BillReceive {
         }
     }
 }
+
+module.exports = BillReceive;

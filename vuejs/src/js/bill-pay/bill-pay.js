@@ -17,3 +17,5 @@ class BillPay {
         }
     }
 }
+
+module.exports = BillPay;

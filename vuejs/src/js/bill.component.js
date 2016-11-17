@@ -1,4 +1,4 @@
-window.billComponent = Vue.extend({
+module.exports = {
     template: `
         <header>
             <ul v-bind:id="o.id" class="dropdown-content" v-for="o in menusDropdown">
@@ -37,10 +37,9 @@ window.billComponent = Vue.extend({
             <h6 class="center-align">&copy; 2016 - CodeBills</h6>
         </footer>
     `,
-    created() {
-        $(document).ready(function () {
-            $('.button-collapse').sideNav();
-        });
+    ready() {
+        $('.button-collapse').sideNav();
+        $('.dropdown-button').dropdown();
     },
     data() {
         return {
@@ -67,4 +66,4 @@ window.billComponent = Vue.extend({
             ]
         };
     }
-});
+};

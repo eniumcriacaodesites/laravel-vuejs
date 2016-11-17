@@ -1,4 +1,6 @@
-window.billPayCreateComponent = Vue.extend({
+let BillPay = require('./bill-pay');
+
+module.exports = {
     template: `
         <div class="container">
             <h4>{{ title }}</h4>
@@ -89,4 +91,4 @@ window.billPayCreateComponent = Vue.extend({
             });
         }
     }
-});
+};
