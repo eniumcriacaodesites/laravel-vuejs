@@ -1,4 +1,4 @@
-Vue.http.options.root = 'http://192.168.1.2:8888/api';
+Vue.http.options.root = 'http://0.0.0.0:8888/api';
 
 let BillPayResource = Vue.resource('bills-pay{/id}', {}, {
     total: {
