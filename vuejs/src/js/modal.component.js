@@ -9,11 +9,13 @@ module.exports = {
             </div>
         </div>
     `,
-    props: ['modal'],
-    data() {
-        return {
-            modal: {
-                id: ''
+    props: {
+        modal: {
+            type: Object,
+            default(){
+                return {
+                    id: ''
+                }
             }
         }
     }

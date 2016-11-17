@@ -41,7 +41,7 @@ module.exports = {
             </table>
         </div>
         <modal :modal="modalDelete">
-            <div slot="content">
+            <div slot="content" v-if="billToDelete">
                 <h4>Deseja excluir esta conta?</h4>
                 <table class="bordered">
                     <tr>
@@ -64,7 +64,7 @@ module.exports = {
             </div>
         </modal>
         <modal :modal="modalPay">
-            <div slot="content">
+            <div slot="content" v-if="billToPay">
                 <h4>Deseja alterar o status desta conta?</h4>
                 <table class="bordered">
                     <tr>
