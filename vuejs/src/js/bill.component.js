@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     template: `
         <header>
             <ul v-bind:id="o.id" class="dropdown-content" v-for="o in menusDropdown">

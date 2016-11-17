@@ -18,4 +18,4 @@ class BillPay {
     }
 }
 
-module.exports = BillPay;
+export default BillPay;

@@ -1,6 +1,7 @@
-let BillReceive = require('./bill-receive');
+import BillReceive from "./bill-receive";
+import {BillReceiveResource} from '../resources';
 
-module.exports = {
+export default {
     template: `
         <div class="container">
             <h4>{{ title }}</h4>

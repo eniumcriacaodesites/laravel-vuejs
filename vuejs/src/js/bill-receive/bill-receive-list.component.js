@@ -1,8 +1,9 @@
-let modalComponent = require('../modal.component');
+import ModalComponent from "../modal.component";
+import {BillReceiveResource} from '../resources';
 
-module.exports = {
+export default {
     components: {
-        modal: modalComponent
+        modal: ModalComponent
     },
     template: `
         <div class="container">

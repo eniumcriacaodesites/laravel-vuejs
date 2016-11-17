@@ -11,5 +11,3 @@ require('vue-resource');
 require('../sass/app.scss');
 
 require('./filters');
-
-require('./resources');

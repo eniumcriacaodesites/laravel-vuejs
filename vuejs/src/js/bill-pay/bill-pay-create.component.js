@@ -1,6 +1,7 @@
-let BillPay = require('./bill-pay');
+import BillPay from "./bill-pay";
+import {BillPayResource} from '../resources';
 
-module.exports = {
+export default {
     template: `
         <div class="container">
             <h4>{{ title }}</h4>

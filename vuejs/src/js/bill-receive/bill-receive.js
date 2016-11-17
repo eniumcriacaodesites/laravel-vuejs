@@ -18,4 +18,4 @@ class BillReceive {
     }
 }
 
-module.exports = BillReceive;
+export default BillReceive;

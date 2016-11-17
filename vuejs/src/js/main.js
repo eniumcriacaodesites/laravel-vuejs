@@ -1,81 +1,67 @@
-require('./bootstrap');
+import "./bootstrap";
+import BillComponent from "./bill.component";
+import DashboardComponent from "./dashboard.component";
+import BillPayComponent from "./bill-pay/bill-pay.component";
+import BillPayListComponent from "./bill-pay/bill-pay-list.component";
+import BillPayCreateComponent from "./bill-pay/bill-pay-create.component";
+import BillReceiveComponent from "./bill-receive/bill-receive.component";
+import BillReceiveListComponent from "./bill-receive/bill-receive-list.component";
+import BillReceiveCreateComponent from "./bill-receive/bill-receive-create.component";
 
-require([
-    './bill.component',
-    './dashboard.component',
+let VueRouter = require('vue-router');
+let router = new VueRouter();
 
-    './bill-pay/bill-pay.component',
-    './bill-pay/bill-pay-list.component',
-    './bill-pay/bill-pay-create.component',
-
-    './bill-receive/bill-receive.component',
-    './bill-receive/bill-receive-list.component',
-    './bill-receive/bill-receive-create.component'
-], function (billComponent,
-             dashboardComponent,
-             billPayComponent,
-             billPayListComponent,
-             billPayCreateComponent,
-             billReceiveComponent,
-             billReceiveListComponent,
-             billReceiveCreateComponent) {
-
-    let VueRouter = require('vue-router');
-    let router = new VueRouter();
-
-    router.map({
-        '/': {
-            name: 'dashboard',
-            component: dashboardComponent
-        },
-        '/bill-pays': {
-            component: billPayComponent,
-            subRoutes: {
-                '/': {
-                    name: 'bill-pay.list',
-                    component: billPayListComponent
-                },
-                '/create': {
-                    name: 'bill-pay.create',
-                    component: billPayCreateComponent
-                },
-                '/:id/update': {
-                    name: 'bill-pay.update',
-                    component: billPayCreateComponent
-                }
+router.map({
+    '/': {
+        name: 'dashboard',
+        component: DashboardComponent
+    },
+    '/bill-pays': {
+        component: BillPayComponent,
+        subRoutes: {
+            '/': {
+                name: 'bill-pay.list',
+                component: BillPayListComponent
+            },
+            '/create': {
+                name: 'bill-pay.create',
+                component: BillPayCreateComponent
+            },
+            '/:id/update': {
+                name: 'bill-pay.update',
+                component: BillPayCreateComponent
             }
+        }
 
-        },
-        '/bill-receive': {
-            component: billReceiveComponent,
-            subRoutes: {
-                '/': {
-                    name: 'bill-receive.list',
-                    component: billReceiveListComponent
-                },
-                '/create': {
-                    name: 'bill-receive.create',
-                    component: billReceiveCreateComponent
-                },
-                '/:id/update': {
-                    name: 'bill-receive.update',
-                    component: billReceiveCreateComponent
-                }
+    },
+    '/bill-receive': {
+        component: BillReceiveComponent,
+        subRoutes: {
+            '/': {
+                name: 'bill-receive.list',
+                component: BillReceiveListComponent
+            },
+            '/create': {
+                name: 'bill-receive.create',
+                component: BillReceiveCreateComponent
+            },
+            '/:id/update': {
+                name: 'bill-receive.update',
+                component: BillReceiveCreateComponent
             }
-        },
-        '*': {
-            component: dashboardComponent
         }
-    });
+    },
+    '*': {
+        component: DashboardComponent
+    }
+});
 
-    router.start({
-        components: {
-            'bill-component': billComponent
-        }
-    }, '#app');
+router.start({
+    components: {
+        'bill-component': BillComponent
+    }
+}, '#app');
 
-    router.redirect({
-        '*': '/'
-    });
-
+router.redirect({
+    '*': '/'
 });
