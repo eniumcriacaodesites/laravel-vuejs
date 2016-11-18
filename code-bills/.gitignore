@@ -6,3 +6,6 @@
 Homestead.json
 Homestead.yaml
 .env
+/public/fonts
+/public/css/admin.css
+/public/css/admin.css.map
