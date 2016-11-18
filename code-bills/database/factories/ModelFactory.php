@@ -22,3 +22,9 @@ $factory->define(CodeBills\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->state(CodeBills\User::class, 'admin', function (Faker\Generator $faker) {
+    return [
+        'role' => \CodeBills\User::ROLE_ADMIN,
+    ];
+});
