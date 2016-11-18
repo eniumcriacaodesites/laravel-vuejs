@@ -18,4 +18,10 @@ elixir((mix) => {
         .sass('./resources/assets/admin/sass/admin.scss')
         .copy('./node_modules/materialize-css/fonts/roboto', './public/fonts/roboto')
     ;
+
+    mix.browserSync({
+        host: '0.0.0.0',
+        proxy: 'http://codebills.dev'
+    });
+
 });
