@@ -19,16 +19,18 @@ Route::get('/client', function () {
     \Illuminate\Support\Facades\Auth::loginUsingId(2);
 });
 
-Auth::routes();
-
 Route::get('/home', function () {
     return redirect()->route('admin.home');
 });
 
-Route::group([
-    'prefix' => 'admin',
-    'as' => 'admin.',
-    'middleware' => 'can:access-admin',
-], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Auth::routes();
+
+    Route::get('/', function () {
+        return redirect()->route('admin.home');
+    });
+
+    Route::group(['middleware' => 'can:access-admin'], function () {
+        Route::get('/home', 'HomeController@index')->name('home');
+    });
 });
