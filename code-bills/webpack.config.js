@@ -6,7 +6,7 @@ module.exports = {
     },
     output: {
         path: __dirname + '/public/build',
-        filename: '[].bundle.js',
+        filename: '[name].bundle.js',
         publicPath: '/build/'
     },
     plugins: [
