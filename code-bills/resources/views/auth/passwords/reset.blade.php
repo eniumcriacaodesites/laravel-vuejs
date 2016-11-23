@@ -1,69 +1,66 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Reset Password</div>
-
-                    <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
-                            {{ csrf_field() }}
-
-                            <input type="hidden" name="token" value="{{ $token }}">
-
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email"
-                                           value="{{ $email or old('email') }}" required autofocus>
-
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
+    <div class="section page-login">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card z-depth-2">
+                        <div class="card-content">
+                            <div class="card-title">
+                                <h4 class="center-align">Reset Password</h4>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
+                            <form role="form" method="POST" action="{{ url(env('URL_ADMIN_RESET_PASSWORD')) }}">
+                                {{ csrf_field() }}
 
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
+                                <input type="hidden" name="token" value="{{ $token }}">
 
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="email" name="email"
+                                               class="{{ $errors->has('email') ? 'invalid validate' : 'validate' }}"
+                                               placeholder="Informe seu e-mail" value="{{ $email or old('email') }}">
+                                        <label for="email" class="active"
+                                               data-error="{{ $errors->has('email') ? $errors->first('email') : null }}">E-mail:</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                           name="password_confirmation" required>
-
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                    @endif
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="password" name="password"
+                                               class="{{ $errors->has('password') ? 'invalid' : 'validate' }}"
+                                               placeholder="Informe sua nova senha">
+                                        <label for="password" class="active"
+                                               data-error="{{ $errors->has('password') ? $errors->first('email') : null }}">Senha:</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Reset Password
-                                    </button>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="password" name="password_confirmation"
+                                               class="{{ $errors->has('password_confirmation') ? 'invalid' : 'validate' }}"
+                                               placeholder="Confirne sua nova senha">
+                                        <label for="password_confirmation" class="active"
+                                               data-error="{{ $errors->has('password_confirmation') ? $errors->first('email') : null }}">Confirm
+                                            Password:</label>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+
+                                <div class="row">
+                                    <div class="input-field col s12 right-align">
+                                        <button type="submit" class="btn-ok">
+                                            Reset Password
+                                        </button>
+
+                                        <a class="btn-cancel" href="{{ url(env('URL_ADMIN_LOGIN')) }}">
+                                            Cancel
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
                 </div>
             </div>

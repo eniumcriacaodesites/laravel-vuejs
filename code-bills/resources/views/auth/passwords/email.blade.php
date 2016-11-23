@@ -1,45 +1,47 @@
 @extends('layouts.admin')
 
-<!-- Main Content -->
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Reset Password</div>
-                    <div class="panel-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
+    <div class="section page-login">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card z-depth-2">
+                        <div class="card-content">
+                            <div class="card-title">
+                                <h4 class="center-align">Reset Password</h4>
                             </div>
-                        @endif
-
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
-                            {{ csrf_field() }}
-
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email"
-                                           value="{{ old('email') }}" required>
-
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Send Password Reset Link
-                                    </button>
+                            <form role="form" method="POST" action="{{ url(env('URL_ADMIN_RESET_PASSWORD')) }}">
+                                {{ csrf_field() }}
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="email" name="email"
+                                               class="{{ $errors->has('email') ? 'invalid validate' : 'validate' }}"
+                                               placeholder="Informe seu e-mail">
+                                        <label for="email" class="active"
+                                               data-error="{{ $errors->has('email') ? $errors->first('email') : null }}">E-mail:</label>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                                <div class="row">
+                                    <div class="input-field col s12 right-align">
+                                        <button type="submit" class="btn-ok">
+                                            Send Password Reset Link
+                                        </button>
+
+                                        <a class="btn-cancel" href="{{ url(env('URL_ADMIN_LOGIN')) }}">
+                                            Cancel
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
                 </div>
             </div>
