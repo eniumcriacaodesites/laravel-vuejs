@@ -9,3 +9,6 @@ Homestead.yaml
 /public/fonts
 /public/css/admin.css
 /public/css/admin.css.map
+/public/css/spa.css
+/public/css/spa.css.map
+/roboto
