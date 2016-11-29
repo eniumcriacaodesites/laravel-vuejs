@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {User} from '../services/resource';
+    import Auth from '../services/auth';
 
     export default {
         data() {
@@ -24,7 +24,7 @@
             }
         },
         ready() {
-            User.get();
+            console.log(Auth.user());
         }
     }
 </script>
