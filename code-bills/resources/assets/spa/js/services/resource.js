@@ -6,6 +6,10 @@ export class Jwt {
         });
     }
 
+    static refreshToken() {
+        return Vue.http.post('refresh_token');
+    }
+
     static logout() {
         return Vue.http.post('logout');
     }

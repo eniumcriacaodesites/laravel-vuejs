@@ -8,11 +8,6 @@ const afterLogin = (response) => {
     User.get().then((response) => LocalStorage.setObject(USER, response.data));
 };
 
-const afterLogout = () => {
-    LocalStorage.remove(TOKEN);
-    LocalStorage.remove(USER);
-};
-
 export default {
     login(email, password) {
         return Jwt.accessToken(email, password).then((response) => {
@@ -22,7 +17,13 @@ export default {
         });
     },
     logout() {
-        return Jwt.logout().then(afterLogout()).catch(afterLogout());
+        return Jwt.logout().then(this.clear()).catch(this.clear());
+    },
+    refreshToken() {
+        return Jwt.refreshToken().then((response) => {
+            LocalStorage.set(TOKEN, response.data.token);
+            return response;
+        });
     },
     getAuthorizationHeader() {
         return `Bearer ${LocalStorage.get(TOKEN)}`;
@@ -32,5 +33,9 @@ export default {
     },
     check() {
         return LocalStorage.get(TOKEN) ? true : false;
+    },
+    clear() {
+        LocalStorage.remove(TOKEN);
+        LocalStorage.remove(USER);
     }
 }
