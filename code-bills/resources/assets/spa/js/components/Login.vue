@@ -9,6 +9,8 @@
                                 <h4 class="center-align">Login</h4>
                             </div>
 
+                            <h5 class="red-text center-align" v-if="error.error">{{ error.message }}</h5>
+
                             <form role="form" @submit.prevent="login()">
                                 <div class="row">
                                     <div class="input-field col s12">
@@ -43,8 +45,8 @@
     </div>
 </template>
 
-<script>
-    import {Jwt} from '../services/resource';
+<script type="text/javascript">
+    import Auth from '../services/auth';
 
     export default {
         data() {
@@ -52,14 +54,27 @@
                 user: {
                     email: '',
                     password: ''
-                }
+                },
+                error: {
+                    error: false,
+                    message: ''
+                },
             }
         },
         methods: {
             login() {
-                Jwt.accessToken(this.user.email, this.user.password).then((response) => {
-                    console.log(response);
-                });
+                Auth.login(this.user.email, this.user.password)
+                        .then(() => this.$router.go({name: 'dashboard'}))
+                        .catch((responseError) => {
+                            switch (responseError.status) {
+                                case 401:
+                                    this.error.message = responseError.data.message;
+                                    break;
+                                default:
+                                    this.error.message = 'Login failed.';
+                            }
+                            this.error.error = true;
+                        });
             }
         }
     }
