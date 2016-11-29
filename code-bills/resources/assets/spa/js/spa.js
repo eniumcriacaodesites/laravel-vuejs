@@ -7,6 +7,7 @@ require('vue-resource');
 
 Vue.http.options.root = appConfig.api_url; // app laravel
 
+require('./services/interceptors');
 require('./router');
 
 // Testing service of LocalStorage

@@ -15,11 +15,16 @@
 </template>
 
 <script>
+    import {User} from '../services/resource';
+
     export default {
         data() {
             return {
                 title: 'Dashboard'
             }
+        },
+        ready() {
+            User.get();
         }
     }
 </script>
