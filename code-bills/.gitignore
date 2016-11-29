@@ -12,3 +12,4 @@ Homestead.yaml
 /public/css/spa.css
 /public/css/spa.css.map
 /roboto
+/resources/assets/spa/js/config.js
