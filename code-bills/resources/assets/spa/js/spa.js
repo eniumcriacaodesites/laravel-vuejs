@@ -1,10 +1,11 @@
-import LocalStorage from './services/localStorage';
+import LocalStorage from "./services/localStorage";
+import appConfig from "./services/appConfig";
 
 window.Vue = require('vue');
 require('materialize-css');
 require('vue-resource');
 
-Vue.http.options.root = "http://192.168.1.2:8000/api"; // app laravel
+Vue.http.options.root = appConfig.api_url; // app laravel
 
 require('./router');
 
