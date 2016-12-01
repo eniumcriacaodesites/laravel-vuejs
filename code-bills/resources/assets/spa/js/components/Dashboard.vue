@@ -14,17 +14,12 @@
     </div>
 </template>
 
-<script>
-    import Auth from '../services/auth';
-
+<script type="text/javascript">
     export default {
         data() {
             return {
                 title: 'Dashboard'
             }
-        },
-        ready() {
-            console.log(Auth.user());
         }
     }
 </script>

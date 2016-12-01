@@ -27,11 +27,14 @@
         ready() {
             setTimeout(() => {
                 this.logout()
-            }, 5000);
+            }, 1000);
         },
         methods: {
             logout() {
-                let goToLogin = () => this.$router.go({name: 'auth.login'});
+                let goToLogin = () => {
+                    this.$dispatch('change-menu');
+                    this.$router.go({name: 'auth.login'})
+                };
 
                 Auth.logout().then(goToLogin()).catch(goToLogin());
             }

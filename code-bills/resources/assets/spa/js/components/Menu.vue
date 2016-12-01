@@ -1,71 +1,108 @@
 <template>
-    <ul :id="o.id" class="dropdown-content" v-for="o in config.menusDropdown">
-        <li v-for="item in o.items">
-            <a :href="item.url">{{ item.name }}</a>
-        </li>
-    </ul>
-    <ul id="dropdown-logout" class="dropdown-content">
-        <li>
-            <a :href="config.urlLogout" @click.prevent="goToLogout()">Logout</a>
-        </li>
-        <form id="logout-form" :action="config.urlLogout" method="POST" style="display: none;">
-            <input type="hidden" name="_token" :value="config.csrfToken">
-        </form>
-    </ul>
-    <div class="navbar-fixed">
+    <div v-show="authorization">
+        <ul :id="o.id" class="dropdown-content" v-for="o in menusDropdown">
+            <li v-for="item in o.items">
+                <a v-link="{name: item.routeName}">{{ item.name }}</a>
+            </li>
+        </ul>
+        <ul id="dropdown-logout" class="dropdown-content">
+            <li>
+                <a href="#!/logout">Logout</a>
+            </li>
+        </ul>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper container">
+                    <div class="brand-logo left">
+                        <a href="#!/dashboard">
+                            CodeBills
+                        </a>
+                    </div>
+                    <a href="#" data-activates="nav-mobile" class="button-collapse">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <ul class="hide-on-med-and-down right">
+                        <li v-for="o in menus">
+                            <a v-if="o.dropdownId" class="dropdown-button" href="!#"
+                               :data-activates="o.dropdownId">
+                                {{ o.name }} <i class="material-icons right">arrow_drop_down</i>
+                            </a>
+                            <a v-else v-link="{name: o.routeName}">{{ o.name }}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-button" href="#" data-activates="dropdown-logout">
+                                {{ username }} <i class="material-icons right">arrow_drop_down</i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul id="nav-mobile" class="side-nav">
+                        <li v-for="o in menus">
+                            <a v-link="{name: o.routeName}">{{ o.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="navbar-fixed" v-else>
         <nav>
             <div class="nav-wrapper container">
-                <div class="brand-logo left">CodeBills</div>
-                <a href="#" data-activates="nav-mobile" class="button-collapse">
-                    <i class="material-icons">menu</i>
-                </a>
-                <ul class="hide-on-med-and-down right">
-                    <li v-for="o in config.menus">
-                        <a v-if="o.dropdownId" class="dropdown-button" href="!#"
-                           :data-activates="o.dropdownId">
-                            {{ o.name }} <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                        <a v-else :href="o.url">{{ o.name }}</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-button" href="#" data-activates="dropdown-logout">
-                            {{ config.name }} <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
-                </ul>
-                <ul id="nav-mobile" class="side-nav">
-                    <li v-for="o in menus">
-                        <a :href="o.url">{{ o.name }}</a>
-                    </li>
-                </ul>
+                <div class="brand-logo center">CodeBills</div>
             </div>
         </nav>
     </div>
 </template>
 
-<script>
+<script type="text/javascript">
+    import Auth from '../services/auth';
+
     export default {
-        props: {
-            config: {
-                type: Object,
-                default() {
-                    return {
-                        name: '',
-                        menus: [],
-                        menusDropdown: [],
-                        urlLogout: '/admin/logout',
-                        csrfToken: ''
+        ready() {
+            this.refreshMenu();
+        },
+        data() {
+            return {
+                menus: [
+                    {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pay'},
+                    {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receive'}
+                ],
+                menusDropdown: [
+                    {
+                        id: 'bill-pay',
+                        items: [
+                            {name: "Listar contas", routeName: 'dashboard'},
+                            {name: "Criar conta", routeName: 'dashboard'}
+                        ]
+                    },
+                    {
+                        id: 'bill-receive',
+                        items: [
+                            {name: "Listar contas", routeName: 'dashboard'},
+                            {name: "Criar conta", routeName: 'dashboard'}
+                        ]
                     }
+                ],
+                username: null,
+                authorization: null
+            };
+        },
+        methods: {
+            refreshMenu() {
+                if (Auth.check()) {
+                    this.username = Auth.user().name;
+                    this.authorization = Auth.check();
+
+                    $('.button-collapse').sideNav();
+                    $('.dropdown-button').dropdown();
+                } else {
+                    this.username = null;
+                    this.authorization = Auth.check();
                 }
             }
         },
-        ready() {
-            $('.button-collapse').sideNav();
-            $('.dropdown-button').dropdown();
-        },
-        methods: {
-            goToLogout() {
-                $('#logout-form').submit();
+        events: {
+            'refresh-menu'() {
+                this.refreshMenu();
             }
         }
     };

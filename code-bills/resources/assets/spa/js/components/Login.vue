@@ -64,9 +64,13 @@
         methods: {
             login() {
                 Auth.login(this.user.email, this.user.password)
-                        .then(() => this.$router.go({name: 'dashboard'}))
+                        .then((response) => {
+                            this.$dispatch('change-menu');
+                            this.$router.go({name: 'dashboard'});
+                        })
                         .catch((responseError) => {
                             switch (responseError.status) {
+                                case 400:
                                 case 401:
                                     this.error.message = responseError.data.message;
                                     break;

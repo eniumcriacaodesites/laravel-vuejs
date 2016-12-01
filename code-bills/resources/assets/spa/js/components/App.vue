@@ -1,6 +1,6 @@
 <template>
     <header>
-
+        <menu-component></menu-component>
     </header>
 
     <main>
@@ -12,11 +12,21 @@
     </footer>
 </template>
 
-<script>
+<script type="text/javascript">
+    import MenuComponet from './Menu.vue';
+
     export default {
+        components: {
+            'menu-component': MenuComponet
+        },
         data() {
             return {
                 year: new Date().getFullYear()
+            }
+        },
+        events: {
+            'change-menu'() {
+                this.$broadcast('refresh-menu');
             }
         }
     };
