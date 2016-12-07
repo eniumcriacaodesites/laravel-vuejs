@@ -1,3 +1,4 @@
+const HOST = '192.168.1.2';
 const gulp = require('gulp');
 const elixir = require('laravel-elixir');
 const webpack = require('webpack');
@@ -42,14 +43,14 @@ gulp.task('spa-config', () => {
 
 gulp.task('webpack-dev-server', () => {
     let config = webpackMerge(webpackConfig, webpackDevConfig);
-    let inlineHot = ['webpack/hot/dev-server', 'webpack-dev-server/client?http://192.168.1.2:8088'];
+    let inlineHot = ['webpack/hot/dev-server', `webpack-dev-server/client?http://${HOST}:8088`];
 
     config.entry.admin = [config.entry.admin].concat(inlineHot);
 
     new WebpackDevServer(webpack(config), {
         hot: true,
         proxy: {
-            '*': 'http://192.168.1.2:8000' // app laravel
+            '*': `http://${HOST}:8000` // app laravel
         },
         watchOptions: {
             poll: true,
@@ -60,7 +61,7 @@ gulp.task('webpack-dev-server', () => {
         stats: {
             colors: true
         },
-    }).listen(8088, '0.0.0.0', () => {
+    }).listen(8088, HOST, () => {
         console.log("Building project...");
     });
 });
@@ -75,8 +76,7 @@ elixir((mix) => {
     gulp.start('spa-config', 'webpack-dev-server');
 
     mix.browserSync({
-        host: '0.0.0.0',
-        proxy: 'http://192.168.1.2:8088'
+        host: HOST,
+        proxy: `http://${HOST}:8088`
     });
-
 });
