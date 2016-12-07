@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(CodeBills\User::class, function (Faker\Generator $faker) {
+$factory->define(\CodeBills\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -23,8 +23,8 @@ $factory->define(CodeBills\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(CodeBills\User::class, 'admin', function (Faker\Generator $faker) {
+$factory->state(\CodeBills\Models\User::class, 'admin', function (Faker\Generator $faker) {
     return [
-        'role' => \CodeBills\User::ROLE_ADMIN,
+        'role' => \CodeBills\Models\User::ROLE_ADMIN,
     ];
 });

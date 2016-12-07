@@ -3,7 +3,7 @@
 namespace CodeBills\Http\Controllers\Auth;
 
 use CodeBills\Http\Controllers\Controller;
-use CodeBills\User;
+use CodeBills\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 

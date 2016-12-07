@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\CodeBills\User::class, 1)->states('admin')->create([
+        factory(\CodeBills\Models\User::class, 1)->states('admin')->create([
             'name' => 'Admin',
             'email' => 'admin@codebills.com',
         ]);

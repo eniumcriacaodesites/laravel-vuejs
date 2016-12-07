@@ -2,7 +2,7 @@
 
 namespace CodeBills\Providers;
 
-use CodeBills\User;
+use CodeBills\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 

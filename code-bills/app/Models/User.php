@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeBills;
+namespace CodeBills\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
