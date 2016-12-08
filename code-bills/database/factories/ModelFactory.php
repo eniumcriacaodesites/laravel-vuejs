@@ -28,3 +28,10 @@ $factory->state(\CodeBills\Models\User::class, 'admin', function (Faker\Generato
         'role' => \CodeBills\Models\User::ROLE_ADMIN,
     ];
 });
+
+$factory->define(\CodeBills\Models\Bank::class, function (Faker\Generator $faker) {
+    return [
+        'name' => ucfirst($faker->word),
+        'logo' => 'no-image.png',
+    ];
+});

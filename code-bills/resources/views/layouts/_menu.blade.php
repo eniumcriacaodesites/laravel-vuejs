@@ -3,6 +3,7 @@
 $config = [
     'name' => \Illuminate\Support\Facades\Auth::user()->name,
     'menus' => [
+        ['name' => 'Bancos', 'url' => route('admin.banks.index')],
         ['name' => 'Contas a pagar', 'url' => 'bill-pay.list', 'dropdownId' => 'bill-pay'],
         ['name' => 'Contas a receber', 'url' => 'bill-receive.list', 'dropdownId' => 'bill-receive']
     ],
