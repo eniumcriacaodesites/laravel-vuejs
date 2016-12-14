@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -20,6 +23,9 @@
         "symfony/dom-crawler": "3.1.*"
     },
     "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
         "classmap": [
             "database"
         ],
