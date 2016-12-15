@@ -27,9 +27,27 @@
                         <delete-action action="{{ route('admin.banks.destroy', ['id' => $bank->id]) }}"
                                        action-element="link-delete-{{ $bank->id }}"
                                        csrf-token="{{ csrf_token() }}">
-                            <a id="link-delete-{{ $bank->id }}"
-                               href="{{ route('admin.banks.destroy', ['id' => $bank->id]) }}"
+                            <a id="link-modal-{{ $bank->id }}"
+                               href="#{{ 'modal-delete-' . $bank->id }}"
                                class="btn btn-danger btn-xs">Deletar</a>
+                            <modal :modal="{{ json_encode(['id' => 'modal-delete-' . $bank->id]) }}"
+                                   style="display: none;">
+                                <div slot="content">
+                                    <h5>Deseja excluir este banco?</h5>
+                                    <table class="bordered">
+                                        <tr>
+                                            <td>Nome:</td>
+                                            <td>{{ $bank->name }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div slot="footer">
+                                    <button class="btn-cancel modal-close modal-action">Cancel</button>
+                                    <button id="link-delete-{{ $bank->id }}" class="btn-ok modal-close modal-action">
+                                        Ok
+                                    </button>
+                                </div>
+                            </modal>
                         </delete-action>
                     </td>
                 </tr>

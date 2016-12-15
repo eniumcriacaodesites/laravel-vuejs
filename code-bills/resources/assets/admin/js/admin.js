@@ -14,6 +14,7 @@ require('./bootstrap');
 
 Vue.component('menu-component', require('./components/Menu.vue'));
 Vue.component('delete-action', require('./components/DeleteAction.vue'));
+Vue.component('modal', require('../../_default/components/Modal.vue'));
 
 const app = new Vue({
     el: '#app'
