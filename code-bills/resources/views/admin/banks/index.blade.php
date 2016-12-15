@@ -12,6 +12,7 @@
             <thead>
             <tr>
                 <th width="5%">Id</th>
+                <th>Logo</th>
                 <th>Name</th>
                 <th width="10%">Action</th>
             </tr>
@@ -20,6 +21,11 @@
             @foreach($banks as $bank)
                 <tr>
                     <td>{{ $bank->id }}</td>
+                    <td width="5%">
+                        <img src="{{ asset("storage/banks/images/{$bank->logo}") }}"
+                             class="responsive-img"
+                             alt="{{ $bank->name }}">
+                    </td>
                     <td>{{ $bank->name }}</td>
                     <td nowrap="nowrap">
                         <a href="{{ route('admin.banks.edit', ['id' => $bank->id]) }}"

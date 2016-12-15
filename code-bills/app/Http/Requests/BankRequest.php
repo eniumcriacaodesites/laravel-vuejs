@@ -23,8 +23,16 @@ class BankRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->getMethod() === 'PUT') {
+            return [
+                'name' => 'required|max:255|unique:banks,name,' . (int) $this->route('bank'),
+                'logo' => 'max:255|image',
+            ];
+        }
+
         return [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:banks,name',
+            'logo' => 'required|max:255|image',
         ];
     }
 }

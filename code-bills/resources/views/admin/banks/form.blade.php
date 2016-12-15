@@ -5,9 +5,9 @@
         <h3>{{ empty($bank) ? 'Adicionar Banco' : 'Atualizar Banco' }}</h3>
 
         @if(!empty($bank))
-            {!! Form::model($bank, ['route' => ['admin.banks.update', $bank->id], 'method' => 'PUT']) !!}
+            {!! Form::model($bank, ['route' => ['admin.banks.update', $bank->id], 'method' => 'PUT', 'files' => true]) !!}
         @else
-            {!! Form::open(['route' => 'admin.banks.store']) !!}
+            {!! Form::open(['route' => 'admin.banks.store', 'files' => true]) !!}
         @endif
 
         @if (count($errors) > 0)
@@ -24,8 +24,15 @@
         </div>
 
         <div class="form-group">
-            {{--{!! Form::label('logo', 'Logo:') !!}--}}
-            {!! Form::hidden('logo', 'no-image.png', ['class' => 'form-control']) !!}
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>Logo</span>
+                    <input type="file" id="logo" name="logo">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
         </div>
 
         <div class="form-group text-right">

@@ -2,10 +2,11 @@
 
 namespace CodeBills\Repositories;
 
+use CodeBills\Events\BankStoredEvent;
 use CodeBills\Models\Bank;
-use CodeBills\Validators\BankValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class BankRepositoryEloquent
@@ -14,6 +15,33 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class BankRepositoryEloquent extends BaseRepository implements BankRepository
 {
+    public function create(array $attributes)
+    {
+        $logo = $attributes['logo'];
+        $attributes['logo'] = 'no_image.png';
+        $model = parent::create($attributes);
+
+        event(new BankStoredEvent($model, $logo));
+
+        return $model;
+    }
+
+    public function update(array $attributes, $id)
+    {
+        $logo = null;
+
+        if (isset($attributes['logo']) && $attributes['logo'] instanceof UploadedFile) {
+            $logo = $attributes['logo'];
+            unset($attributes['logo']);
+        }
+
+        $model = parent::update($attributes, $id);
+
+        event(new BankStoredEvent($model, $logo));
+
+        return $model;
+    }
+
     /**
      * Specify Model class name
      *

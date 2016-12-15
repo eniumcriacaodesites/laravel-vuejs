@@ -2,7 +2,8 @@
 
 namespace CodeBills\Providers;
 
-use Illuminate\Support\Facades\Event;
+use CodeBills\Events\BankStoredEvent;
+use CodeBills\Listeners\BankLogoUploadListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'CodeBills\Events\SomeEvent' => [
-            'CodeBills\Listeners\EventListener',
+        BankStoredEvent::class => [
+            BankLogoUploadListener::class,
         ],
     ];
 
@@ -26,7 +27,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
         //
     }
 }
