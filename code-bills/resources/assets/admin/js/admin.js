@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * include Vue and Vue Resource. This gives a great starting point for
@@ -14,6 +13,7 @@ require('./bootstrap');
  */
 
 Vue.component('menu-component', require('./components/Menu.vue'));
+Vue.component('delete-action', require('./components/DeleteAction.vue'));
 
 const app = new Vue({
     el: '#app'

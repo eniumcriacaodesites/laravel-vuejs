@@ -24,8 +24,13 @@
                     <td nowrap="nowrap">
                         <a href="{{ route('admin.banks.edit', ['id' => $bank->id]) }}"
                            class="btn btn-primary btn-xs">Editar</a>
-                        <a href="{{ route('admin.banks.destroy', ['id' => $bank->id]) }}"
-                           class="btn btn-danger btn-xs js-destroy">Deletar</a>
+                        <delete-action action="{{ route('admin.banks.destroy', ['id' => $bank->id]) }}"
+                                       action-element="link-delete-{{ $bank->id }}"
+                                       csrf-token="{{ csrf_token() }}">
+                            <a id="link-delete-{{ $bank->id }}"
+                               href="{{ route('admin.banks.destroy', ['id' => $bank->id]) }}"
+                               class="btn btn-danger btn-xs">Deletar</a>
+                        </delete-action>
                     </td>
                 </tr>
             @endforeach
