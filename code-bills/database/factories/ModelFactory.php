@@ -32,6 +32,6 @@ $factory->state(\CodeBills\Models\User::class, 'admin', function (Faker\Generato
 $factory->define(\CodeBills\Models\Bank::class, function (Faker\Generator $faker) {
     return [
         'name' => ucfirst($faker->word),
-        'logo' => 'no-image.png',
+        'logo' => env('BANK_LOGO_DEFAULT'),
     ];
 });

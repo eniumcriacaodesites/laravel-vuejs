@@ -4,6 +4,7 @@ namespace CodeBills\Repositories;
 
 use CodeBills\Events\BankStoredEvent;
 use CodeBills\Models\Bank;
+use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,7 +19,7 @@ class BankRepositoryEloquent extends BaseRepository implements BankRepository
     public function create(array $attributes)
     {
         $logo = $attributes['logo'];
-        $attributes['logo'] = 'no_image.png';
+        $attributes['logo'] = env('BANK_LOGO_DEFAULT');
         $model = parent::create($attributes);
 
         event(new BankStoredEvent($model, $logo));
@@ -40,6 +41,15 @@ class BankRepositoryEloquent extends BaseRepository implements BankRepository
         event(new BankStoredEvent($model, $logo));
 
         return $model;
+    }
+
+    public function delete($id)
+    {
+        $bank = $this->find($id);
+
+        Storage::disk('public')->delete(Bank::logosDir() . '/' . $bank->logo);
+
+        return parent::delete($id);
     }
 
     /**
