@@ -35,3 +35,11 @@ $factory->define(\CodeBills\Models\Bank::class, function (Faker\Generator $faker
         'logo' => env('BANK_LOGO_DEFAULT'),
     ];
 });
+
+$factory->define(\CodeBills\Models\BankAccount::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->city,
+        'agency' => rand(10000, 60000) . '-' . rand(0, 9),
+        'account' => rand(70000, 90000) . '-' . rand(0, 9),
+    ];
+});
