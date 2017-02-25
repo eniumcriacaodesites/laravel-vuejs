@@ -63,10 +63,18 @@
         data() {
             return {
                 menus: [
+                    {name: "Contas bancárias", routeName: '', dropdownId: 'bank-accounts'},
                     {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pay'},
                     {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receive'}
                 ],
                 menusDropdown: [
+                    {
+                        id: 'bank-accounts',
+                        items: [
+                            {name: "Listar contas", routeName: 'bank-accounts.list'},
+                            {name: "Criar conta", routeName: 'bank-accounts.create'}
+                        ]
+                    },
                     {
                         id: 'bill-pay',
                         items: [
