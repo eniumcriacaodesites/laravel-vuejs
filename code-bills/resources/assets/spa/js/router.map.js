@@ -1,7 +1,6 @@
 import LoginComponent from "./components/Login.vue";
 import LogoutComponent from "./components/Logout.vue";
 import DashboardComponent from "./components/Dashboard.vue";
-import BankAccountComponent from "./components/bank-accounts/BankAccount.vue";
 import BankAccountCreateComponent from "./components/bank-accounts/BankAccountCreate.vue";
 import BankAccountListComponent from "./components/bank-accounts/BankAccountList.vue";
 
@@ -22,7 +21,9 @@ export default {
         auth: true
     },
     '/bank-accounts': {
-        component: BankAccountComponent,
+        component: {
+            template: '<router-view></router-view>'
+        },
         subRoutes: {
             '/': {
                 name: 'bank-accounts.list',

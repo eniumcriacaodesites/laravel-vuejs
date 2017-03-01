@@ -2,14 +2,14 @@
 
 namespace CodeBills\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use CodeBills\Repositories\BankAccountRepository;
 use CodeBills\Models\BankAccount;
-use CodeBills\Validators\BankAccountValidator;
+use CodeBills\Presenters\BankAccountPresenter;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class BankAccountRepositoryEloquent
+ *
  * @package namespace CodeBills\Repositories;
  */
 class BankAccountRepositoryEloquent extends BaseRepository implements BankAccountRepository
@@ -24,13 +24,16 @@ class BankAccountRepositoryEloquent extends BaseRepository implements BankAccoun
         return BankAccount::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return BankAccountPresenter::class;
     }
 }

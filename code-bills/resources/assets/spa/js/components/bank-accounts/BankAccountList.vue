@@ -1,25 +1,38 @@
 <template>
     <div class="container">
-        <h4>{{ title }}</h4>
-        <table class="bordered highlight responsive-table z-depth-1">
-            <thead>
-            <tr>
-                <th width="5%">#</th>
-                <th>Nome</th>
-                <th width="10%">Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(index, o) in bankAccounts">
-                <td>{{ o.id }}</td>
-                <td>{{ o.name }}</td>
-                <td nowrap="nowrap">
-                    <a v-link="{name: 'bank-accounts.update', params: {id: o.id}}">Editar</a> |
-                    <a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="card-panel blue lighten-3">
+                <span class="blue-text text-darken-2">
+                    <h5>{{ title}}</h5>
+                </span>
+            </div>
+
+            <div class="card-panel z-depth-2">
+                <table class="bordered striped highlight responsive-table">
+                    <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th>Nome</th>
+                        <th>Agência</th>
+                        <th>C/C</th>
+                        <th width="10%">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(index, o) in bankAccounts">
+                        <td>{{ o.id }}</td>
+                        <td>{{ o.name }}</td>
+                        <td>{{ o.agency }}</td>
+                        <td>{{ o.account }}</td>
+                        <td nowrap="nowrap">
+                            <a v-link="{name: 'bank-accounts.update', params: {id: o.id}}">Editar</a> |
+                            <a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <modal :modal="modalDelete">
         <div slot="content" v-if="bankAccountToDelete">
@@ -58,7 +71,7 @@
         },
         created() {
             BankAccountResource.query().then((response) => {
-                this.bankAccounts = response.data;
+                this.bankAccounts = response.data.data;
             });
         },
         methods: {
