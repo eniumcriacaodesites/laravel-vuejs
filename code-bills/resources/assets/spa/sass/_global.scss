@@ -66,3 +66,14 @@ footer {
   color: #000;
   background-color: color("orange", "lighten-1");
 }
+
+.spinner {
+  @extend .progress;
+  margin: 0;
+}
+
+.spinner-fixed {
+  width: 100%;
+  position: fixed;
+  z-index: 998;
+}

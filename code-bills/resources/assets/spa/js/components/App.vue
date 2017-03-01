@@ -1,4 +1,9 @@
 <template>
+    <div class="spinner-fixed" v-if="loading">
+        <div class="spinner">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
     <header>
         <menu-component></menu-component>
     </header>
@@ -19,9 +24,16 @@
         components: {
             'menu-component': MenuComponet
         },
+        created() {
+            window.Vue.http.interceptors.unshift((request, next) => {
+                this.loading = true;
+                next(() => this.loading = false);
+            });
+        },
         data() {
             return {
-                year: new Date().getFullYear()
+                year: new Date().getFullYear(),
+                loading: false
             }
         },
         events: {
