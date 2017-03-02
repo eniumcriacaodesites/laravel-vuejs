@@ -66,3 +66,15 @@ footer {
   color: #000;
   background-color: color("orange", "lighten-1");
 }
+
+.filter-group {
+  .btn {
+    float: right;
+    height: 3rem;
+    line-height: 3rem;
+  }
+  .filter-wrapper {
+    overflow: hidden;
+    padding-right: 10px;
+  }
+}

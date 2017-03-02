@@ -8,25 +8,52 @@
 
         <br><br>
 
-        <table class="bordered highlight responsive-table z-depth-1">
+        <form name="form-search" method="get" action="{{ route('admin.banks.index') }}">
+            <div class="filter-group">
+                <button type="submit" class="btn waves-effect">
+                    <i class="material-icons">search</i>
+                </button>
+                <div class="filter-wrapper">
+                    <input type="text" name="search" value="{{ $search }}" placeholder="Digite aqui a sua busca">
+                </div>
+            </div>
+        </form>
+
+        <table class="bordered striped highlight responsive-table">
             <thead>
             <tr>
-                <th width="5%">Id</th>
-                <th>Logo</th>
-                <th>Name</th>
+                <th width="5%">
+                    <a href="{{ route('admin.banks.index', ['orderBy' => 'id', 'sortedBy' => ($sortedBy == 'asc') ? 'desc' : 'asc', 'search' => $search]) }}">
+                        ID
+                        @if($orderBy == 'id')
+                            <i class="material-icons right">
+                                {{ $sortedBy == 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                            </i>
+                        @endif
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ route('admin.banks.index', ['orderBy' => 'name', 'sortedBy' => ($sortedBy == 'asc') ? 'desc' : 'asc', 'search' => $search]) }}">
+                        Nome
+                        @if($orderBy == 'name')
+                            <i class="material-icons right">
+                                {{ $sortedBy == 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                            </i>
+                        @endif
+                    </a>
+                </th>
+                <th width="15%">
+                    Logo
+                </th>
                 <th width="10%">Action</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($banks as $bank)
+            @forelse($banks as $bank)
                 <tr>
                     <td>{{ $bank->id }}</td>
-                    <td width="5%">
-                        <img src="{{ asset("storage/banks/images/{$bank->logo}") }}"
-                             class="responsive-img"
-                             alt="{{ $bank->name }}">
-                    </td>
                     <td>{{ $bank->name }}</td>
+                    <td><img src="{{ asset("storage/banks/images/{$bank->logo}") }}" height="30"></td>
                     <td nowrap="nowrap">
                         <a href="{{ route('admin.banks.edit', ['id' => $bank->id]) }}"
                            class="btn btn-primary btn-xs">Editar</a>
@@ -57,7 +84,11 @@
                         </delete-action>
                     </td>
                 </tr>
-            @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4">&raquo; Nenhum registro encontrado.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
         {!! $banks->links() !!}

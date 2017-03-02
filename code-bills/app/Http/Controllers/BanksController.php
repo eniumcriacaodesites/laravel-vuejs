@@ -29,9 +29,18 @@ class BanksController extends Controller
      */
     public function index()
     {
+        $search = request()->get('search', '');
+        $orderBy = request()->get('orderBy', 'id');
+        $sortedBy = request()->get('sortedBy', 'asc');
+
+        if (!in_array($orderBy, ['id', 'name'])) {
+            $orderBy = 'id';
+            request()->offsetSet('orderBy', $orderBy);
+        }
+
         $banks = $this->bankRepository->paginate();
 
-        return view('admin.banks.index', compact('banks'));
+        return view('admin.banks.index', compact('banks', 'search', 'orderBy', 'sortedBy'));
     }
 
     /**
