@@ -16,4 +16,9 @@ class BankAccount extends Model implements Transformable
         'account',
         'bank_id',
     ];
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
 }
