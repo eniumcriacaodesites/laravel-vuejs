@@ -31,6 +31,9 @@
                     </tr>
                     </tbody>
                 </table>
+                <pagination :current-page.sync="pagination.current_page"
+                            :per-page="pagination.per_page"
+                            :total-records="pagination.total"></pagination>
             </div>
         </div>
     </div>
@@ -53,11 +56,13 @@
 
 <script type="text/javascript">
     import ModalComponent from '../../../../_default/components/Modal.vue';
+    import PaginationComponent from '../Pagination.vue';
     import {BankAccountResource} from '../../services/resource';
 
     export default {
         components: {
-            modal: ModalComponent
+            modal: ModalComponent,
+            pagination: PaginationComponent
         },
         data() {
             return {
@@ -66,13 +71,16 @@
                 bankAccountToDelete: null,
                 modalDelete: {
                     id: 'modal-delete'
+                },
+                pagination: {
+                    current_page: 0,
+                    per_page: 0,
+                    total: 0
                 }
             };
         },
         created() {
-            BankAccountResource.query().then((response) => {
-                this.bankAccounts = response.data.data;
-            });
+            this.getBankAccounts();
         },
         methods: {
             deleteBankAccount() {
@@ -86,6 +94,21 @@
                 this.bankAccountToDelete = bankAccount;
                 $('#modal-delete').modal();
                 $('#modal-delete').modal('open');
+            },
+            getBankAccounts() {
+                BankAccountResource.query({
+                    page: this.pagination.current_page + 1
+                }).then((response) => {
+                    this.bankAccounts = response.data.data;
+                    let pagination = response.data.meta.pagination;
+                    pagination.current_page--;
+                    this.pagination = pagination;
+                });
+            }
+        },
+        events: {
+            'pagination::changed'(page) {
+                this.getBankAccounts();
             }
         }
     };
