@@ -32,7 +32,6 @@
         methods: {
             logout() {
                 let goToLogin = () => {
-                    this.$dispatch('change-menu');
                     this.$router.go({name: 'auth.login'})
                 };
 

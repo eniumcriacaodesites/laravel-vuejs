@@ -2,21 +2,27 @@
     <div class="section page-login">
         <div class="container">
             <div class="row">
-                <div class="col s12 m8 offset-m2">
+                <div class="col s12 m6 offset-m3">
                     <div class="card z-depth-2">
                         <div class="card-content">
                             <div class="card-title">
                                 <h4 class="center-align">Login</h4>
                             </div>
 
-                            <h5 class="red-text center-align" v-if="error.error">{{ error.message }}</h5>
+                            <div class="row" v-if="error.error">
+                                <div class="col s12">
+                                    <div class="card-panel red">
+                                        <span class="white-text">{{ error.message }}</span>
+                                    </div>
+                                </div>
+                            </div>
 
                             <form role="form" @submit.prevent="login()">
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input type="email" name="email" class="validate"
                                                placeholder="Informe seu e-mail"
-                                               v-model="user.email">
+                                               v-model="user.email" autofocus>
                                         <label for="email" class="active">E-mail:</label>
                                     </div>
                                 </div>
@@ -58,16 +64,13 @@
                 error: {
                     error: false,
                     message: ''
-                },
+                }
             }
         },
         methods: {
             login() {
                 Auth.login(this.user.email, this.user.password)
-                        .then((response) => {
-                            this.$dispatch('change-menu');
-                            this.$router.go({name: 'dashboard'});
-                        })
+                        .then(() => this.$router.go({name: 'dashboard'}))
                         .catch((responseError) => {
                             switch (responseError.status) {
                                 case 400:

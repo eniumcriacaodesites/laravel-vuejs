@@ -8,11 +8,11 @@ const router = new VueRouter();
 router.map(routerMap);
 
 router.beforeEach(({to, next}) => {
-    if (to.auth && !Auth.check()) {
+    if (to.auth && !Auth.user.check) {
         return router.go({name: 'auth.login'});
     }
 
-    if (to.name == "auth.login" && Auth.check()) {
+    if (to.name == "auth.login" && Auth.user.check) {
         return router.go({name: 'dashboard'});
     }
 

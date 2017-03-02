@@ -1,53 +1,44 @@
 <template>
-    <div v-show="authorization">
-        <ul :id="o.id" class="dropdown-content" v-for="o in menusDropdown">
-            <li v-for="item in o.items">
-                <a v-link="{name: item.routeName}">{{ item.name }}</a>
-            </li>
-        </ul>
-        <ul id="dropdown-logout" class="dropdown-content">
-            <li>
-                <a href="#!/logout">Logout</a>
-            </li>
-        </ul>
-        <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper container">
-                    <div class="brand-logo left">
-                        <a href="#!/dashboard">
-                            CodeBills
-                        </a>
-                    </div>
-                    <a href="#" data-activates="nav-mobile" class="button-collapse">
-                        <i class="material-icons">menu</i>
-                    </a>
-                    <ul class="hide-on-med-and-down right">
-                        <li v-for="o in menus">
-                            <a v-if="o.dropdownId" class="dropdown-button" href="!#"
-                               :data-activates="o.dropdownId">
-                                {{ o.name }} <i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                            <a v-else v-link="{name: o.routeName}">{{ o.name }}</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-button" href="#" data-activates="dropdown-logout">
-                                {{ username }} <i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul id="nav-mobile" class="side-nav">
-                        <li v-for="o in menus">
-                            <a v-link="{name: o.routeName}">{{ o.name }}</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <div class="navbar-fixed" v-else>
+    <ul :id="o.id" class="dropdown-content" v-for="o in menusDropdown">
+        <li v-for="item in o.items">
+            <a v-link="{name: item.routeName}">{{ item.name }}</a>
+        </li>
+    </ul>
+    <ul id="dropdown-logout" class="dropdown-content">
+        <li>
+            <a v-link="{name: 'auth.logout'}">Sair</a>
+        </li>
+    </ul>
+    <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper container">
-                <div class="brand-logo center">CodeBills</div>
+                <div class="brand-logo left">
+                    <a v-link="{name: 'dashboard'}">
+                        CodeBills
+                    </a>
+                </div>
+                <a href="#" data-activates="nav-mobile" class="button-collapse">
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="hide-on-med-and-down right">
+                    <li v-for="o in menus">
+                        <a v-if="o.dropdownId" class="dropdown-button" href="!#"
+                           :data-activates="o.dropdownId">
+                            {{ o.name }} <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                        <a v-else v-link="{name: o.routeName}">{{ o.name }}</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-button" href="#" data-activates="dropdown-logout">
+                            {{ name }} <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                </ul>
+                <ul id="nav-mobile" class="side-nav">
+                    <li v-for="o in menus">
+                        <a v-link="{name: o.routeName}">{{ o.name }}</a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </div>
@@ -57,9 +48,6 @@
     import Auth from '../services/auth';
 
     export default {
-        ready() {
-            this.refreshMenu();
-        },
         data() {
             return {
                 menus: [
@@ -90,28 +78,17 @@
                         ]
                     }
                 ],
-                username: null,
-                authorization: null
+                user: Auth.user
             };
         },
-        methods: {
-            refreshMenu() {
-                if (Auth.check()) {
-                    this.username = Auth.user().name;
-                    this.authorization = Auth.check();
-
-                    $('.button-collapse').sideNav();
-                    $('.dropdown-button').dropdown();
-                } else {
-                    this.username = null;
-                    this.authorization = Auth.check();
-                }
+        computed: {
+            name() {
+                return this.user.data ? this.user.data.name : '';
             }
         },
-        events: {
-            'refresh-menu'() {
-                this.refreshMenu();
-            }
+        ready() {
+            $('.button-collapse').sideNav();
+            $('.dropdown-button').dropdown();
         }
     };
 </script>

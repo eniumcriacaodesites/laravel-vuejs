@@ -5,7 +5,16 @@
         </div>
     </div>
     <header>
-        <menu-component></menu-component>
+        <div v-if="showMenu">
+            <menu-component></menu-component>
+        </div>
+        <div v-else class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper container">
+                    <div class="brand-logo center">CodeBills</div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main>
@@ -18,6 +27,7 @@
 </template>
 
 <script type="text/javascript">
+    import Auth from '../services/auth';
     import MenuComponet from './Menu.vue';
 
     export default {
@@ -33,12 +43,13 @@
         data() {
             return {
                 year: new Date().getFullYear(),
+                user: Auth.user,
                 loading: false
-            }
+            };
         },
-        events: {
-            'change-menu'() {
-                this.$broadcast('refresh-menu');
+        computed: {
+            showMenu() {
+                return this.user.check && this.$route.name != 'auth.login';
             }
         }
     };
