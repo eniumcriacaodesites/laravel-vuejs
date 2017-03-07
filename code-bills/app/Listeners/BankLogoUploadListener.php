@@ -22,6 +22,7 @@ class BankLogoUploadListener
     public function __construct(BankRepository $bankRepository)
     {
         $this->bankRepository = $bankRepository;
+        $this->bankRepository->skipPresenter(true);
     }
 
     /**

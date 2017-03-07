@@ -1,7 +1,9 @@
 <?php
 
+use CodeBills\Models\Bank;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class CreateBanksData extends Migration
 {
@@ -29,9 +31,15 @@ class CreateBanksData extends Migration
     {
         /** @var \CodeBills\Repositories\BankRepository $bankRepository */
         $bankRepository = app(\CodeBills\Repositories\BankRepository::class);
+        $bankRepository->skipPresenter(true);
+        $count = count($this->getData());
 
-        foreach ($bankRepository->all() as $bank) {
-            $bankRepository->delete($bank->id);
+        foreach (range(1, $count) as $value) {
+            $model = $bankRepository->find($value);
+
+            Storage::disk('public')->delete(Bank::logosDir() . '/' . $model->logo);
+
+            $model->delete();
         }
     }
 

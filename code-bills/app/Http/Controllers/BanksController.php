@@ -20,6 +20,7 @@ class BanksController extends Controller
     public function __construct(BankRepository $bankRepository)
     {
         $this->bankRepository = $bankRepository;
+        $this->bankRepository->skipPresenter(true);
     }
 
     /**
