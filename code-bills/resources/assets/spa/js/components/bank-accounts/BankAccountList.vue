@@ -6,16 +6,7 @@
             </page-title>
 
             <div class="card-panel z-depth-2">
-                <form name="form-search" method="get" @submit="filter()">
-                    <div class="filter-group">
-                        <button type="submit" class="btn waves-effect">
-                            <i class="material-icons">search</i>
-                        </button>
-                        <div class="filter-wrapper">
-                            <input type="text" v-model="search" placeholder="Digite aqui a sua busca">
-                        </div>
-                    </div>
-                </form>
+                <search @on-submit="filter" :model.sync="search"></search>
                 <table class="bordered striped highlight responsive-table">
                     <thead>
                     <tr>
@@ -71,12 +62,14 @@
     import PaginationComponent from '../Pagination.vue';
     import {BankAccountResource} from '../../services/resource';
     import PageTitleComponent from '../PageTitle.vue';
+    import SearchComponent from '../Search.vue';
 
     export default {
         components: {
             modal: ModalComponent,
             pagination: PaginationComponent,
-            pageTitle: PageTitleComponent
+            pageTitle: PageTitleComponent,
+            search: SearchComponent
         },
         data() {
             return {
