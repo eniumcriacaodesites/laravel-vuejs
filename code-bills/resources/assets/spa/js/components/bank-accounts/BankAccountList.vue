@@ -1,11 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="card-panel blue lighten-3">
-                <span class="blue-text text-darken-2">
-                    <h5>{{ title}}</h5>
-                </span>
-            </div>
+            <page-title>
+                <h5>{{ title }}</h5>
+            </page-title>
 
             <div class="card-panel z-depth-2">
                 <form name="form-search" method="get" @submit="filter()">
@@ -72,11 +70,13 @@
     import ModalComponent from '../../../../_default/components/Modal.vue';
     import PaginationComponent from '../Pagination.vue';
     import {BankAccountResource} from '../../services/resource';
+    import PageTitleComponent from '../PageTitle.vue';
 
     export default {
         components: {
             modal: ModalComponent,
-            pagination: PaginationComponent
+            pagination: PaginationComponent,
+            pageTitle: PageTitleComponent
         },
         data() {
             return {
