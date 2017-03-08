@@ -27,6 +27,21 @@
                         <td>{{ o.name }}</td>
                         <td>{{ o.agency }}</td>
                         <td>{{ o.account }}</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td width="32">
+                                        <img :src="o.bank.data.logo" class="bank-logo">
+                                    </td>
+                                    <td>
+                                        {{ o.bank.data.name }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <i class="material-icons green-text" v-if="o.default">check</i>
+                        </td>
                         <td nowrap="nowrap">
                             <a v-link="{name: 'bank-accounts.update', params: {id: o.id}}">Editar</a> |
                             <a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
@@ -97,7 +112,7 @@
                         },
                         name: {
                             label: 'Nome',
-                            width: '45%'
+                            width: '40%'
                         },
                         agency: {
                             label: 'Agência',
@@ -106,7 +121,15 @@
                         account: {
                             label: 'C/C',
                             width: '15%'
-                        }
+                        },
+                        'banks:bank_id|banks.name': {
+                            label: 'Banco',
+                            width: '15%'
+                        },
+                        'default': {
+                            label: 'Padrão',
+                            width: '10%'
+                        },
                     }
                 }
             };
@@ -129,6 +152,7 @@
             },
             getBankAccounts() {
                 BankAccountResource.query({
+                    include: 'bank',
                     page: this.pagination.current_page + 1,
                     orderBy: this.order.key,
                     sortedBy: this.order.sort,

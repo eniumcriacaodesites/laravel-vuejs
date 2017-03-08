@@ -4,7 +4,7 @@ namespace CodeBills\Http\Controllers\Api;
 
 use CodeBills\Http\Controllers\Controller;
 use CodeBills\Http\Controllers\Response;
-use CodeBills\Http\Requests\BankAccountCreateRequest;
+use CodeBills\Http\Requests\BankAccountRequest;
 use CodeBills\Http\Requests\BankAccountUpdateRequest;
 use CodeBills\Repositories\BankAccountRepository;
 
@@ -40,11 +40,11 @@ class BankAccountsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  BankAccountCreateRequest $request
+     * @param  BankAccountRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(BankAccountCreateRequest $request)
+    public function store(BankAccountRequest $request)
     {
         $bankAccount = $this->repository->create($request->all());
 
@@ -68,12 +68,11 @@ class BankAccountsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  BankAccountUpdateRequest $request
+     * @param BankAccountRequest $request
      * @param  string $id
-     *
      * @return Response
      */
-    public function update(BankAccountUpdateRequest $request, $id)
+    public function update(BankAccountRequest $request, $id)
     {
         $bankAccount = $this->repository->update($request->all(), $id);
 

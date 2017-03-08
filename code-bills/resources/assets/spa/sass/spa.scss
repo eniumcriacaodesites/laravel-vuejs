@@ -11,6 +11,9 @@
 // Materialize
 @import "node_modules/materialize-css/sass/materialize";
 
+// Default
+@import "../../_default/sass/default";
+
 // Custom
 @import "buttons";
 @import "modal";

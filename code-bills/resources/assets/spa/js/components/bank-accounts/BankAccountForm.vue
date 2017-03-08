@@ -9,25 +9,31 @@
                 <form name="form" @submit.prevent="submit">
                     <div class="row">
                         <div class="input-field col s6">
+                            <input type="text" v-model="bankAccount.name" placeholder="Informe um nome">
                             <label class="active">Nome:</label>
-                            <input type="text" v-model="bill.name" placeholder="Informe um nome">
                         </div>
                         <div class="input-field col s6">
-                            <label class="active">Banco:</label>
-                            <select v-model="bill.bank_id" class="browser-default">
+                            <select v-model="bankAccount.bank_id" class="browser-default">
                                 <option value="" disabled selected>Escolha um banco</option>
                                 <option v-for="o in banks" :value="o.id">{{ o.name }}</option>
                             </select>
+                            <label class="active">Banco:</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
+                            <input type="text" v-model="bankAccount.agency" placeholder="Informe a agência">
                             <label class="active">Agência:</label>
-                            <input type="text" v-model="bill.agency" placeholder="Informe a agência">
                         </div>
                         <div class="input-field col s6">
+                            <input type="text" v-model="bankAccount.account" placeholder="Informe o numero da conta">
                             <label class="active">Conta:</label>
-                            <input type="text" v-model="bill.account" placeholder="Informe o numero da conta">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="checkbox" id="account_default" class="filled-in" v-model="bankAccount.default">
+                            <label for="account_default">Padrão?</label>
                         </div>
                     </div>
                     <div class="row">
@@ -54,43 +60,48 @@
         },
         data() {
             return {
-                title: 'Adicionar conta bancaria',
-                formType: 'insert',
+                title: '',
+                formType: '',
                 banks: [],
-                bill: new BankAccount()
+                bankAccount: new BankAccount()
             };
         },
         created() {
-            BankResource.get().then((response) => {
-                this.banks = response.data.data;
-            });
+            this.getBanks();
 
             if (this.$route.name == 'bank-accounts.update') {
                 this.title = 'Atualizar conta';
                 this.formType = 'update';
                 this.getBill(this.$route.params.id);
+            } else {
+                this.title = 'Adicionar conta bancaria';
+                this.formType = 'insert';
             }
         },
         methods: {
             submit() {
-                let bill = this.bill.toJSON();
+                let bankAccount = this.bankAccount.toJSON();
+
                 if (this.formType == 'insert') {
-                    BankAccountResource.save({}, bill).then((response) => {
-                        this.$dispatch('change-info');
+                    BankAccountResource.save({}, bankAccount).then((response) => {
                         Materialize.toast('Conta cadastrada com sucesso!', 4000);
                         this.$router.go({name: 'bank-accounts.list'});
                     });
                 } else {
-                    BankAccountResource.update({id: this.bill.id}, bill).then((response) => {
-                        this.$dispatch('change-info');
+                    BankAccountResource.update({id: this.bankAccount.id}, bankAccount).then((response) => {
                         Materialize.toast('Conta alterada com sucesso!', 4000);
                         this.$router.go({name: 'bank-accounts.list'});
                     });
                 }
             },
+            getBanks() {
+                BankResource.get().then((response) => {
+                    this.banks = response.data.data;
+                });
+            },
             getBill(id) {
                 BankAccountResource.get({id: id}).then((response) => {
-                    this.bill = new BankAccount(response.data.data);
+                    this.bankAccount = new BankAccount(response.data.data);
                 });
             }
         }

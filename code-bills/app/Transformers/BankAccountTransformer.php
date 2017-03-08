@@ -12,6 +12,8 @@ use League\Fractal\TransformerAbstract;
  */
 class BankAccountTransformer extends TransformerAbstract
 {
+    protected $availableIncludes = ['bank'];
+
     /**
      * Transform the \BankAccount entity
      *
@@ -31,5 +33,10 @@ class BankAccountTransformer extends TransformerAbstract
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at,
         ];
+    }
+
+    public function includeBank(BankAccount $model)
+    {
+        return $this->item($model->bank, new BankTransformer());
     }
 }
