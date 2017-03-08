@@ -1,11 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="card-panel blue lighten-3">
-                <span class="blue-text text-darken-2">
-                    <h5>{{ title}}</h5>
-                </span>
-            </div>
+            <page-title>
+                <h5>{{ title }}</h5>
+            </page-title>
 
             <div class="card-panel z-depth-2">
                 <form name="form" @submit.prevent="submit">
@@ -33,10 +31,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12">
-                            <button class="btn-send" type="submit" name="action">Enviar
-                                <i class="material-icons right">send</i>
-                            </button>
+                        <div class="col s12 right-align">
+                            <button type="submit" class="btn-save">Salvar</button>
+                            <a v-link="{name: 'bank-accounts.list'}" class="btn-cancel">Cancelar</a>
                         </div>
                     </div>
                 </form>
@@ -49,8 +46,12 @@
     import BankAccount from "./BankAccount";
     import {BankResource} from '../../services/resource';
     import {BankAccountResource} from '../../services/resource';
+    import PageTitleComponent from '../PageTitle.vue';
 
     export default {
+        components: {
+            pageTitle: PageTitleComponent
+        },
         data() {
             return {
                 title: 'Adicionar conta bancaria',
@@ -61,7 +62,7 @@
         },
         created() {
             BankResource.get().then((response) => {
-                this.banks = response.data;
+                this.banks = response.data.data;
             });
 
             if (this.$route.name == 'bank-accounts.update') {

@@ -30,8 +30,6 @@ class BanksController extends Controller
      */
     public function index()
     {
-        $banks = $this->repository->all();
-
-        return response()->json($banks->toArray(), 200);
+        return $this->repository->all();
     }
 }

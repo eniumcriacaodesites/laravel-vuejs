@@ -12,3 +12,8 @@
 .btn-send {
   @extend .btn, .waves-effect, .waves-light, .right;
 }
+
+.btn-save {
+  @extend .btn, .btn-flat, .waves-effect, .blue, .darken-2;
+  color: #FFFFFF;
+}

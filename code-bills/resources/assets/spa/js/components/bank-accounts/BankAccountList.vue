@@ -73,7 +73,7 @@
         },
         data() {
             return {
-                title: 'Minhas contas bancarias',
+                title: 'Minhas contas bancárias',
                 bankAccounts: [],
                 bankAccountToDelete: null,
                 modalDelete: {
