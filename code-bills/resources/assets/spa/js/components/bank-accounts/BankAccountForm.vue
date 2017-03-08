@@ -13,10 +13,14 @@
                             <label class="active">Nome:</label>
                         </div>
                         <div class="input-field col s6">
-                            <select v-model="bankAccount.bank_id" class="browser-default">
+                            <!--<select v-model="bankAccount.bank_id" class="browser-default">
                                 <option value="" disabled selected>Escolha um banco</option>
                                 <option v-for="o in banks" :value="o.id">{{ o.name }}</option>
-                            </select>
+                            </select>-->
+                            <input type="text" id="bank-id" :value="bankAccount.bank.data.name"
+                                   placeholder="Procure o banco" autocomplete="off"
+                                   data-activates="bank-id-dropdown" data-beloworigin="true">
+                            <ul id="bank-id-dropdown" class="dropdown-content ac-dropdown"></ul>
                             <label class="active">Banco:</label>
                         </div>
                     </div>
@@ -53,6 +57,8 @@
     import {BankResource} from '../../services/resource';
     import {BankAccountResource} from '../../services/resource';
     import PageTitleComponent from '../PageTitle.vue';
+    import 'materialize-autocomplete';
+    import _ from 'lodash';
 
     export default {
         components: {
@@ -97,12 +103,50 @@
             getBanks() {
                 BankResource.get().then((response) => {
                     this.banks = response.data.data;
+                    this.initAutocomplete();
                 });
             },
             getBill(id) {
-                BankAccountResource.get({id: id}).then((response) => {
+                BankAccountResource.get({id: id, include: 'bank'}).then((response) => {
                     this.bankAccount = new BankAccount(response.data.data);
                 });
+            },
+            initAutocomplete() {
+                let self = this;
+
+                $(document).ready(() => {
+                    $('#bank-id').materialize_autocomplete({
+                        limit: 10,
+                        multiple: {
+                            enable: false
+                        },
+                        appender: {
+                            el: '.ac-dropdown'
+                        },
+                        dropdown: {
+                            el: '#bank-id-dropdown'
+                        },
+                        getData: (value, callback) => {
+                            let banks = self.filterBankByName(value);
+
+                            banks = banks.map((o) => {
+                                return {id: o.id, text: o.name};
+                            });
+
+                            callback(value, banks);
+                        },
+                        onSelect(item) {
+                            self.bankAccount.bank_id = item.id;
+                        }
+                    });
+                });
+            },
+            filterBankByName(name) {
+                let banks = _.filter(this.banks, (o) => {
+                    return _.includes(o.name.toLowerCase(), name.toLowerCase());
+                });
+
+                return banks;
             }
         }
     };

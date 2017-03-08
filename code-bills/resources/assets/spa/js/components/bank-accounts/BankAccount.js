@@ -5,6 +5,11 @@ class BankAccount {
         this.account = '';
         this.bank_id = '';
         this.default = false;
+        this.bank = {
+            data: {
+                name: ''
+            }
+        };
 
         Object.assign(this, data);
     }
