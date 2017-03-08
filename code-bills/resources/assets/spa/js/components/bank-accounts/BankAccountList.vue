@@ -142,6 +142,11 @@
                 BankAccountResource.delete({id: this.bankAccountToDelete.id}).then((response) => {
                     this.bankAccounts.$remove(this.bankAccountToDelete);
                     this.bankAccountToDelete = null;
+
+                    if (this.bankAccounts.length === 0 && this.pagination.current_page > 0) {
+                        this.pagination.current_page--;
+                    }
+
                     Materialize.toast('Conta bancária excluída com sucesso!', 4000);
                 });
             },
@@ -170,6 +175,7 @@
                 this.getBankAccounts();
             },
             filter() {
+                this.pagination.current_page = 0;
                 this.getBankAccounts();
             }
         },
