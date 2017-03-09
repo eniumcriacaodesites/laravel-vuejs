@@ -3,31 +3,54 @@
 $config = [
     'name' => \Illuminate\Support\Facades\Auth::user()->name,
     'menus' => [
-        ['name' => 'Bancos', 'url' => route('admin.banks.index'), 'active' => isRouteActive('admin.banks.index')],
-        ['name' => 'Contas a pagar', 'url' => 'bill-pay.list', 'dropdownId' => 'bill-pay'],
-        ['name' => 'Contas a receber', 'url' => 'bill-receive.list', 'dropdownId' => 'bill-receive']
+        ['name' => 'Bancos', 'dropdownId' => 'banks'],
+        ['name' => 'Contas a pagar', 'dropdownId' => 'bill-pays'],
+        ['name' => 'Contas a receber', 'dropdownId' => 'bill-receives']
     ],
     'menusDropdown' => [
         [
-            'id' => 'bill-pay',
+            'id' => 'banks',
             'items' => [
                 [
-                    'name' => 'Listar contas',
-                    'url' => route('admin.banks.create'),
-                    'active' => isRouteActive('admin.banks.create')
-                ],
-                [
-                    'name' => 'Criar conta',
+                    'name' => 'Listar bancos',
                     'url' => route('admin.banks.index'),
                     'active' => isRouteActive('admin.banks.index')
+                ],
+                [
+                    'name' => 'Criar banco',
+                    'url' => route('admin.banks.create'),
+                    'active' => isRouteActive('admin.banks.create')
                 ],
             ]
         ],
         [
-            'id' => 'bill-receive',
+            'id' => 'bill-pays',
             'items' => [
-                ['name' => 'Listar contas', 'url' => 'bill-receive'],
-                ['name' => 'Criar conta', 'url' => 'bill-receive/create']
+                [
+                    'name' => 'Listar contas',
+                    'url' => route('admin.bill-pays.index'),
+                    'active' => isRouteActive('admin.bill-pays.index')
+                ],
+                [
+                    'name' => 'Criar conta',
+                    'url' => route('admin.bill-pays.create'),
+                    'active' => isRouteActive('admin.bill-pays.create')
+                ],
+            ]
+        ],
+        [
+            'id' => 'bill-receives',
+            'items' => [
+                [
+                    'name' => 'Listar contas',
+                    'url' => route('admin.bill-receives.index'),
+                    'active' => isRouteActive('admin.bill-receives.index')
+                ],
+                [
+                    'name' => 'Criar conta',
+                    'url' => route('admin.bill-receives.create'),
+                    'active' => isRouteActive('admin.bill-receives.create')
+                ],
             ]
         ]
     ],
