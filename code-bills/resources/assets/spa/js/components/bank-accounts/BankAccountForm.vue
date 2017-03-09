@@ -78,7 +78,7 @@
             if (this.$route.name == 'bank-accounts.update') {
                 this.title = 'Atualizar conta';
                 this.formType = 'update';
-                this.getBill(this.$route.params.id);
+                this.getBankAccount(this.$route.params.id);
             } else {
                 this.title = 'Adicionar conta bancaria';
                 this.formType = 'insert';
@@ -106,7 +106,7 @@
                     this.initAutocomplete();
                 });
             },
-            getBill(id) {
+            getBankAccount(id) {
                 BankAccountResource.get({id: id, include: 'bank'}).then((response) => {
                     this.bankAccount = new BankAccount(response.data.data);
                 });

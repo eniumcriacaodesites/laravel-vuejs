@@ -52,8 +52,8 @@
             return {
                 menus: [
                     {name: "Contas bancárias", routeName: '', dropdownId: 'bank-accounts'},
-                    {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pay'},
-                    {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receive'}
+                    {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pays'},
+                    {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receives'}
                 ],
                 menusDropdown: [
                     {
@@ -64,17 +64,17 @@
                         ]
                     },
                     {
-                        id: 'bill-pay',
+                        id: 'bill-pays',
                         items: [
-                            {name: "Listar contas", routeName: 'dashboard'},
-                            {name: "Criar conta", routeName: 'dashboard'}
+                            {name: "Listar contas", routeName: 'bill-pays.list'},
+                            {name: "Criar conta", routeName: 'bill-pays.create'}
                         ]
                     },
                     {
-                        id: 'bill-receive',
+                        id: 'bill-receives',
                         items: [
-                            {name: "Listar contas", routeName: 'dashboard'},
-                            {name: "Criar conta", routeName: 'dashboard'}
+                            {name: "Listar contas", routeName: 'bill-receives.list'},
+                            {name: "Criar conta", routeName: 'bill-receives.create'}
                         ]
                     }
                 ],

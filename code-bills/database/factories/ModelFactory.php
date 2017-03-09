@@ -43,3 +43,21 @@ $factory->define(\CodeBills\Models\BankAccount::class, function (Faker\Generator
         'account' => rand(70000, 90000) . '-' . rand(0, 9),
     ];
 });
+
+$factory->define(\CodeBills\Models\BillPay::class, function (Faker\Generator $faker) {
+    return [
+        'date_due' => $faker->date('Y-m-d'),
+        'name' => $faker->city,
+        'value' => $faker->randomFloat(2),
+        'done' => $faker->boolean(),
+    ];
+});
+
+$factory->define(\CodeBills\Models\BillReceive::class, function (Faker\Generator $faker) {
+    return [
+        'date_due' => $faker->date('Y-m-d'),
+        'name' => $faker->city,
+        'value' => $faker->randomFloat(2),
+        'done' => $faker->boolean(),
+    ];
+});

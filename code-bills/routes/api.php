@@ -24,5 +24,7 @@ Route::group(['middleware' => 'cors', 'as' => 'api.'], function () {
 
         Route::get('/banks', 'Api\BanksController@index')->name('banks');
         Route::resource('/bank_accounts', 'Api\BankAccountsController', ['except' => ['create', 'edit']]);
+        Route::resource('/bill_pays', 'Api\BillPaysController', ['except' => ['create', 'edit']]);
+        Route::resource('/bill_receives', 'Api\BillReceivesController', ['except' => ['create', 'edit']]);
     });
 });
