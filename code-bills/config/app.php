@@ -170,6 +170,7 @@ return [
         Barryvdh\Cors\ServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        HipsterJazzbo\Landlord\LandlordServiceProvider::class,
 
         //
 
