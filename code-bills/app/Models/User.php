@@ -35,6 +35,11 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
