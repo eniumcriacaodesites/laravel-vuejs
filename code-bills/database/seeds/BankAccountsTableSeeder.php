@@ -1,9 +1,13 @@
 <?php
 
+use CodeBills\Repositories\GetBanksTrait;
+use CodeBills\Repositories\GetClientsTrait;
 use Illuminate\Database\Seeder;
 
 class BankAccountsTableSeeder extends Seeder
 {
+    use GetClientsTrait, GetBanksTrait;
+
     /**
      * Run the database seeds.
      *
@@ -33,23 +37,5 @@ class BankAccountsTableSeeder extends Seeder
                     $bankAccount->save();
                 }
             });
-    }
-
-    private function getBanks()
-    {
-        /** @var \CodeBills\Repositories\BankRepository $repository */
-        $repository = app(\CodeBills\Repositories\BankRepository::class);
-        $repository->skipPresenter(true);
-
-        return $repository->all();
-    }
-
-    private function getClients()
-    {
-        /** @var \CodeBills\Repositories\BankRepository $repository */
-        $repository = app(\CodeBills\Repositories\ClientRepository::class);
-        $repository->skipPresenter(true);
-
-        return $repository->all();
     }
 }

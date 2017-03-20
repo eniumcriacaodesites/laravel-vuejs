@@ -67,3 +67,9 @@ $factory->define(\CodeBills\Models\Client::class, function (Faker\Generator $fak
         'name' => $faker->name,
     ];
 });
+
+$factory->define(\CodeBills\Models\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
