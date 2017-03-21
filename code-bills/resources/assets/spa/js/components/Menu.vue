@@ -51,6 +51,7 @@
         data() {
             return {
                 menus: [
+                    {name: "Categorias", routeName: 'categories.list', dropdownId: ''},
                     {name: "Contas bancárias", routeName: '', dropdownId: 'bank-accounts'},
                     {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pays'},
                     {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receives'}

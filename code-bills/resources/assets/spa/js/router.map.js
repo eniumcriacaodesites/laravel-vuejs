@@ -7,6 +7,7 @@ import BillPayFormComponent from "./components/bill-pay/BillPayForm.vue";
 import BillPayListComponent from "./components/bill-pay/BillPayList.vue";
 import BillReceiveFormComponent from "./components/bill-receive/BillReceiveForm.vue";
 import BillReceiveListComponent from "./components/bill-receive/BillReceiveList.vue";
+import CategoryListComponent from "./components/category/CategoryList.vue";
 
 export default {
     '/login': {
@@ -31,15 +32,18 @@ export default {
         subRoutes: {
             '/': {
                 name: 'bank-accounts.list',
-                component: BankAccountListComponent
+                component: BankAccountListComponent,
+                auth: true
             },
             '/create': {
                 name: 'bank-accounts.create',
-                component: BankAccountFormComponent
+                component: BankAccountFormComponent,
+                auth: true
             },
             '/:id/update': {
                 name: 'bank-accounts.update',
-                component: BankAccountFormComponent
+                component: BankAccountFormComponent,
+                auth: true
             }
         }
     },
@@ -50,15 +54,18 @@ export default {
         subRoutes: {
             '/': {
                 name: 'bill-pays.list',
-                component: BillPayListComponent
+                component: BillPayListComponent,
+                auth: true
             },
             '/create': {
                 name: 'bill-pays.create',
-                component: BillPayFormComponent
+                component: BillPayFormComponent,
+                auth: true
             },
             '/:id/update': {
                 name: 'bill-pays.update',
-                component: BillPayFormComponent
+                component: BillPayFormComponent,
+                auth: true
             }
         }
     },
@@ -69,16 +76,24 @@ export default {
         subRoutes: {
             '/': {
                 name: 'bill-receives.list',
-                component: BillReceiveListComponent
+                component: BillReceiveListComponent,
+                auth: true
             },
             '/create': {
                 name: 'bill-receives.create',
-                component: BillReceiveFormComponent
+                component: BillReceiveFormComponent,
+                auth: true
             },
             '/:id/update': {
                 name: 'bill-receives.update',
-                component: BillReceiveFormComponent
+                component: BillReceiveFormComponent,
+                auth: true
             }
         }
+    },
+    '/categories': {
+        name: 'categories.list',
+        component: CategoryListComponent,
+        auth: true
     }
 }

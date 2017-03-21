@@ -89,3 +89,25 @@ footer {
     padding-right: 10px;
   }
 }
+
+.category-tree {
+  @extend .collection;
+  border: none;
+  margin: 0;
+  overflow: visible;
+
+  .category-child {
+    @extend .collection-item;
+    padding-left: 50px;
+  }
+
+  .category-symbol {
+    line-height: 36px;
+    height: 36px;
+
+    i {
+      line-height: inherit;
+      height: inherit;
+    }
+  }
+}

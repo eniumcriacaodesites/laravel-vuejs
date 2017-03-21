@@ -20,5 +20,6 @@ let BankResource = Vue.resource('banks');
 let BankAccountResource = Vue.resource('bank_accounts{/id}');
 let BillPayResource = Vue.resource('bill_pays{/id}');
 let BillReceiveResource = Vue.resource('bill_receives{/id}');
+let CategoryResource = Vue.resource('categories{/id}');
 
-export {User, BankResource, BankAccountResource, BillPayResource, BillReceiveResource};
+export {User, BankResource, BankAccountResource, BillPayResource, BillReceiveResource, CategoryResource};
