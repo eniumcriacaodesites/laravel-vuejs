@@ -11,15 +11,36 @@
 
             <category-save :modal-options="modalOptionsSave"
                            :category.sync="categorySave"
+                           :cp-options="cpOptions"
                            @save-category="saveCategory()">
                 <div slot="title">{{ title }}</div>
                 <div slot="footer">
-                    <button type="submit" class="btn btn-flat waves-effect blue lighten-2 modal-close modal-action">
-                        OK
-                    </button>
-                    <button class="btn btn-flat waves-effect waves-red modal-close modal-action">Cancelar</button>
+                    <button type="button" class="btn-cancel modal-close modal-action">Cancelar</button>
+                    <button type="submit" class="btn-ok modal-close modal-action">Salvar</button>
                 </div>
             </category-save>
+
+            <modal :modal="modalOptionsDelete">
+                <div slot="content" v-if="categoryDelete">
+                    <h4>Deseja excluir esta categoria?</h4>
+                    <table class="bordered">
+                        <tr>
+                            <td>Nome:</td>
+                            <td>{{ categoryDelete.name }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div slot="footer">
+                    <button type="button" class="btn-cancel modal-close modal-action">Cancelar</button>
+                    <button class="btn-ok modal-close modal-action" @click="destroy()">Ok</button>
+                </div>
+            </modal>
+
+            <div class="fixed-action-btn">
+                <button class="btn-floating btn-large" @click="modalNew(null)">
+                    <i class="large material-icons">add</i>
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -28,18 +49,25 @@
     import PageTitleComponent from '../PageTitle.vue';
     import CategoryTreeComponent from './CategoryTree.vue';
     import CategorySaveComponent from './CategorySave.vue';
+    import ModalComponent from '../../../../_default/components/Modal.vue';
     import {CategoryResource} from '../../services/resource';
+    import {CategoryFormat, CategoryService} from '../../services/category-nsm';
 
     export default {
         components: {
             pageTitle: PageTitleComponent,
             categoryTree: CategoryTreeComponent,
-            categorySave: CategorySaveComponent
+            categorySave: CategorySaveComponent,
+            modal: ModalComponent
         },
         data() {
             return {
-                title: 'Adicionar categoria',
+                title: '',
+                parent: null,
+                category: null,
+                categoryDelete: null,
                 categories: [],
+                categoriesFormatted: [],
                 categorySave: {
                     id: 0,
                     name: '',
@@ -48,45 +76,110 @@
                 modalOptionsSave: {
                     id: 'modal-category-save'
                 },
+                modalOptionsDelete: {
+                    id: 'modal-category-delete'
+                },
                 selected: 0
             };
         },
         created() {
             this.getCategories();
         },
+        computed: {
+            // opções para o campo select 2 de categoria pai
+            cpOptions() {
+                return {
+                    data: this.categoriesFormatted,
+                    templateResult(category) {
+                        let margin = '&nbsp;'.repeat(category.level * 6);
+                        let text = category.hasChildren ? `<strong>${category.text}</strong>` : category.text;
+
+                        return `${margin}${text}`;
+                    },
+                    escapeMarkup(m) {
+                        return m;
+                    }
+                };
+            }
+        },
         methods: {
             getCategories() {
                 CategoryResource.query().then(response => {
                     this.categories = response.data.data;
+                    this.formatCategories();
                 });
             },
             saveCategory() {
-                console.log('ok!!!');
+                CategoryService.save(this.categorySave, this.parent, this.categories, this.category).then(response => {
+                    if (this.categorySave.id === 0) {
+                        Materialize.toast('Categoria adicionada com sucesso!', 4000);
+                    } else {
+                        Materialize.toast('Categoria atualizada com sucesso!', 4000);
+                    }
+
+                    this.resetScope();
+                });
+            },
+            destroy() {
+                CategoryService.destroy(this.categoryDelete, this.parent, this.categories).then(response => {
+                    Materialize.toast('Categoria excluída com sucesso!', 4000);
+                    this.resetScope();
+                });
             },
             modalNew(category) {
-                this.categorySave = category;
+                this.title = 'Nova categoria';
+                this.categorySave = {
+                    id: 0,
+                    name: '',
+                    parent_id: category === null ? null : category.id
+                };
+
+                this.parent = category;
                 $(`#${this.modalOptionsSave.id}`).modal('open');
             },
-            modalEdit(category) {
-                console.log(category);
+            modalEdit(category, parent) {
+                this.title = 'Editar categoria';
+                this.categorySave = {
+                    id: category.id,
+                    name: category.name,
+                    parent_id: category.parent_id
+                };
+
+                this.parent = parent;
+                this.category = category;
+                $(`#${this.modalOptionsSave.id}`).modal('open');
             },
-            modalDelete(category) {
-                console.log(category);
+            modalDelete(category, parent) {
+                this.categoryDelete = category;
+                this.parent = parent;
+                $(`#${this.modalOptionsDelete.id}`).modal('open');
+            },
+            formatCategories() {
+                this.categoriesFormatted = CategoryFormat.getCategoriesFormatted(this.categories);
+            },
+            resetScope() {
+                this.categorySave = {
+                    id: 0,
+                    name: '',
+                    parent_id: 0
+                };
+
+                this.parent = null;
+                this.category = null;
+                this.categoryDelete = null;
+                this.formatCategories();
             }
         },
         events: {
             'category-new'(category) {
                 this.modalNew(category);
-                console.log('category-new');
             },
-            'category-edit'(category) {
-                this.modalEdit(category);
-                console.log('category-edit');
+            'category-edit'(category, parent) {
+                this.modalEdit(category, parent);
             },
-            'category-delete'(category) {
-                this.modalDelete(category);
-                console.log('category-delete');
-            },
+            'category-delete'(category, parent) {
+                this.modalDelete(category, parent);
+            }
         }
     };
 </script>

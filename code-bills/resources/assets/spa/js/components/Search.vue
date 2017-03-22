@@ -1,5 +1,5 @@
 <template>
-    <form name="form-search" method="GET" @submit="submit()">
+    <form name="form-search" method="GET" @submit.prevent="submit()">
         <div class="filter-group">
             <button type="submit" class="btn waves-effect">
                 <i class="material-icons">search</i>

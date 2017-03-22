@@ -2,7 +2,7 @@
     <ul class="category-tree">
         <li v-for="(index, o) in categories" class="category-child">
             <div class="valign-wrapper">
-                <a href="#" class="category-symbol" :data-activates="dropdownId(o)"
+                <a href="javascript:void(0)" class="category-symbol" :data-activates="dropdownId(o)"
                    :class="{'blue-text': o.children.data.length > 0, 'grey-text': !o.children.data.length}">
                     <i class="material-icons">{{ categoryIcon(o) }}</i>
                 </a>
@@ -13,7 +13,7 @@
                 </ul>
                 <span class="valign">{{{ categoryText(o) }}}</span>
             </div>
-            <category-tree :categories="o.children.data"></category-tree>
+            <category-tree :categories="o.children.data" :parent="o"></category-tree>
         </li>
     </ul>
 </template>
@@ -25,6 +25,13 @@
             categories: {
                 type: Array,
                 required: true
+            },
+            parent: {
+                type: Object,
+                required: false,
+                'default'() {
+                    return null;
+                }
             }
         },
         watch: {
@@ -54,10 +61,10 @@
                 this.$dispatch('category-new', category);
             },
             categoryEdit(category) {
-                this.$dispatch('category-edit', category);
+                this.$dispatch('category-edit', category, this.parent);
             },
             categoryDelete(category) {
-                this.$dispatch('category-delete', category);
+                this.$dispatch('category-delete', category, this.parent);
             }
         }
     };
