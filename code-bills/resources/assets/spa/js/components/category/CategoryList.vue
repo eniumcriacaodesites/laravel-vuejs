@@ -6,6 +6,20 @@
             </page-title>
 
             <div class="card-panel z-depth-2">
+                <div class="row">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab">
+                            <a href="#test1" @click="getCategories(1)" class="active">Categorias de Receita</a>
+                        </li>
+                        <li class="tab">
+                            <a href="#test2" @click="getCategories(2)">Categorias de Despesa</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div id="test1" class="col s12"> &raquo; Administrar categorias de receita</div>
+                    <div id="test2" class="col s12"> &raquo; Administrar categorias de despesa</div>
+                </div>
                 <category-tree :categories="categories"></category-tree>
             </div>
 
@@ -50,7 +64,7 @@
     import CategoryTreeComponent from './CategoryTree.vue';
     import CategorySaveComponent from './CategorySave.vue';
     import ModalComponent from '../../../../_default/components/Modal.vue';
-    import {CategoryResource} from '../../services/resource';
+    import {CategoryExpenseResource, CategoryRevenueResource} from '../../services/resource';
     import {CategoryFormat, CategoryService} from '../../services/category-nsm';
 
     export default {
@@ -63,6 +77,7 @@
         data() {
             return {
                 title: '',
+                resource: null,
                 parent: null,
                 category: null,
                 categoryDelete: null,
@@ -103,28 +118,37 @@
             }
         },
         methods: {
-            getCategories() {
-                CategoryResource.query().then(response => {
+            getCategories(type = 1) {
+                if (type === 1) {
+                    this.resource = CategoryRevenueResource;
+                } else {
+                    this.resource = CategoryExpenseResource;
+                }
+
+                this.resource.query().then(response => {
                     this.categories = response.data.data;
                     this.formatCategories();
+                    $('ul.tabs').tabs();
                 });
             },
             saveCategory() {
-                CategoryService.save(this.categorySave, this.parent, this.categories, this.category).then(response => {
-                    if (this.categorySave.id === 0) {
-                        Materialize.toast('Categoria adicionada com sucesso!', 4000);
-                    } else {
-                        Materialize.toast('Categoria atualizada com sucesso!', 4000);
-                    }
+                CategoryService.save(this.resource, this.categorySave, this.parent, this.categories, this.category)
+                    .then(response => {
+                        if (this.categorySave.id === 0) {
+                            Materialize.toast('Categoria adicionada com sucesso!', 4000);
+                        } else {
+                            Materialize.toast('Categoria atualizada com sucesso!', 4000);
+                        }
 
-                    this.resetScope();
-                });
+                        this.resetScope();
+                    });
             },
             destroy() {
-                CategoryService.destroy(this.categoryDelete, this.parent, this.categories).then(response => {
-                    Materialize.toast('Categoria excluída com sucesso!', 4000);
-                    this.resetScope();
-                });
+                CategoryService.destroy(this.resource, this.categoryDelete, this.parent, this.categories)
+                    .then(response => {
+                        Materialize.toast('Categoria excluída com sucesso!', 4000);
+                        this.resetScope();
+                    });
             },
             modalNew(category) {
                 this.title = 'Nova categoria';
