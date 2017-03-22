@@ -73,3 +73,15 @@ $factory->define(\CodeBills\Models\Category::class, function (Faker\Generator $f
         'name' => $faker->name,
     ];
 });
+
+$factory->define(\CodeBills\Models\CategoryExpense::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->define(\CodeBills\Models\CategoryRevenue::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
