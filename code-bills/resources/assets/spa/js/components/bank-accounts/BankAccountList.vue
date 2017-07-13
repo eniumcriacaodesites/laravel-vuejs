@@ -79,6 +79,7 @@
     import PageTitleComponent from '../PageTitle.vue';
     import SearchComponent from '../Search.vue';
     import store from '../../store/store';
+    import SearchOptions from '../../services/search-options';
 
     export default {
         components: {
@@ -94,6 +95,7 @@
                 modalDelete: {
                     id: 'modal-delete'
                 },
+                searchOptions: new SearchOptions(),
                 pagination: {
                     current_page: 0,
                     per_page: 0,
@@ -141,6 +143,9 @@
         },
         created() {
             this.getBankAccounts();
+        },
+        ready() {
+            console.log(this);
         },
         methods: {
             deleteBankAccount() {
