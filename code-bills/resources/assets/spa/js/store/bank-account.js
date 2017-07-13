@@ -66,6 +66,22 @@ const actions = {
 
                 return response;
             });
+    },
+    find(context, bankId) {
+        return BankAccountResource.get({id: bankId, include: 'bank'}).then((response) => {
+            return response;
+        });
+    },
+    save(context, bankAccount) {
+        if (bankAccount.id !== undefined) { // updating
+            BankAccountResource.update({id: bankAccount.id}, bankAccount).then((response) => {
+                return response;
+            });
+        } else { // creating
+            return BankAccountResource.save({}, bankAccount.toJSON()).then((response) => {
+                return response;
+            });
+        }
     }
 };
 

@@ -54,11 +54,9 @@
 
 <script type="text/javascript">
     import BankAccount from "./BankAccount";
-    import {BankResource} from '../../services/resource';
-    import {BankAccountResource} from '../../services/resource';
     import PageTitleComponent from '../PageTitle.vue';
     import 'materialize-autocomplete';
-    import _ from 'lodash';
+    import store from '../../store/store';
 
     export default {
         components: {
@@ -68,9 +66,13 @@
             return {
                 title: '',
                 formType: '',
-                banks: [],
                 bankAccount: new BankAccount()
             };
+        },
+        computed: {
+            banks() {
+                return store.state.bank.banks;
+            }
         },
         created() {
             this.getBanks();
@@ -86,28 +88,19 @@
         },
         methods: {
             submit() {
-                let bankAccount = this.bankAccount.toJSON();
-
-                if (this.formType == 'insert') {
-                    BankAccountResource.save({}, bankAccount).then((response) => {
-                        Materialize.toast('Conta cadastrada com sucesso!', 4000);
-                        this.$router.go({name: 'bank-accounts.list'});
-                    });
-                } else {
-                    BankAccountResource.update({id: this.bankAccount.id}, bankAccount).then((response) => {
-                        Materialize.toast('Conta alterada com sucesso!', 4000);
-                        this.$router.go({name: 'bank-accounts.list'});
-                    });
-                }
+                store.dispatch('bankAccount/save', this.bankAccount).then(() => {
+                    let msg = (this.formType == 'insert') ? 'Conta bancária cadastrada com sucesso!' : 'Conta bancária alterada com sucesso!';
+                    Materialize.toast(msg, 4000);
+                    this.$router.go({name: 'bank-accounts.list'});
+                });
             },
             getBanks() {
-                BankResource.get().then((response) => {
-                    this.banks = response.data.data;
+                store.dispatch('bank/query').then(() => {
                     this.initAutocomplete();
                 });
             },
             getBankAccount(id) {
-                BankAccountResource.get({id: id, include: 'bank'}).then((response) => {
+                store.dispatch('bankAccount/find', id).then((response) => {
                     this.bankAccount = new BankAccount(response.data.data);
                 });
             },
@@ -127,12 +120,8 @@
                             el: '#bank-id-dropdown'
                         },
                         getData: (value, callback) => {
-                            let banks = self.filterBankByName(value);
-
-                            banks = banks.map((o) => {
-                                return {id: o.id, text: o.name};
-                            });
-
+                            let mapBanks = store.getters['bank/mapBanks'];
+                            let banks = mapBanks(value);
                             callback(value, banks);
                         },
                         onSelect(item) {
@@ -141,13 +130,6 @@
                     });
                 });
             },
-            filterBankByName(name) {
-                let banks = _.filter(this.banks, (o) => {
-                    return _.includes(o.name.toLowerCase(), name.toLowerCase());
-                });
-
-                return banks;
-            }
         }
     };
 </script>
