@@ -78,6 +78,7 @@
     import {BankAccountResource} from '../../services/resource';
     import PageTitleComponent from '../PageTitle.vue';
     import SearchComponent from '../Search.vue';
+    import store from '../../store/store';
 
     export default {
         components: {
@@ -89,7 +90,6 @@
         data() {
             return {
                 title: 'Minhas contas bancárias',
-                bankAccounts: [],
                 bankAccountToDelete: null,
                 modalDelete: {
                     id: 'modal-delete'
@@ -134,6 +134,11 @@
                 }
             };
         },
+        computed: {
+            bankAccounts() {
+                return store.state.bankAccount.bankAccounts;
+            }
+        },
         created() {
             this.getBankAccounts();
         },
@@ -156,17 +161,15 @@
                 $('#modal-delete').modal('open');
             },
             getBankAccounts() {
-                BankAccountResource.query({
-                    include: 'bank',
-                    page: this.pagination.current_page + 1,
-                    orderBy: this.order.key,
-                    sortedBy: this.order.sort,
+                store.dispatch('query', {
+                    pagination: this.pagination,
+                    order: this.order,
                     search: this.search
                 }).then((response) => {
-                    this.bankAccounts = response.data.data;
-                    let pagination = response.data.meta.pagination;
-                    pagination.current_page--;
-                    this.pagination = pagination;
+                    /*this.bankAccounts = response.data.data;
+                     let pagination = response.data.meta.pagination;
+                     pagination.current_page--;
+                     this.pagination = pagination;*/
                 });
             },
             sortBy(key) {
