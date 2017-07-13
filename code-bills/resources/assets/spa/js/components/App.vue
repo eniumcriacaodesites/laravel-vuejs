@@ -27,7 +27,7 @@
 </template>
 
 <script type="text/javascript">
-    import Auth from '../services/auth';
+    import store from '../store';
     import MenuComponet from './Menu.vue';
 
     export default {
@@ -43,13 +43,15 @@
         data() {
             return {
                 year: new Date().getFullYear(),
-                user: Auth.user,
                 loading: false
             };
         },
         computed: {
+            isAuth() {
+                return store.state.check;
+            },
             showMenu() {
-                return this.user.check && this.$route.name != 'auth.login';
+                return this.isAuth && this.$route.name != 'auth.login';
             }
         }
     };
