@@ -1,9 +1,12 @@
 // import LocalStorage from "./services/localStorage";
+// import Vuex from "vuex";
 import appConfig from "./services/appConfig";
 
 window.Vue = require('vue');
+// window.Vue.use(Vuex);
 require('materialize-css');
 require('vue-resource');
+require('vuex');
 
 Vue.http.options.root = appConfig.api_url; // app laravel
 
