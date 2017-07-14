@@ -7,14 +7,17 @@
 
             <div class="card-panel z-depth-2">
                 <div class="row">
-                    <ul class="tabs tabs-fixed-width">
-                        <li class="tab">
-                            <a href="#test1" @click="getCategories(1)" class="active">Categorias de Receita</a>
-                        </li>
-                        <li class="tab">
-                            <a href="#test2" @click="getCategories(2)">Categorias de Despesa</a>
-                        </li>
-                    </ul>
+                    <div class="col-xs-12">
+                        <ul class="tabs tabs-fixed-width">
+                            <li class="tab">
+                                <a href="#test1" @click="getCategories('revenue')" class="active">Categorias de
+                                    Receita</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#test2" @click="getCategories('expense')">Categorias de Despesa</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="row">
                     <div id="test1" class="col s12"> &raquo; Administrar categorias de receita</div>
@@ -64,7 +67,6 @@
     import CategoryTreeComponent from './CategoryTree.vue';
     import CategorySaveComponent from './CategorySave.vue';
     import ModalComponent from '../../../../_default/components/Modal.vue';
-    import {CategoryExpenseResource, CategoryRevenueResource} from '../../services/resource';
     import {CategoryFormat, CategoryService} from '../../services/category-nsm';
 
     export default {
@@ -118,12 +120,8 @@
             }
         },
         methods: {
-            getCategories(type = 1) {
-                if (type === 1) {
-                    this.resource = CategoryRevenueResource;
-                } else {
-                    this.resource = CategoryExpenseResource;
-                }
+            getCategories(type = 'revenue') {
+                this.resource = new CategoryService(type);
 
                 this.resource.query().then(response => {
                     this.categories = response.data.data;
@@ -132,7 +130,7 @@
                 });
             },
             saveCategory() {
-                CategoryService.save(this.resource, this.categorySave, this.parent, this.categories, this.category)
+                this.resource.save(this.categorySave, this.parent, this.categories, this.category)
                     .then(response => {
                         if (this.categorySave.id === 0) {
                             Materialize.toast('Categoria adicionada com sucesso!', 4000);
@@ -144,7 +142,7 @@
                     });
             },
             destroy() {
-                CategoryService.destroy(this.resource, this.categoryDelete, this.parent, this.categories)
+                this.resource.destroy(this.categoryDelete, this.parent, this.categories)
                     .then(response => {
                         Materialize.toast('Categoria excluída com sucesso!', 4000);
                         this.resetScope();

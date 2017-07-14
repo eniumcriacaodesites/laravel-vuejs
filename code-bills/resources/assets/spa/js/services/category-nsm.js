@@ -1,3 +1,5 @@
+import {CategoryExpenseResource, CategoryRevenueResource} from "../services/resource";
+
 export class CategoryFormat {
 
     static getCategoriesFormatted(categories) {
@@ -33,22 +35,26 @@ export class CategoryFormat {
 
 export class CategoryService {
 
-    static save(resource, category, parent, categories, categoryOriginal) {
+    constructor(type) {
+        this.resource = type == 'revenue' ? CategoryRevenueResource : CategoryExpenseResource;
+    }
+
+    save(category, parent, categories, categoryOriginal) {
         if (category.id === 0) {
-            return this.new(resource, category, parent, categories);
+            return this.new(category, parent, categories);
         } else {
-            return this.edit(resource, category, parent, categories, categoryOriginal);
+            return this.edit(category, parent, categories, categoryOriginal);
         }
     }
 
-    static new(resource, category, parent, categories) {
+    new(category, parent, categories) {
         let categoryCopy = $.extend(true, {}, category);
 
         if (categoryCopy.parent_id === null) {
             delete categoryCopy.parent_id;
         }
 
-        return resource.save(categoryCopy).then(response => {
+        return this.resource.save(categoryCopy).then(response => {
             let categoryAdded = response.data.data;
 
             if (categoryAdded.parent_id === null) {
@@ -61,15 +67,14 @@ export class CategoryService {
         });
     }
 
-    static edit(resource, category, parent, categories, categoryOriginal) {
+    edit(category, parent, categories, categoryOriginal) {
         let categoryCopy = $.extend(true, {}, category);
 
         if (categoryCopy.parent_id === null) {
             delete categoryCopy.parent_id;
         }
 
-        return resource.update({id: categoryCopy.id}, categoryCopy).then(response => {
-            let self = this;
+        return this.resource.update({id: categoryCopy.id}, categoryCopy).then(response => {
             let categoryUpdated = response.data.data;
 
             if (categoryUpdated.parent_id === null) {
@@ -93,7 +98,7 @@ export class CategoryService {
                      */
                     if (parent.id != categoryUpdated.parent_id) {
                         parent.children.data.$remove(categoryOriginal);
-                        self._addChild(categoryUpdated, categories);
+                        CategoryService._addChild(categoryUpdated, categories);
 
                         return response;
                     }
@@ -103,7 +108,7 @@ export class CategoryService {
                      * Antes a categoria era um pai
                      */
                     categories.$remove(categoryOriginal);
-                    self._addChild(categoryUpdated, categories);
+                    CategoryService._addChild(categoryUpdated, categories);
 
                     return response;
                 }
@@ -131,8 +136,8 @@ export class CategoryService {
         });
     }
 
-    static destroy(resource, category, parent, categories) {
-        return resource.delete({id: category.id}).then(response => {
+    destroy(category, parent, categories) {
+        return this.resource.delete({id: category.id}).then(response => {
             if (parent) {
                 parent.children.data.$remove(category);
             } else {
@@ -141,6 +146,10 @@ export class CategoryService {
 
             return response;
         });
+    }
+
+    query() {
+        return this.resource.query();
     }
 
     static _findParent(id, categories) {
