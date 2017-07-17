@@ -23,13 +23,58 @@ export default {
                 date_due: '',
                 name: '',
                 value: '',
-                done: false
+                done: false,
+                bank_account_id: 0
             }
         };
+    },
+    computed: {
+        bankAccounts() {
+            return store.state.bankAccount.lists;
+        }
+    },
+    watch: {
+        bankAccounts(bankAccounts) {
+            if (bankAccounts.length > 0) {
+                this.initAutocomplete();
+            }
+        }
     },
     methods: {
         doneId() {
             return `done-${this._uid}`;
+        },
+        bankAccountTextId() {
+            return `bank-account-text-${this._uid}`;
+        },
+        bankAccountDropdownId() {
+            return `bank-account-dropdown-${this._uid}`;
+        },
+        initAutocomplete() {
+            let self = this;
+
+            $(document).ready(() => {
+                $(`#${this.bankAccountTextId()}`).materialize_autocomplete({
+                    limit: 10,
+                    multiple: {
+                        enable: false
+                    },
+                    appender: {
+                        el: '.ac-dropdown'
+                    },
+                    dropdown: {
+                        el: `#${this.bankAccountDropdownId()}`
+                    },
+                    getData: (value, callback) => {
+                        let mapBankAccounts = store.getters['bankAccount/mapBankAccounts'];
+                        let bankAccounts = mapBankAccounts(value);
+                        callback(value, bankAccounts);
+                    },
+                    onSelect(item) {
+                        self.bill.bank_account_id = item.id;
+                    }
+                });
+            });
         },
         submit() {
             if (this.bill.id !== 0) {
@@ -50,7 +95,8 @@ export default {
                 date_due: '',
                 name: '',
                 value: '',
-                done: false
+                done: false,
+                bank_account_id: 0
             }
         }
     }

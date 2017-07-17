@@ -191,6 +191,7 @@
         },
         created() {
             store.dispatch('billPay/query');
+            store.dispatch('bankAccount/lists');
         },
         methods: {
             destroy() {
