@@ -1,9 +1,12 @@
 <?php
 
+use CodeBills\Repositories\GetClientsTrait;
 use Illuminate\Database\Seeder;
 
 class BillReceivesTableSeeder extends Seeder
 {
+    use GetClientsTrait;
+
     /**
      * Run the database seeds.
      *
@@ -11,6 +14,14 @@ class BillReceivesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\CodeBills\Models\BillReceive::class, 50)->create();
+        $clients = $this->getClients();
+
+        factory(\CodeBills\Models\BillReceive::class, 200)
+            ->make()
+            ->each(function ($billPay) use ($clients) {
+                $client = $clients->random();
+                $billPay->client_id = $client->id;
+                $billPay->save();
+            });
     }
 }
