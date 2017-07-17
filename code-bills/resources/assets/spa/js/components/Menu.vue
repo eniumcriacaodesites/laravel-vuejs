@@ -52,12 +52,20 @@
             return {
                 menus: [
                     {name: "Plano de contas", routeName: 'plan-account', dropdownId: ''},
+                    {name: "Contas", routeName: '', dropdownId: 'bills-dropdown'},
                     {name: "Categorias", routeName: 'categories.list', dropdownId: ''},
                     {name: "Contas bancárias", routeName: '', dropdownId: 'bank-accounts'},
-                    {name: "Contas a pagar", routeName: 'dashboard', dropdownId: 'bill-pays'},
-                    {name: "Contas a receber", routeName: 'dashboard', dropdownId: 'bill-receives'}
+                    {name: "Contas a pagar", routeName: '', dropdownId: 'bill-pays'},
+                    {name: "Contas a receber", routeName: '', dropdownId: 'bill-receives'}
                 ],
                 menusDropdown: [
+                    {
+                        id: 'bills-dropdown',
+                        items: [
+                            {name: "À pagar", routeName: 'bill-pay.list'},
+                            {name: "À receber", routeName: 'bill-pay.list'}
+                        ]
+                    },
                     {
                         id: 'bank-accounts',
                         items: [

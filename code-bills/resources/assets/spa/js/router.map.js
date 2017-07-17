@@ -9,6 +9,7 @@ import BillReceiveFormComponent from "./components/bill-receive/BillReceiveForm.
 import BillReceiveListComponent from "./components/bill-receive/BillReceiveList.vue";
 import CategoryListComponent from "./components/category/CategoryList.vue";
 import PlanAccountComponent from "./components/category/PlanAccount.vue";
+import BillPayList from "./components/bill/bill-pay/BillPayList.vue";
 
 export default {
     '/login': {
@@ -101,5 +102,17 @@ export default {
         name: 'plan-account',
         component: PlanAccountComponent,
         auth: true
-    }
+    },
+    '/bill-pay': {
+        component: {
+            template: '<router-view></router-view>'
+        },
+        subRoutes: {
+            '/': {
+                name: 'bill-pay.list',
+                component: BillPayList,
+                auth: true
+            },
+        }
+    },
 }
