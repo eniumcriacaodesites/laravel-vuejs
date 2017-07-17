@@ -17,5 +17,6 @@ class BillPay extends Model implements Transformable
         'value',
         'done',
         'bank_account_id',
+        'category_id',
     ];
 }

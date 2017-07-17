@@ -23,6 +23,9 @@
             title() {
                 return 'Editar pagamento';
             },
+            categoryNamespace() {
+                return 'categoryExpense';
+            },
             getBill() {
                 let bill = store.getters[`${this.namespace()}/billByIndex`](this.index);
                 this.bill = {
