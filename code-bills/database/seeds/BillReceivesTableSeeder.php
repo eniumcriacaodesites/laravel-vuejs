@@ -18,10 +18,15 @@ class BillReceivesTableSeeder extends Seeder
 
         factory(\CodeBills\Models\BillReceive::class, 200)
             ->make()
-            ->each(function ($billPay) use ($clients) {
+            ->each(function ($billReceive) use ($clients) {
                 $client = $clients->random();
-                $billPay->client_id = $client->id;
-                $billPay->save();
+                $bankAccount = $client->bankAccounts->random();
+                $category = $client->categoryRevenues->random();
+
+                $billReceive->client_id = $client->id;
+                $billReceive->bank_account_id = $bankAccount->id;
+                $billReceive->category_id = $category->id;
+                $billReceive->save();
             });
     }
 }
