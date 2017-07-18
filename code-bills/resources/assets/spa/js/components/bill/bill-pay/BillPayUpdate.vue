@@ -6,6 +6,9 @@
 
     export default {
         mixins: [billMixin],
+        ready() {
+            this.initSelect2();
+        },
         created() {
             let self = this;
             this.modalOptions.options = {};
