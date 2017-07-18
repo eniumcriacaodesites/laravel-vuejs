@@ -2,11 +2,12 @@
 
 <script type="text/javascript">
     import billMixin from '../../../mixins/bill-mixin';
+    import validatorOffRemoveMixin from '../../../mixins/validator-off-remove-mixin';
     import BillPay from '../../../models/bill-pay';
     import store from '../../../store/store';
 
     export default {
-        mixins: [billMixin],
+        mixins: [billMixin, validatorOffRemoveMixin],
         ready() {
             this.initSelect2();
         },
