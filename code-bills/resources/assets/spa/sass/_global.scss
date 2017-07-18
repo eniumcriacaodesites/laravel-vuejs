@@ -111,3 +111,18 @@ footer {
     }
   }
 }
+
+// Badges
+span.badge-yes {
+  @extend span.badge, .bg-green, .white-text;
+  margin-left: 0;
+  float: none;
+  display: inline-block;
+}
+
+span.badge-no {
+  @extend span.badge, .bg-red, .white-text;
+  margin-left: 0;
+  float: none;
+  display: inline-block;
+}

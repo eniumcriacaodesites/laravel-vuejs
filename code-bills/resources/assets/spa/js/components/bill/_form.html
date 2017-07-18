@@ -21,11 +21,11 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <input type="text" v-model="bill.date_due" placeholder="Informe a data">
+                        <input type="text" v-model="bill.date_due | dateFormat" placeholder="Informe a data">
                         <label class="active">Vencimento:</label>
                     </div>
                     <div class="input-field col s6">
-                        <input type="text" v-model="bill.value">
+                        <input type="text" v-model="bill.value | numberFormat">
                         <label class="active">Valor:</label>
                     </div>
                 </div>

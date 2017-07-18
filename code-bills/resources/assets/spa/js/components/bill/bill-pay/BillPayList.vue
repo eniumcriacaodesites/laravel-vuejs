@@ -10,7 +10,7 @@
                 <table class="bordered striped highlight responsive-table">
                     <thead>
                     <tr>
-                        <th v-for="(key, o) in table.headers" :width="o.width">
+                        <th v-for="(key, o) in table.headers" :width="o.width" :class="o.class">
                             <a href="#" @click.prevent="sortBy(key)">
                                 {{ o.label }}
                                 <i class="material-icons right" v-if="searchOptions.order.key == key">
@@ -24,19 +24,14 @@
                     <tbody>
                     <tr v-for="(index, o) in bills">
                         <td>{{ o.id }}</td>
-                        <td>{{ o.date_due }}</td>
+                        <td>{{ o.date_due | dateFormat }}</td>
                         <td>{{ o.name }}</td>
-                        <td>{{ o.value }}</td>
-                        <td :class="{'bg-yes': o.done, 'bg-not': !o.done}">
-                            <div v-if="o.done === 1">
-                                <a href="#" @click.prevent="openModalDone(o)">{{ o.done }}</a>
-                            </div>
-                            <div v-else>
-                                <a href="#" @click.prevent="openModalDone(o)">{{ o.done }}</a>
-                            </div>
+                        <td class="right-align">{{ o.value | numberFormat true }}</td>
+                        <td class="center-align">
+                            <a href="#" @click.prevent="openModalDone(o)">{{{ o.done | doneLabel }}}</a>
                         </td>
                         <td nowrap="nowrap">
-                            <a href="#" @click.prevent="openModalEdit(index)">Editar</a>
+                            <a href="#" @click.prevent="openModalEdit(index)">Editar</a> |
                             <a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
                         </td>
                     </tr>
@@ -65,7 +60,7 @@
             <table class="bordered">
                 <tr>
                     <td>Data:</td>
-                    <td>{{ billPayDelete.date_due }}</td>
+                    <td>{{ billPayDelete.date_due | dateFormat }}</td>
                 </tr>
                 <tr>
                     <td>Nome:</td>
@@ -73,7 +68,7 @@
                 </tr>
                 <tr>
                     <td>Valor:</td>
-                    <td>{{ billPayDelete.value }}</td>
+                    <td>{{ billPayDelete.value | numberFormat true }}</td>
                 </tr>
             </table>
         </div>
@@ -89,7 +84,7 @@
             <table class="bordered">
                 <tr>
                     <td>Data:</td>
-                    <td>{{ billPayDone.date_due }}</td>
+                    <td>{{ billPayDone.date_due | dateFormat }}</td>
                 </tr>
                 <tr>
                     <td>Nome:</td>
@@ -97,7 +92,7 @@
                 </tr>
                 <tr>
                     <td>Valor:</td>
-                    <td>{{ billPayDone.value }}</td>
+                    <td>{{ billPayDone.value | numberFormat true }}</td>
                 </tr>
             </table>
         </div>
@@ -157,11 +152,13 @@
                         },
                         value: {
                             label: 'Valor',
-                            width: '15%'
+                            width: '10%',
+                            'class': 'right-align'
                         },
                         done: {
                             label: 'Pago?',
-                            width: '15%'
+                            width: '10%',
+                            'class': 'center-align'
                         }
                     }
                 }
