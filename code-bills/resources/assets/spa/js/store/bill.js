@@ -2,11 +2,13 @@ import SearchOptions from "../services/search-options";
 
 export default () => {
 
+    const include = 'category,bankAccount';
+
     const state = {
         bills: [],
         billDelete: null,
         resource: null,
-        searchOptions: new SearchOptions(),
+        searchOptions: new SearchOptions(include),
     };
 
     const mutations = {
@@ -73,13 +75,13 @@ export default () => {
                 });
         },
         save(context, bill) {
-            return context.state.resource.save({}, bill).then((response) => {
+            return context.state.resource.save({}, bill.toJSON()).then((response) => {
                 context.dispatch('query');
                 return response;
             });
         },
         edit(context, {index, bill}) {
-            return context.state.resource.update({id: bill.id}, bill).then((response) => {
+            return context.state.resource.update({id: bill.id}, bill.toJSON()).then((response) => {
                 context.commit('update', {index, bill});
                 return response;
             });
@@ -88,7 +90,7 @@ export default () => {
             let bill = context.state.billDelete;
             bill.done = !bill.done;
 
-            return context.state.resource.update({id: bill.id}, bill).then((response) => {
+            return context.state.resource.update({id: bill.id}, bill.toJSON()).then((response) => {
                 context.dispatch('query');
                 return response;
             });

@@ -22,7 +22,7 @@
                     <div class="input-field col s12">
                         <select-material :options="cpOptions" :selected.sync="bill.category_id" v-validate
                                          data-vv-rules="required" data-vv-name="category_id" data-vv-as="categoria"
-                                         name="category_id">
+                                         name="category_id" data-vv-value-path="val">
                         </select-material>
                         <label class="active" :data-error="errors.first('category_id')">Categoria</label>
                     </div>
@@ -54,10 +54,32 @@
                         <label :for="doneId()" class="active">Pago?</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input type="checkbox" class="filled-in" v-model="bill.repeat" :id="repeatId()">
+                        <label :for="repeatId()" class="active">Repetir?</label>
+                    </div>
+                    <div class="input-field col s4" v-if="bill.repeat">
+                        <select v-model="bill.repeat_type" class="browser-default">
+                            <option value="1">Mensalmente</option>
+                            <option value="2">Anualmente</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s4" v-if="bill.repeat">
+                        <input type="number" id="repeat_number" name="repeat_number" v-model="bill.repeat_number" min="1"
+                               placeholder="Repetir quantas vezez?" class="validate"
+                               :class="{'invalid': errors.has('repeat_number')}"
+                               v-validate data-vv-rules="min_value:1" data-vv-as="ocorrências"
+                               @blur="blurRepeatNumber">
+                        <label class="active" for="name" :data-error="errors.first('repeat_number')">
+                            Ocorrências:
+                        </label>
+                    </div>
+                </div>
             </div>
             <div slot="footer">
                 <button type="button" class="btn-cancel modal-close modal-action">Cancelar</button>
-                <button type="submit" class="btn-ok">Salvar</button>
+                <button type="submit" class="btn-ok" :disabled="fields.dirty() && errors.any()">Salvar</button>
             </div>
         </modal>
     </form>

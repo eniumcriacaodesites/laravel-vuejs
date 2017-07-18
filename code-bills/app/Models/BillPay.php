@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class BillPay extends Model implements Transformable
+class BillPay extends Model implements Transformable, BillRepeatTypeInterface
 {
-    use TransformableTrait, BelongsToTenants;
+    use TransformableTrait, BelongsToTenants, BillTrait;
 
     protected $fillable = [
         'date_due',
@@ -19,4 +19,14 @@ class BillPay extends Model implements Transformable
         'bank_account_id',
         'category_id',
     ];
+
+    public function bankAccount()
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(CategoryExpense::class);
+    }
 }

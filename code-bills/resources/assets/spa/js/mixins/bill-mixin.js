@@ -1,5 +1,6 @@
 import ModalComponent from "../../../_default/components/Modal.vue";
 import SelectMaterialComponent from "../../../_default/components/SelectMaterial.vue";
+import BillPay from "../models/bill-pay";
 import store from "../store/store";
 
 export default {
@@ -20,15 +21,7 @@ export default {
     },
     data() {
         return {
-            bill: {
-                id: 0,
-                date_due: '',
-                name: '',
-                value: 0,
-                done: false,
-                bank_account_id: null,
-                category_id: null
-            },
+            bill: new BillPay(),
             bankAccount: {
                 name: '',
                 text: ''
@@ -80,6 +73,9 @@ export default {
         formId() {
             return `form-bill-${this._uid}`;
         },
+        repeatId() {
+            return `repeat-bill-${this._uid}`;
+        },
         blurBankAccount($event) {
             let el = $($event.target);
             let text = this.bankAccount.text;
@@ -89,6 +85,13 @@ export default {
             }
 
             this.validateBankAccount();
+        },
+        blurRepeatNumber($event) {
+            let el = $($event.target);
+
+            if (parseInt(el.val(), 10) < 0) {
+                el.val(0);
+            }
         },
         validateCategory() {
             let valid = this.$validator.validate('category_id', this.bill.category_id);
@@ -149,28 +152,33 @@ export default {
             $(`#${this.bankAccountTextId()}`).parent().find('label').insertAfter($(`#${this.bankAccountTextId()}`));
         },
         submit() {
-            if (this.bill.id !== 0) {
-                store.dispatch(`${this.namespace()}/edit`, {index: this.index, bill: this.bill}).then(() => {
-                    Materialize.toast('Conta atualizada com sucesso!', 4000);
-                    this.resetScope();
-                });
-            } else {
-                store.dispatch(`${this.namespace()}/save`, this.bill).then(() => {
-                    Materialize.toast('Conta criada com sucesso!', 4000);
-                    this.resetScope();
-                });
-            }
+            let self = this;
+            this.validateCategory();
+
+            this.$validator.validateAll().then(success => {
+                if (success) {
+                    if (self.bill.id !== 0) {
+                        store.dispatch(`${self.namespace()}/edit`, {index: self.index, bill: self.bill}).then(() => {
+                            $(`#${this.modalOptions.id}`).modal('close');
+                            Materialize.toast('Conta atualizada com sucesso!', 4000);
+                            self.resetScope();
+                        });
+                    } else {
+                        store.dispatch(`${self.namespace()}/save`, self.bill).then(() => {
+                            $(`#${this.modalOptions.id}`).modal('close');
+                            Materialize.toast('Conta criada com sucesso!', 4000);
+                            self.resetScope();
+                        });
+                    }
+                }
+            });
         },
         resetScope() {
-            this.bill = {
-                id: 0,
-                date_due: '',
+            this.bill.init();
+            this.bankAccount = {
                 name: '',
-                value: 0,
-                done: false,
-                bank_account_id: null,
-                category_id: null
-            }
+                text: ''
+            };
         }
     }
 };
