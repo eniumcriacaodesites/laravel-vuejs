@@ -2,10 +2,13 @@
 
 namespace CodeBills\Http\Controllers\Api;
 
+use CodeBills\Criteria\FindBetweenDateBRCriteria;
+use CodeBills\Criteria\FindByValueBRCriteria;
 use CodeBills\Http\Controllers\Controller;
 use CodeBills\Http\Controllers\Response;
 use CodeBills\Http\Requests\BillPayRequest;
 use CodeBills\Repositories\BillPayRepository;
+use Illuminate\Http\Request;
 
 class BillPaysController extends Controller
 {
@@ -27,10 +30,17 @@ class BillPaysController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $searchParam = config('repository.criteria.params.search');
+        $search = $request->get($searchParam);
+        $this->repository
+            ->pushCriteria(new FindBetweenDateBRCriteria($search))
+            ->pushCriteria(new FindByValueBRCriteria($search));
+
         $billPays = $this->repository->paginate();
 
         return response()->json($billPays, 200);
