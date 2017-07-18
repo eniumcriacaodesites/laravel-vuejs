@@ -81,8 +81,8 @@ export default () => {
             });
         },
         edit(context, {index, bill}) {
-            return context.state.resource.update({id: bill.id}, bill.toJSON()).then((response) => {
-                context.commit('update', {index, bill});
+            return context.state.resource.update({id: bill.id, include: include}, bill.toJSON()).then((response) => {
+                context.commit('update', {index, bill: response.data.data});
                 return response;
             });
         },

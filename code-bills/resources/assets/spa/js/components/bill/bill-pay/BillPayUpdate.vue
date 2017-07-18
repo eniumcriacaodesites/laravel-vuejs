@@ -2,7 +2,8 @@
 
 <script type="text/javascript">
     import billMixin from '../../../mixins/bill-mixin';
-    import store from '../../../store/store'
+    import BillPay from '../../../models/bill-pay';
+    import store from '../../../store/store';
 
     export default {
         mixins: [billMixin],
@@ -14,9 +15,6 @@
             this.modalOptions.options = {};
             this.modalOptions.options.ready = () => {
                 self.getBill();
-            };
-            this.modalOptions.options.complete = () => {
-                self.resetScope();
             };
         },
         methods: {
@@ -30,14 +28,11 @@
                 return 'categoryExpense';
             },
             getBill() {
+                this.resetScope();
                 let bill = store.getters[`${this.namespace()}/billByIndex`](this.index);
-                this.bill = {
-                    id: bill.id,
-                    date_due: bill.date_due,
-                    name: bill.name,
-                    value: bill.value,
-                    done: bill.done
-                }
+                this.bill = new BillPay(bill);
+                let text = store.getters['bankAccount/textAutocomplete'](bill.bankAccount.data);
+                this.bankAccount.text = text;
             }
         }
     };

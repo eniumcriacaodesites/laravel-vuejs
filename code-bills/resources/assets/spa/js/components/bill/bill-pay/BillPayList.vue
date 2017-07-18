@@ -203,22 +203,18 @@
                 });
             },
             openModalCreate() {
-                $('#modal-create').modal();
                 $('#modal-create').modal('open');
             },
             openModalEdit(index) {
                 this.indexUpdate = index;
-                $('#modal-edit').modal();
                 $('#modal-edit').modal('open');
             },
             openModalDelete(billPay) {
                 store.commit('billPay/setDelete', billPay);
-                $('#modal-delete').modal();
                 $('#modal-delete').modal('open');
             },
             openModalDone(billPay) {
                 store.commit('billPay/setDelete', billPay);
-                $('#modal-done').modal();
                 $('#modal-done').modal('open');
             },
             sortBy(key) {

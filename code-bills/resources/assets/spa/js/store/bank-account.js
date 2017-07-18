@@ -110,8 +110,8 @@ const getters = {
             return {id: o.id, text: getters.textAutocomplete(o)};
         });
     },
-    textAutocomplete: (state) => (bank) => {
-        return `${bank.name} - ${bank.account}`;
+    textAutocomplete: (state) => (bankAccount) => {
+        return `${bankAccount.name} - ${bankAccount.account}`;
     }
 };
 

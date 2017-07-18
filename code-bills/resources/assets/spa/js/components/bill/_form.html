@@ -10,7 +10,7 @@
                         <input type="text" :id="bankAccountTextId()" placeholder="Procure a conta bancária"
                                class="validate" :class="{'invalid': errors.has('bank_account_id')}" autocomplete="off"
                                :data-activates="bankAccountDropdownId()" data-beloworigin="true"
-                               @blur="blurBankAccount">
+                               :value="bankAccount.text" @blur="blurBankAccount">
                         <label class="active" :data-error="errors.first('bank_account_id')">Conta bancária:</label>
                         <input type="hidden" name="bank_account_id" :id="bankAccountHiddenId()"
                                :value="bill.bank_account_id" v-validate data-vv-rules="required"
@@ -54,8 +54,8 @@
                         <label :for="doneId()" class="active">Pago?</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s4">
+                <div class="row" v-if="!bill.id">
+                    <div class="checkbox input-field col s4">
                         <input type="checkbox" class="filled-in" v-model="bill.repeat" :id="repeatId()">
                         <label :for="repeatId()" class="active">Repetir?</label>
                     </div>
@@ -66,10 +66,10 @@
                         </select>
                     </div>
                     <div class="input-field col s4" v-if="bill.repeat">
-                        <input type="number" id="repeat_number" name="repeat_number" v-model="bill.repeat_number" min="1"
+                        <input type="number" id="repeat_number" name="repeat_number" v-model="bill.repeat_number"
                                placeholder="Repetir quantas vezez?" class="validate"
                                :class="{'invalid': errors.has('repeat_number')}"
-                               v-validate data-vv-rules="min_value:1" data-vv-as="ocorrências"
+                               v-validate data-vv-rules="min_value:0" data-vv-as="ocorrências"
                                @blur="blurRepeatNumber">
                         <label class="active" for="name" :data-error="errors.first('repeat_number')">
                             Ocorrências:

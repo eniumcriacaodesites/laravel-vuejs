@@ -23,10 +23,8 @@
             }
         },
         ready() {
-            let id = this.modal.id;
-
             $(document).ready(() => {
-                let modal = $(`#${id}`).modal(this.modal.options);
+                $(`#${this.modal.id}`).modal(this.modal.options);
             });
         }
     };
