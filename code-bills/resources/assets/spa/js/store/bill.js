@@ -90,7 +90,7 @@ export default () => {
             let bill = context.state.billDelete;
             bill.done = !bill.done;
 
-            return context.state.resource.update({id: bill.id}, bill.toJSON()).then((response) => {
+            return context.state.resource.update({id: bill.id, include: include}, bill).then((response) => {
                 context.dispatch('query');
                 return response;
             });
@@ -99,7 +99,6 @@ export default () => {
 
     const getters = {
         billByIndex: (state) => (index) => {
-            console.log(state.bills[index]);
             return state.bills[index];
         }
     };
