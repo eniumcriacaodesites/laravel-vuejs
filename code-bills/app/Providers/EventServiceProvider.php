@@ -3,7 +3,9 @@
 namespace CodeBills\Providers;
 
 use CodeBills\Events\BankStoredEvent;
+use CodeBills\Events\BillStoredEvent;
 use CodeBills\Listeners\BankAccountSetDefaultListener;
+use CodeBills\Listeners\BankAccountUpdateBalanceListener;
 use CodeBills\Listeners\BankLogoUploadListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Prettus\Repository\Events\RepositoryEntityCreated;
@@ -19,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         BankStoredEvent::class => [
             BankLogoUploadListener::class,
+        ],
+        BillStoredEvent::class => [
+            BankAccountUpdateBalanceListener::class,
         ],
         RepositoryEntityCreated::class => [
             BankAccountSetDefaultListener::class,

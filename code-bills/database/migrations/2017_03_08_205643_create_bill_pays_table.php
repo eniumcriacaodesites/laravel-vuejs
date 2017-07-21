@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBillPaysTable extends Migration
 {
@@ -17,7 +17,7 @@ class CreateBillPaysTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->double('value');
-            $table->boolean('done');
+            $table->boolean('done')->default(false);
             $table->date('date_due');
             $table->timestamps();
         });

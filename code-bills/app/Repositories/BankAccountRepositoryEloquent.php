@@ -2,6 +2,7 @@
 
 namespace CodeBills\Repositories;
 
+use CodeBills\Criteria\LockTableCriteria;
 use CodeBills\Models\BankAccount;
 use CodeBills\Presenters\BankAccountPresenter;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -20,6 +21,24 @@ class BankAccountRepositoryEloquent extends BaseRepository implements BankAccoun
         'account' => 'like',
         'bank.name' => 'like',
     ];
+
+    public function addBalance($id, $value)
+    {
+        $skipPresenter = $this->skipPresenter;
+        $this->skipPresenter(true);
+
+        \DB::beginTransaction();
+        $this->pushCriteria(new LockTableCriteria());
+        $model = $this->find($id);
+        $model->balance = $model->balance + $value;
+        $model->save();
+        \DB::commit();
+
+        $this->popCriteria(LockTableCriteria::class);
+        $this->skipPresenter = $skipPresenter;
+
+        return $this->parserResult($model);
+    }
 
     /**
      * Specify Model class name

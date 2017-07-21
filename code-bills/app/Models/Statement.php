@@ -7,25 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class BankAccount extends Model implements Transformable
+class Statement extends Model implements Transformable
 {
     use TransformableTrait, BelongsToTenants;
 
     protected $fillable = [
-        'name',
-        'agency',
-        'account',
-        'bank_id',
-        'default',
+        'value',
         'balance',
+        'bank_account_id',
     ];
 
-    protected $casts = [
-        'balance' => 'float',
-    ];
-
-    public function bank()
+    public function bankAccount()
     {
-        return $this->belongsTo(Bank::class);
+        return $this->belongsTo(BankAccount::class);
+    }
+
+    public function statementabele()
+    {
+        return $this->morphTo();
     }
 }

@@ -20,6 +20,11 @@ class BillPay extends Model implements Transformable, BillRepeatTypeInterface
         'category_id',
     ];
 
+    protected $casts = [
+        'value' => 'float',
+        'done' => 'boolean',
+    ];
+
     public function bankAccount()
     {
         return $this->belongsTo(BankAccount::class);
@@ -28,5 +33,10 @@ class BillPay extends Model implements Transformable, BillRepeatTypeInterface
     public function category()
     {
         return $this->belongsTo(CategoryExpense::class);
+    }
+
+    public function statements()
+    {
+        return $this->morphMany(Statement::class, 'statementable');
     }
 }

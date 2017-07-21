@@ -15,18 +15,22 @@ class BillPaysTableSeeder extends Seeder
     public function run()
     {
         $clients = $this->getClients();
+        $repository = app(\CodeBills\Repositories\BillPayRepository::class);
 
         factory(\CodeBills\Models\BillPay::class, 200)
             ->make()
-            ->each(function ($billPay) use ($clients) {
+            ->each(function ($billPay) use ($clients, $repository) {
                 $client = $clients->random();
+                \Landlord::addTenant($client);
                 $bankAccount = $client->bankAccounts->random();
                 $category = $client->categoryExpenses->random();
 
                 $billPay->client_id = $client->id;
                 $billPay->bank_account_id = $bankAccount->id;
                 $billPay->category_id = $category->id;
-                $billPay->save();
+
+                $data = $billPay->toArray();
+                $repository->create($data);
             });
     }
 }

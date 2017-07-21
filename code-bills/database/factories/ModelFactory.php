@@ -46,18 +46,18 @@ $factory->define(\CodeBills\Models\BankAccount::class, function (Faker\Generator
 
 $factory->define(\CodeBills\Models\BillPay::class, function (Faker\Generator $faker) {
     return [
-        'date_due' => $faker->date('Y-m-d'),
-        'name' => $faker->city,
-        'value' => $faker->randomFloat(2),
+        'date_due' => $faker->dateTimeBetween('0 years', '+2 years')->format('Y-m-d'),
+        'name' => $faker->word,
+        'value' => $faker->numberBetween(10, 1000),
         'done' => $faker->boolean(),
     ];
 });
 
 $factory->define(\CodeBills\Models\BillReceive::class, function (Faker\Generator $faker) {
     return [
-        'date_due' => $faker->date('Y-m-d'),
-        'name' => $faker->city,
-        'value' => $faker->randomFloat(2),
+        'date_due' => $faker->dateTimeBetween('0 years', '+2 years')->format('Y-m-d'),
+        'name' => $faker->word,
+        'value' => $faker->numberBetween(10, 1000),
         'done' => $faker->boolean(),
     ];
 });

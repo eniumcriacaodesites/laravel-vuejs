@@ -17,7 +17,7 @@ class CreateBillReceivesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->double('value');
-            $table->boolean('done');
+            $table->boolean('done')->default(false);
             $table->date('date_due');
             $table->timestamps();
         });

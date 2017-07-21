@@ -26,8 +26,8 @@ class BillPayTransformer extends TransformerAbstract
         return [
             'id' => (int) $model->id,
             'name' => $model->name,
-            'value' => (double) $model->value,
-            'done' => (boolean) $model->done,
+            'value' => $model->value,
+            'done' => $model->done,
             'date_due' => $model->date_due,
             'category_id' => (int) $model->category_id,
             'bank_account_id' => (int) $model->bank_account_id,

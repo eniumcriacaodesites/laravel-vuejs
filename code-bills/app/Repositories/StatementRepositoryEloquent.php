@@ -2,23 +2,23 @@
 
 namespace CodeBills\Repositories;
 
-use CodeBills\Models\BillReceive;
-use CodeBills\Presenters\BillReceivePresenter;
+use CodeBills\Models\Statement;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
- * Class BillReceiveRepositoryEloquent
+ * Class StatementRepositoryEloquent
  *
  * @package namespace CodeBills\Repositories;
  */
-class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiveRepository
+class StatementRepositoryEloquent extends BaseRepository implements StatementRepository
 {
-    use BillRepositoryTrait;
+    public function create(array $attributes)
+    {
+        $statementable = $attributes['statementable'];
 
-    protected $fieldSearchable = [
-        'name' => 'like',
-    ];
+        return $statementable->statements()->create(array_except($attributes, 'statementable'));
+    }
 
     /**
      * Specify Model class name
@@ -27,7 +27,7 @@ class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiv
      */
     public function model()
     {
-        return BillReceive::class;
+        return Statement::class;
     }
 
     /**
@@ -36,10 +36,5 @@ class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiv
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function presenter()
-    {
-        return BillReceivePresenter::class;
     }
 }
