@@ -11,6 +11,7 @@ import CategoryListComponent from "./components/category/CategoryList.vue";
 import PlanAccountComponent from "./components/category/PlanAccount.vue";
 import BillPayList from "./components/bill/bill-pay/BillPayList.vue";
 import BillReceiveList from "./components/bill/bill-receive/BillReceiveList.vue";
+import CashFlowListComponent from "./components/cash-flow/CashFlowList.vue";
 
 export default {
     '/login': {
@@ -102,6 +103,11 @@ export default {
     '/plan-account': {
         name: 'plan-account',
         component: PlanAccountComponent,
+        auth: true
+    },
+    '/cash-flow': {
+        name: 'cash-flow.list',
+        component: CashFlowListComponent,
         auth: true
     },
     '/bill-pay': {

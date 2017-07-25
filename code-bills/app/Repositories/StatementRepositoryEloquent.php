@@ -43,7 +43,7 @@ class StatementRepositoryEloquent extends BaseRepository implements StatementRep
             $months_year = [];
 
             $filtered->each(function ($category) use (&$months_year) {
-                $months_year = [
+                $months_year[] = [
                     'total' => $category->total,
                     'month_year' => $category->month_year,
                 ];

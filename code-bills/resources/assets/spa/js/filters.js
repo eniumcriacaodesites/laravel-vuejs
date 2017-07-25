@@ -39,3 +39,7 @@ Vue.filter('numberFormat', {
 Vue.filter('doneLabel', (value) => {
     return (value == 1) ? "<span class=\"badge-yes\">sim</span>" : "<span class=\"badge-no\">não</span>";
 });
+
+Vue.filter('monthYear', (value) => {
+    return moment(`${value}-01`).format('MM/YYYY');
+});
