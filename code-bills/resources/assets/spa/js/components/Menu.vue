@@ -55,6 +55,7 @@
                     {name: "Contas bancárias", routeName: '', dropdownId: 'bank-accounts'},
                     {name: "Contas", routeName: '', dropdownId: 'bills-dropdown'},
                     {name: "Fluxo de caixa", routeName: 'cash-flow.list', dropdownId: ''},
+                    {name: "Extrato", routeName: 'statement.list', dropdownId: ''},
                     /*{name: "Categorias", routeName: 'categories.list', dropdownId: ''},
                     {name: "Contas a pagar", routeName: '', dropdownId: 'bill-pays'},
                     {name: "Contas a receber", routeName: '', dropdownId: 'bill-receives'}*/

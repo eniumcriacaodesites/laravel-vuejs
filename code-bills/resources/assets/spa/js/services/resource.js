@@ -26,6 +26,7 @@ let CategoryResource = Vue.resource('categories{/id}');
 let CategoryExpenseResource = Vue.resource('category_expenses{/id}');
 let CategoryRevenueResource = Vue.resource('category_revenues{/id}');
 let CashFlow = Vue.resource('cash_flow');
+let StatementResource = Vue.resource('statements');
 
 export {
     User,
@@ -36,5 +37,6 @@ export {
     CategoryResource,
     CategoryExpenseResource,
     CategoryRevenueResource,
-    CashFlow
+    CashFlow,
+    StatementResource,
 };

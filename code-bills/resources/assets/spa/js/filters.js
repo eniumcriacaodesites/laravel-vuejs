@@ -36,6 +36,11 @@ Vue.filter('numberFormat', {
     }
 });
 
+Vue.filter('currencyFormat', (value) => {
+    let currency = numeral(value).format('$0,0.00');
+    return (value >= 0) ? `<span class=\"green-text\">${currency}</span>` : `<span class=\"red-text\">${currency}</span>`;
+});
+
 Vue.filter('doneLabel', (value) => {
     return (value == 1) ? "<span class=\"badge-yes\">sim</span>" : "<span class=\"badge-no\">não</span>";
 });

@@ -8,6 +8,7 @@ use CodeBills\Models\BillReceive;
 use CodeBills\Models\CategoryExpense;
 use CodeBills\Models\CategoryRevenue;
 use CodeBills\Models\Statement;
+use CodeBills\Presenters\StatementPresenter;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -18,6 +19,10 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class StatementRepositoryEloquent extends BaseRepository implements StatementRepository
 {
+    protected $fieldSearchable = [
+        'bankAccount.name' => 'like',
+    ];
+
     public function create(array $attributes)
     {
         $statementable = $attributes['statementable'];
@@ -245,5 +250,10 @@ class StatementRepositoryEloquent extends BaseRepository implements StatementRep
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return StatementPresenter::class;
     }
 }
