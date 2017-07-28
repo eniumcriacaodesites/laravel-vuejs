@@ -1,13 +1,19 @@
 <template>
-    <div class="section page-login">
-        <div class="container">
-            <div class="row">
-                <div class="col s12 m8 offset-m2">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <h4>{{ title }}</h4>
-                        </div>
-                    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s8">
+                <!-- left -->
+            </div>
+            <div class="col s4">
+                <!-- right -->
+                <div class="card-panel z-depth-2">
+                    <ul class="collection">
+                        <li class="collection-item avatar" v-for="o in bankAccounts">
+                            <img :src="o.bank.data.logo" :alt="o.bank.data.name" class="circle z-depth-1">
+                            <span class="title"><strong>{{ o.name }}</strong></span>
+                            <p>{{{ o.balance | currencyFormat }}}</p>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -18,10 +24,22 @@
     import store from "../store/store";
 
     export default {
-        data() {
-            return {
-                title: 'Dashboard'
+        computed: {
+            bankAccounts() {
+                return store.state.bankAccount.bankAccounts;
             }
+        },
+        created() {
+            store.commit('bankAccount/setOrder', 'balance');
+            store.commit('bankAccount/setSort', 'desc');
+            store.commit('bankAccount/setLimit', 5);
+            store.dispatch('bankAccount/query');
         }
     }
 </script>
+
+<style type="text/css" scoped>
+    .collection, .collection-item {
+        border: none;
+    }
+</style>

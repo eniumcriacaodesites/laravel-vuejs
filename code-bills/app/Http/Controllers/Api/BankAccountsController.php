@@ -7,6 +7,7 @@ use CodeBills\Http\Controllers\Response;
 use CodeBills\Http\Requests\BankAccountRequest;
 use CodeBills\Http\Requests\BankAccountUpdateRequest;
 use CodeBills\Repositories\BankAccountRepository;
+use Illuminate\Http\Request;
 
 class BankAccountsController extends Controller
 {
@@ -33,11 +34,15 @@ class BankAccountsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bankAccounts = $this->repository->paginate();
+        $limit = (int) $request->get('limit', null);
+        $limit = $limit > 0 ? $limit : null;
+
+        $bankAccounts = $this->repository->paginate($limit);
 
         return response()->json($bankAccounts, 200);
     }

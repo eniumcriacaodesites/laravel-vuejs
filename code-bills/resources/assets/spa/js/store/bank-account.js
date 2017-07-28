@@ -26,6 +26,12 @@ const mutations = {
         state.searchOptions.order.key = key;
         state.searchOptions.order.sort = (state.searchOptions.order.sort == 'desc') ? 'asc' : 'desc';
     },
+    setSort(state, sort) {
+        state.searchOptions.order.sort = sort;
+    },
+    setLimit(state, limit) {
+        state.searchOptions.limit = limit;
+    },
     setPagination(state, pagination) {
         state.searchOptions.pagination = pagination;
     },

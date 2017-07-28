@@ -13,6 +13,7 @@ export default class {
 
         this.search = '';
         this.include = include;
+        this.limit = null;
     }
 
     get pagination() {
@@ -37,6 +38,10 @@ export default class {
 
         if (this.include) {
             options.include = this.include;
+        }
+
+        if (this.limit) {
+            options.limit = this.limit;
         }
 
         return options;
