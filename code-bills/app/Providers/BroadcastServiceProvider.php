@@ -2,8 +2,8 @@
 
 namespace CodeBills\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\ServiceProvider;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
@@ -14,13 +14,13 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Broadcast::routes();
+        Broadcast::routes(['middleware' => ['web', 'cors', 'auth:api']]);
 
         /*
          * Authenticate the user's personal channel...
          */
-        Broadcast::channel('App.User.*', function ($user, $userId) {
-            return (int) $user->id === (int) $userId;
+        Broadcast::channel('client.*', function ($user, $clientId) {
+            return $user->client_id == $clientId;
         });
     }
 }

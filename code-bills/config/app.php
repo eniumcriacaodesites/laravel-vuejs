@@ -179,7 +179,7 @@ return [
          */
         CodeBills\Providers\AppServiceProvider::class,
         CodeBills\Providers\AuthServiceProvider::class,
-        // CodeBills\Providers\BroadcastServiceProvider::class,
+        CodeBills\Providers\BroadcastServiceProvider::class,
         CodeBills\Providers\EventServiceProvider::class,
         CodeBills\Providers\RouteServiceProvider::class,
         CodeBills\Providers\RepositoryServiceProvider::class,

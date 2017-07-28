@@ -3,6 +3,7 @@
 namespace CodeBills\Repositories;
 
 use CodeBills\Criteria\LockTableCriteria;
+use CodeBills\Events\BankAccountBalanceUpdatedEvent;
 use CodeBills\Models\BankAccount;
 use CodeBills\Presenters\BankAccountPresenter;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -33,6 +34,8 @@ class BankAccountRepositoryEloquent extends BaseRepository implements BankAccoun
         $model->balance = $model->balance + $value;
         $model->save();
         \DB::commit();
+
+        broadcast(new BankAccountBalanceUpdatedEvent($model));
 
         $this->popCriteria(LockTableCriteria::class);
         $this->skipPresenter = $skipPresenter;

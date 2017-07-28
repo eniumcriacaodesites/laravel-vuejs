@@ -27,14 +27,50 @@
         computed: {
             bankAccounts() {
                 return store.state.bankAccount.bankAccounts;
+            },
+            clientId() {
+                return store.state.auth.user.client_id;
             }
         },
         created() {
-            store.commit('bankAccount/setOrder', 'balance');
-            store.commit('bankAccount/setSort', 'desc');
-            store.commit('bankAccount/setLimit', 5);
-            store.dispatch('bankAccount/query');
-        }
+            this.store();
+            this.echo();
+        },
+        methods: {
+            store() {
+                store.commit('bankAccount/setOrder', 'balance');
+                store.commit('bankAccount/setSort', 'desc');
+                store.commit('bankAccount/setLimit', 5);
+                store.dispatch('bankAccount/query');
+            },
+            echo() {
+                let self = this;
+
+                Echo.private(`client.${this.clientId}`)
+                    .listen('.CodeBills.Events.BankAccountBalanceUpdatedEvent', (e) => {
+                        self.updateBalance(e.bankAccount);
+                    });
+            },
+            findIndexBankAccount(id) {
+                let index = this.bankAccounts.findIndex(item => {
+                    return item.id == id;
+                });
+
+                return index;
+            },
+            updateBalance(bankAccount) {
+                let index = this.findIndexBankAccount(bankAccount.id);
+
+                if (index != -1) {
+                    store.commit('bankAccount/updateBalance', {index, balance: bankAccount.balance});
+                }
+
+                let balance = this.$options.filters.numberFormat.read(bankAccount.balance, true);
+                let message = `Novo saldo de ${bankAccount.name}: ${balance}`;
+
+                Materialize.toast(message, 4000);
+            }
+        },
     }
 </script>
 
