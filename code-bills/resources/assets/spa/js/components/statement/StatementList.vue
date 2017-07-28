@@ -32,6 +32,26 @@
                 <pagination :current-page.sync="searchOptions.pagination.current_page"
                             :per-page="searchOptions.pagination.per_page"
                             :total-records="searchOptions.pagination.total"></pagination>
+                <table class="grey-text text-darken-2">
+                    <tbody class="left">
+                    <tr>
+                        <td>Total de Recebimentos</td>
+                        <td>{{ statementData.revenues.total | numberFormat true }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Pagamentos</td>
+                        <td>{{ statementData.expenses.total | numberFormat true }}</td>
+                    </tr>
+                    <tr>
+                        <td>Número de Lançamentos</td>
+                        <td>{{ statementData.count }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total do Período</td>
+                        <td>{{ statementData.revenues.total + statementData.expenses.total | numberFormat true}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -42,6 +62,7 @@
     import PageTitleComponent from '../PageTitle.vue';
     import SearchComponent from '../Search.vue';
     import store from '../../store/store';
+    import moment from 'moment';
 
     export default {
         components: {
@@ -57,7 +78,7 @@
                             label: 'Data',
                             width: '10%'
                         },
-                        bank_account_id: {
+                        'bank_accounts:bank_account_id|bank_accounts.name': {
                             label: 'Conta bancária'
                         },
                         value: {
@@ -76,6 +97,9 @@
             statements() {
                 return store.state.statement.statements;
             },
+            statementData() {
+                return store.state.statement.statementData;
+            },
             searchOptions() {
                 return store.state.statement.searchOptions;
             },
@@ -89,6 +113,7 @@
             },
         },
         created() {
+            store.commit('statement/setFilter', `${this.dateFilterStart()} - ${this.dateFilterEnd()}`);
             store.dispatch('statement/query');
         },
         methods: {
@@ -98,6 +123,13 @@
             filter() {
                 store.dispatch('statement/queryWithFilter');
             },
+            dateFilterStart() {
+                let date = (new Date()).setDate(1);
+                return moment(date).format('DD/MM/YYYY');
+            },
+            dateFilterEnd() {
+                return moment(new Date).endOf('month').format('DD/MM/YYYY');
+            }
         },
         events: {
             'pagination::changed'(page) {

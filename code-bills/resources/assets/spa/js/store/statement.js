@@ -3,12 +3,20 @@ import SearchOptions from "../services/search-options";
 
 const state = {
     statements: [],
-    searchOptions: new SearchOptions(),
+    statementData: {
+        count: 0,
+        revenues: {total: 0},
+        expenses: {total: 0},
+    },
+    searchOptions: new SearchOptions('bankAccount'),
 };
 
 const mutations = {
     set(state, statements) {
         state.statements = statements;
+    },
+    setStatementData(state, statementData) {
+        state.statementData = statementData;
     },
     setOrder(state, key) {
         state.searchOptions.order.key = key;
@@ -29,8 +37,9 @@ const actions = {
     query(context) {
         return StatementResource.query(context.state.searchOptions.createOptions())
             .then((response) => {
-                context.commit('set', response.data.data);
-                context.commit('setPagination', response.data.meta.pagination);
+                context.commit('set', response.data.data.statements.data);
+                context.commit('setPagination', response.data.data.statements.meta.pagination);
+                context.commit('setStatementData', response.data.data.statement_data);
             });
     },
     queryWithSortBy(context, key) {
@@ -46,28 +55,8 @@ const actions = {
     },
 };
 
-const getters = {
-    filterBankAccountByName: (state) => (name) => {
-        let statements = _.filter(state.lists, (o) => {
-            return _.includes(o.name.toLowerCase(), name.toLowerCase());
-        });
-
-        return statements;
-    },
-    mapBankAccounts: (state, getters) => (name) => {
-        let statements = getters.filterBankAccountByName(name);
-
-        return statements.map((o) => {
-            return {id: o.id, text: getters.textAutocomplete(o)};
-        });
-    },
-    textAutocomplete: (state) => (bankAccount) => {
-        return `${bankAccount.name} - ${bankAccount.account}`;
-    }
-};
-
 const module = {
-    namespaced: true, state, mutations, actions, getters
+    namespaced: true, state, mutations, actions
 };
 
 export default module;

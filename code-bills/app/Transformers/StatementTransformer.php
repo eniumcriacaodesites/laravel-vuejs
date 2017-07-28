@@ -12,7 +12,7 @@ use League\Fractal\TransformerAbstract;
  */
 class StatementTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['bankAccount'];
+    protected $availableIncludes = ['bankAccount'];
 
     /**
      * Transform the \Statement entity

@@ -2,8 +2,11 @@
 
 namespace CodeBills\Repositories;
 
+use CodeBills\Models\BillPay;
+use CodeBills\Models\BillReceive;
 use CodeBills\Models\Statement;
-use CodeBills\Presenters\StatementPresenter;
+use CodeBills\Presenters\StatementSerializerPresenter;
+use CodeBills\Serializer\StatementSerializer;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -19,6 +22,45 @@ class StatementRepositoryEloquent extends BaseRepository implements StatementRep
     protected $fieldSearchable = [
         'bankAccount.name' => 'like',
     ];
+
+    public function paginate($limit = null, $columns = ['*'], $method = "paginate")
+    {
+        $skipPresenter = $this->skipPresenter;
+        $this->skipPresenter();
+        $collection = parent::paginate($limit, $columns, $method);
+        $this->skipPresenter($skipPresenter);
+
+        return $this->parserResult(new StatementSerializer($collection, $this->formatStatementsData()));
+    }
+
+    protected function getCountAndTotalByBill($billType)
+    {
+        $this->resetModel();
+        $this->resetCriteria();
+
+        $collection = $this->model
+            ->selectRaw("COUNT(id) AS count, SUM(value) AS total")
+            ->where("statementable_type", "=", $billType)->get();
+
+        $result = $collection->first();
+
+        return [
+            'count' => (float) $result->count,
+            'total' => (float) $result->total,
+        ];
+    }
+
+    protected function formatStatementsData()
+    {
+        $resultRevenue = $this->getCountAndTotalByBill(BillReceive::class);
+        $resultExpense = $this->getCountAndTotalByBill(BillPay::class);
+
+        return [
+            'count' => $resultExpense['count'] + $resultExpense['count'],
+            'revenues' => ['total' => $resultRevenue['total']],
+            'expenses' => ['total' => $resultExpense['total']],
+        ];
+    }
 
     public function create(array $attributes)
     {
@@ -47,6 +89,6 @@ class StatementRepositoryEloquent extends BaseRepository implements StatementRep
 
     public function presenter()
     {
-        return StatementPresenter::class;
+        return StatementSerializerPresenter::class;
     }
 }
