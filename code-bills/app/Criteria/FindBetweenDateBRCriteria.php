@@ -18,13 +18,20 @@ class FindBetweenDateBRCriteria implements CriteriaInterface
     private $dateInString;
 
     /**
+     * @var
+     */
+    private $dateField;
+
+    /**
      * FindBetweenDateBRCriteria constructor.
      *
      * @param $dateInString
+     * @param $dateField
      */
-    public function __construct($dateInString)
+    public function __construct($dateInString, $dateField)
     {
         $this->dateInString = $dateInString;
+        $this->dateField = $dateField;
     }
 
     /**
@@ -48,7 +55,7 @@ class FindBetweenDateBRCriteria implements CriteriaInterface
 
             if ($dateStart && $dateEnd) {
                 $model = $model->orWhere(function ($query) use ($dateStart, $dateEnd, $format) {
-                    return $query->whereBetween('date_due', [
+                    return $query->whereBetween($this->dateField, [
                         $dateStart->format($format),
                         $dateEnd->format($format),
                     ]);

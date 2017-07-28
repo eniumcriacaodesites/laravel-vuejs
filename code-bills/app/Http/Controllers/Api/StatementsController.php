@@ -3,6 +3,7 @@
 namespace CodeBills\Http\Controllers\Api;
 
 use CodeBills\Criteria\FindBetweenCreatedAtBRCriteria;
+use CodeBills\Criteria\FindBetweenDateBRCriteria;
 use CodeBills\Criteria\FindByValueBRCriteria;
 use CodeBills\Http\Controllers\Controller;
 use CodeBills\Repositories\StatementRepository;
@@ -34,7 +35,7 @@ class StatementsController extends Controller
         $searchParam = config('repository.criteria.params.search');
         $search = $request->get($searchParam);
         $this->statementRepository
-            ->pushCriteria(new FindBetweenCreatedAtBRCriteria($search))
+            ->pushCriteria(new FindBetweenDateBRCriteria($search, 'created_at'))
             ->pushCriteria(new FindByValueBRCriteria($search));
         $statements = $this->statementRepository->paginate();
 
