@@ -4,29 +4,83 @@
             <div class="col s8">
                 <!-- left -->
                 <div class="row">
-                    <div class="card-panel z-depth-2">
-                        <div class="center" v-show="loadingChart">
-                            <div class="preloader-wrapper big active">
-                                <div class="spinner-layer spinner-blue-only">
-                                    <div class="circle-clipper left">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="circle-clipper right">
-                                        <div class="circle"></div>
+                    <div class="col s6">
+                        <div class="card-panel z-depth-2">
+                            <div class="center" v-show="loadingRevenue">
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div v-show="!loadingRevenue">
+                                <div>A receber hoje</div>
+                                <h3 id="revenue-number" class="green-text center">R$0,00</h3>
+                                <div class="left">Restante do mês</div>
+                                <div class="right">R$0,00</div>
+                            </div>
                         </div>
-                        <div v-if="hasCashFlowsMonthly">
-                            <vue-chart :chart-type="chartOptions.chartType"
-                                       :chart-events="chartOptions.chartEvents"
-                                       :columns="chartOptions.columns"
-                                       :rows="chartOptions.rows"
-                                       :options="chartOptions.options">
-                            </vue-chart>
+                    </div>
+                    <div class="col s6">
+                        <div class="card-panel z-depth-2">
+                            <div class="center" v-show="loadingExpense">
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-show="!loadingExpense">
+                                <div>A pagar hoje</div>
+                                <h3 id="expense-number" class="red-text center">R$0,00</h3>
+                                <div class="left">Restante do mês</div>
+                                <div class="right">R$0,00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel z-depth-2">
+                            <div class="center" v-show="loadingChart">
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="hasCashFlowsMonthly">
+                                <vue-chart :chart-type="chartOptions.chartType"
+                                           :chart-events="chartOptions.chartEvents"
+                                           :columns="chartOptions.columns"
+                                           :rows="chartOptions.rows"
+                                           :options="chartOptions.options">
+                                </vue-chart>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,6 +119,7 @@
 <script type="text/javascript">
     import store from "../store/store";
     import VueCharts from "vue-charts";
+    import "jquery.animate-number";
 
     Vue.use(VueCharts);
 
@@ -73,6 +128,8 @@
             return {
                 loadingBankAccountList: true,
                 loadingChart: true,
+                loadingRevenue: true,
+                loadingExpense: true,
             }
         },
         computed: {
@@ -147,6 +204,28 @@
                 });
 
                 store.dispatch('cashFlow/monthly');
+
+                let self = this;
+                setTimeout(() => {
+                    this.loadingRevenue = false;
+                    this.loadingExpense = false;
+
+                    $('#revenue-number').animateNumber({
+                        number: 7000.00,
+                        numberStep(now, twee) {
+                            let number = self.$options.filters.numberFormat.read(now, true);
+                            $(twee.elem).text(number);
+                        }
+                    }, 1000);
+
+                    $('#expense-number').animateNumber({
+                        number: 1497.49,
+                        numberStep(now, twee) {
+                            let number = self.$options.filters.numberFormat.read(now, true);
+                            $(twee.elem).text(number);
+                        }
+                    }, 1000);
+                }, 2000);
             },
             echo() {
                 let self = this;
@@ -182,5 +261,12 @@
 <style type="text/css" scoped>
     .collection, .collection-item {
         border: none;
+        margin: 0;
+    }
+
+    .card-panel:after {
+        content: "";
+        display: table;
+        clear: both;
     }
 </style>

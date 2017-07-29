@@ -3117,7 +3117,13 @@ jquery-mousewheel@~3.1.13:
   version "3.1.13"
   resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
 
-jquery@^2.1.4:
+jquery.animate-number@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/jquery.animate-number/-/jquery.animate-number-0.0.14.tgz#9263bb87e3c9ac2e2fc173d16ebd607589ad3198"
+  dependencies:
+    jquery ">= 1.7.0"
+
+"jquery@>= 1.7.0", jquery@^2.1.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
