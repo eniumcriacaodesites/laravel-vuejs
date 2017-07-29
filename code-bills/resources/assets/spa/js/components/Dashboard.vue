@@ -3,13 +3,31 @@
         <div class="row">
             <div class="col s8">
                 <!-- left -->
-                <div class="row" v-if="hasCashFlowsMonthly">
+                <div class="row">
                     <div class="card-panel z-depth-2">
-                        <vue-chart :chart-type="chartOptions.chartType"
-                                   :columns="chartOptions.columns"
-                                   :rows="chartOptions.rows"
-                                   :options="chartOptions.options">
-                        </vue-chart>
+                        <div class="center" v-show="loadingChart">
+                            <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-blue-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="hasCashFlowsMonthly">
+                            <vue-chart :chart-type="chartOptions.chartType"
+                                       :chart-events="chartOptions.chartEvents"
+                                       :columns="chartOptions.columns"
+                                       :rows="chartOptions.rows"
+                                       :options="chartOptions.options">
+                            </vue-chart>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,6 +72,7 @@
         data() {
             return {
                 loadingBankAccountList: true,
+                loadingChart: true,
             }
         },
         computed: {
@@ -70,8 +89,14 @@
                 return store.getters['cashFlow/hasCashFlowsMonthly'];
             },
             chartOptions() {
+                let self = this;
                 let obj = {
                     chartType: 'ColumnChart',
+                    chartEvents: {
+                        ready() {
+                            self.loadingChart = false;
+                        }
+                    },
                     columns: [
                         {'type': 'string', 'label': 'Dia'},
                         {'type': 'number', 'label': 'Receita'},
@@ -85,7 +110,12 @@
                         isStacked: true,
                         bar: {groupWidth: '40%'},
                         legend: {position: 'top'},
-                        colors: ['green', 'red']
+                        colors: ['green', 'red'],
+                        animation: {
+                            duration: 3000,
+                            easing: 'out',
+                            startup: true
+                        }
                     }
                 };
 
