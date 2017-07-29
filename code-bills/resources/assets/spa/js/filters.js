@@ -46,5 +46,5 @@ Vue.filter('doneLabel', (value) => {
 });
 
 Vue.filter('monthYear', (value) => {
-    return moment(`${value}-01`).format('MM/YYYY');
+    return moment(value instanceof Date ? value : `${value}-01`).format('MM/YYYY');
 });
