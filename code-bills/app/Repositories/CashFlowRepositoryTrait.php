@@ -33,6 +33,33 @@ trait CashFlowRepositoryTrait
         return $this->formatCashFlow($expensesCollection, $revenuesCollection, $balancePreviousMonth);
     }
 
+    public function getCashFlowByPeriod(Carbon $dateStart, Carbon $dateEnd)
+    {
+        $dateFormat = '%Y-%m-%d';
+        $dateStartStr = $dateStart->format('Y-m-d');
+        $dateEndStr = $dateEnd->format('Y-m-d');
+
+        $revenuesCollection = $this->getQueryCategoriesValuesByPeriod(
+            new CategoryRevenue(),
+            (new BillReceive())->getTable(),
+            $dateStartStr,
+            $dateEndStr,
+            $dateFormat
+        )->get();
+
+        $expensesCollection = $this->getQueryCategoriesValuesByPeriod(
+            new CategoryExpense(),
+            (new BillPay())->getTable(),
+            $dateStartStr,
+            $dateEndStr,
+            $dateFormat
+        )->get();
+
+        return [
+            'period_list' => $this->formatPeriods($expensesCollection, $revenuesCollection),
+        ];
+    }
+
     public function getBalanceByMonth(Carbon $date)
     {
         $dateString = $date->copy()->day($date->daysInMonth)->format('Y-m-d');
@@ -174,7 +201,7 @@ trait CashFlowRepositoryTrait
         return $mainCollection;
     }
 
-    protected function getQueryCategoriesValuesByPeriod($model, $billTable, $dateStart, $dateEnd)
+    protected function getQueryCategoriesValuesByPeriod($model, $billTable, $dateStart, $dateEnd, $dateFormat = '%Y-%m')
     {
         $table = $model->getTable();
         list($lft, $rgt) = [$model->getLftName(), $model->getRgtName()];
@@ -183,7 +210,7 @@ trait CashFlowRepositoryTrait
             ->addSelect("{$table}.id")
             ->addSelect("{$table}.name")
             ->selectRaw("SUM(value) AS total")
-            ->selectRaw("DATE_FORMAT(date_due, '%Y-%m') AS period")
+            ->selectRaw("DATE_FORMAT(date_due, '{$dateFormat}') AS period")
             ->selectSub($this->getQueryWithDepth($model), "depth")
             ->join("{$table} AS childOrSelf", function ($join) use ($table, $lft, $rgt) {
                 $join->on("{$table}.{$lft}", "<=", "childOrSelf.{$lft}")

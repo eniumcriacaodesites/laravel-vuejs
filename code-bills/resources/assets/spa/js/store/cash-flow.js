@@ -2,13 +2,17 @@ import {CashFlow} from "../services/resource";
 import moment from "moment";
 
 const state = {
-    cashFlows: [],
-    firstPeriod: null
+    cashFlows: null,
+    cashFlowsMonthly: null,
+    firstPeriod: null,
 };
 
 const mutations = {
     set(state, cashFlows) {
         state.cashFlows = cashFlows;
+    },
+    setMonthly(state, cashFlowsMonthly) {
+        state.cashFlowsMonthly = cashFlowsMonthly;
     },
     setFirstPeriod(state, date) {
         state.firstPeriod = moment(date)
@@ -24,6 +28,11 @@ const actions = {
             context.commit('set', response.data);
         });
     },
+    monthly(context) {
+        return CashFlow.monthly().then((response) => {
+            context.commit('setMonthly', response.data);
+        });
+    }
 };
 
 const getters = {
@@ -73,6 +82,9 @@ const getters = {
     },
     hasCashFlows(state) {
         return state.cashFlows != null && state.cashFlows.period_list.length > 1;
+    },
+    hasCashFlowsMonthly(state) {
+        return state.cashFlowsMonthly != null && state.cashFlowsMonthly.period_list.length > 1;
     },
     balance: (state, getters) => (index) => {
         return getters._calculateBalance(index + getters.indexSecondPeriod + 1);

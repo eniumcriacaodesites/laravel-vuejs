@@ -32,5 +32,6 @@ Route::group(['middleware' => 'cors', 'as' => 'api.'], function () {
         Route::resource('/bill_receives', 'Api\BillReceivesController', ['except' => ['create', 'edit']]);
         Route::get('/statements', 'Api\StatementsController@index')->name('statements.index');
         Route::get('/cash_flow', 'Api\CashFlowsController@index')->name('cash_flow.index');
+        Route::get('/cash_flow/monthly', 'Api\CashFlowsController@byPeriod')->name('cash_flow.monthly');
     });
 });

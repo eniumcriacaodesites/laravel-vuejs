@@ -3,6 +3,15 @@
         <div class="row">
             <div class="col s8">
                 <!-- left -->
+                <div class="row" v-if="hasCashFlowsMonthly">
+                    <div class="card-panel z-depth-2">
+                        <vue-chart :chart-type="chartOptions.chartType"
+                                   :columns="chartOptions.columns"
+                                   :rows="chartOptions.rows"
+                                   :options="chartOptions.options">
+                        </vue-chart>
+                    </div>
+                </div>
             </div>
             <div class="col s4">
                 <!-- right -->
@@ -22,6 +31,9 @@
 
 <script type="text/javascript">
     import store from "../store/store";
+    import VueCharts from "vue-charts";
+
+    Vue.use(VueCharts);
 
     export default {
         computed: {
@@ -30,6 +42,44 @@
             },
             clientId() {
                 return store.state.auth.user.client_id;
+            },
+            cashFlowsMonthly() {
+                return store.state.cashFlow.cashFlowsMonthly;
+            },
+            hasCashFlowsMonthly() {
+                return store.getters['cashFlow/hasCashFlowsMonthly'];
+            },
+            chartOptions() {
+                let obj = {
+                    chartType: 'ColumnChart',
+                    columns: [
+                        {'type': 'string', 'label': 'Dia'},
+                        {'type': 'number', 'label': 'Receita'},
+                        {'type': 'string', 'role': 'style'},
+                        {'type': 'number', 'label': 'Despesa'},
+                        {'type': 'string', 'role': 'style'}
+                    ],
+                    rows: [],
+                    options: {
+                        title: 'Fluxo de Caixa Mensal',
+                        isStacked: true,
+                        bar: {groupWidth: '40%'},
+                        legend: {position: 'top'},
+                        colors: ['green', 'red']
+                    }
+                };
+
+                for (let period of this.cashFlowsMonthly.period_list) {
+                    obj.rows.push([
+                        this.$options.filters.dayMonth(period.period),
+                        period.revenues.total == 0 ? null : period.revenues.total,
+                        'green',
+                        period.expenses.total == 0 ? null : -period.expenses.total,
+                        'red'
+                    ]);
+                }
+
+                return obj;
             }
         },
         created() {
@@ -42,6 +92,8 @@
                 store.commit('bankAccount/setSort', 'desc');
                 store.commit('bankAccount/setLimit', 5);
                 store.dispatch('bankAccount/query');
+
+                store.dispatch('cashFlow/monthly');
             },
             echo() {
                 let self = this;
