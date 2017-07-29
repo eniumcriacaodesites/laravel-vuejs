@@ -11,12 +11,12 @@
                         <thead>
                         <tr class="blue lighten-4">
                             <th class="text-csv"></th>
-                            <th v-if="!hasFirstMonthYear" class="text-csv">
-                                {{ firstMonthYear | monthYear }}
+                            <th v-if="!hasFirstPeriod" class="text-csv">
+                                {{ firstPeriod | monthYear }}
                             </th>
-                            <th v-for="o in monthsList" :class="{'blue lighten-2': isCurrentMonthYear(o.month_year)}"
+                            <th v-for="o in periodsList" :class="{'blue lighten-2': isCurrentPeriod(o.period)}"
                                 class="text-csv">
-                                {{ o.month_year | monthYear }}
+                                {{ o.period | monthYear }}
                             </th>
                         </tr>
                         </thead>
@@ -25,7 +25,7 @@
                             <td class="tb-title text-csv">Saldo final</td>
                             <td class="text-csv">{{ firstBalance }}</td>
                             <td class="text-csv">{{ secondBalance }}</td>
-                            <td v-for="(key, o) in monthsListBalanceFinal" class="text-csv">
+                            <td v-for="(key, o) in periodsListBalanceFinal" class="text-csv">
                                 {{ balance(key) }}
                             </td>
                         </tr>
@@ -34,43 +34,43 @@
                             <td class="text-csv">{{ balanceBeforeFirstMonth }}</td>
                             <td class="text-csv">{{ firstBalance }}</td>
                             <td class="text-csv">{{ secondBalance }}</td>
-                            <td v-for="(key, o) in monthsListBalancePrevious" class="text-csv">
+                            <td v-for="(key, o) in periodsListBalancePrevious" class="text-csv">
                                 {{ balance(key) }}
                             </td>
                         </tr>
                         <tr>
                             <td class="text-csv">Geração de caixa</td>
-                            <td v-if="!hasFirstMonthYear" class="text-csv">0</td>
-                            <td v-for="(key, o) in monthsList" class="text-csv">
+                            <td v-if="!hasFirstPeriod" class="text-csv">0</td>
+                            <td v-for="(key, o) in periodsList" class="text-csv">
                                 {{ o.revenues.total - o.expenses.total }}
                             </td>
                         </tr>
                         <tr class="blue lighten-4">
                             <td class="tb-title text-csv">Recebimentos</td>
-                            <td v-if="!hasFirstMonthYear" class="text-csv">0</td>
-                            <td v-for="(key, o) in monthsList" class="text-csv">
+                            <td v-if="!hasFirstPeriod" class="text-csv">0</td>
+                            <td v-for="(key, o) in periodsList" class="text-csv">
                                 {{ o.revenues.total }}
                             </td>
                         </tr>
-                        <tr v-for="o in categoriesMonths.revenues.data">
+                        <tr v-for="o in categoriesPeriod.revenues.data">
                             <td class="text-csv">{{ o.name }}</td>
-                            <td v-if="!hasFirstMonthYear" class="text-csv"></td>
-                            <td v-for="v in monthsList" class="text-csv">
-                                {{ categoryTotal(o, v.month_year).total }}
+                            <td v-if="!hasFirstPeriod" class="text-csv"></td>
+                            <td v-for="v in periodsList" class="text-csv">
+                                {{ categoryTotal(o, v.period).total }}
                             </td>
                         </tr>
                         <tr class="blue lighten-4">
                             <td class="tb-title text-csv">Pagamentos</td>
-                            <td v-if="!hasFirstMonthYear" class="text-csv">0</td>
-                            <td v-for="(key, o) in monthsList" class="text-csv">
+                            <td v-if="!hasFirstPeriod" class="text-csv">0</td>
+                            <td v-for="(key, o) in periodsList" class="text-csv">
                                 {{ o.expenses.total }}
                             </td>
                         </tr>
-                        <tr v-for="o in categoriesMonths.expenses.data">
+                        <tr v-for="o in categoriesPeriod.expenses.data">
                             <td class="text-csv">{{ o.name }}</td>
-                            <td v-if="!hasFirstMonthYear" class="text-csv"></td>
-                            <td v-for="v in monthsList" class="text-csv">
-                                {{ categoryTotal(o, v.month_year).total }}
+                            <td v-if="!hasFirstPeriod" class="text-csv"></td>
+                            <td v-for="v in periodsList" class="text-csv">
+                                {{ categoryTotal(o, v.period).total }}
                             </td>
                         </tr>
                         </tbody>
@@ -100,17 +100,17 @@
             cashFlows() {
                 return store.state.cashFlow.cashFlows;
             },
-            monthsList() {
-                return this.cashFlows.months_list;
+            periodsList() {
+                return this.cashFlows.period_list;
             },
-            categoriesMonths() {
-                return this.cashFlows.categories_months;
+            categoriesPeriod() {
+                return this.cashFlows.categories_period;
             },
-            hasFirstMonthYear() {
-                return store.getters['cashFlow/hasFirstMonthYear'];
+            hasFirstPeriod() {
+                return store.getters['cashFlow/hasFirstPeriod'];
             },
-            firstMonthYear() {
-                return store.state.cashFlow.firstMonthYear;
+            firstPeriod() {
+                return store.state.cashFlow.firstPeriod;
             },
             firstBalance() {
                 return store.getters['cashFlow/firstBalance'];
@@ -118,11 +118,11 @@
             secondBalance() {
                 return store.getters['cashFlow/secondBalance'];
             },
-            monthsListBalanceFinal() {
-                return store.getters['cashFlow/monthsListBalanceFinal'];
+            periodsListBalanceFinal() {
+                return store.getters['cashFlow/periodsListBalanceFinal'];
             },
-            monthsListBalancePrevious() {
-                return store.getters['cashFlow/monthsListBalancePrevious'];
+            periodsListBalancePrevious() {
+                return store.getters['cashFlow/periodsListBalancePrevious'];
             },
             hasCashFlows() {
                 return store.getters['cashFlow/hasCashFlows'];
@@ -132,18 +132,18 @@
             }
         },
         created() {
-            store.commit('cashFlow/setFirstMonthYear', new Date());
+            store.commit('cashFlow/setFirstPeriod', new Date());
             store.dispatch('cashFlow/query');
         },
         methods: {
             balance(index) {
                 return store.getters['cashFlow/balance'](index);
             },
-            categoryTotal(category, monthYear) {
-                return store.getters['cashFlow/categoryTotal'](category, monthYear);
+            categoryTotal(category, period) {
+                return store.getters['cashFlow/categoryTotal'](category, period);
             },
-            isCurrentMonthYear(monthYear) {
-                return this.$options.filters.monthYear(new Date) == this.$options.filters.monthYear(monthYear);
+            isCurrentPeriod(period) {
+                return this.$options.filters.monthYear(new Date) == this.$options.filters.monthYear(period);
             },
             getCsv() {
                 let csvResult = [];
