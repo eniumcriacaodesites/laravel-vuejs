@@ -16,7 +16,22 @@
             <div class="col s4">
                 <!-- right -->
                 <div class="card-panel z-depth-2">
-                    <ul class="collection">
+                    <div class="center" v-show="loadingBankAccountList">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-blue-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="bank-account-list" class="collection" v-show="!loadingBankAccountList">
                         <li class="collection-item avatar" v-for="o in bankAccounts">
                             <img :src="o.bank.data.logo" :alt="o.bank.data.name" class="circle z-depth-1">
                             <span class="title"><strong>{{ o.name }}</strong></span>
@@ -36,6 +51,11 @@
     Vue.use(VueCharts);
 
     export default {
+        data() {
+            return {
+                loadingBankAccountList: true,
+            }
+        },
         computed: {
             bankAccounts() {
                 return store.state.bankAccount.bankAccounts;
@@ -91,7 +111,10 @@
                 store.commit('bankAccount/setOrder', 'balance');
                 store.commit('bankAccount/setSort', 'desc');
                 store.commit('bankAccount/setLimit', 5);
-                store.dispatch('bankAccount/query');
+                store.dispatch('bankAccount/query').then(() => {
+                    this.loadingBankAccountList = false;
+                    Materialize.showStaggeredList('#bank-account-list');
+                });
 
                 store.dispatch('cashFlow/monthly');
             },
