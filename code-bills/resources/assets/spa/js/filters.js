@@ -24,7 +24,7 @@ Vue.filter('dateFormat', {
 Vue.filter('numberFormat', {
     read(value, isCurrency = false) {
         let number = 0;
-        if (value && value != "" && !isNaN(value)) {
+        if (value !== null && value !== "" && !isNaN(value)) {
             number = isCurrency ? numeral(value).format('$0,0.00') : numeral(value).format('0,0.00');
         }
 

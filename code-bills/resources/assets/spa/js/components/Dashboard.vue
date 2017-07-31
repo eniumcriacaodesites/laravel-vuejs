@@ -25,7 +25,7 @@
                                 <div>A receber hoje</div>
                                 <h3 id="revenue-number" class="green-text center">R$0,00</h3>
                                 <div class="left">Restante do mês</div>
-                                <div class="right">R$0,00</div>
+                                <div class="right">{{ totalRestOfMonthReceive | numberFormat true }}</div>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                                 <div>A pagar hoje</div>
                                 <h3 id="expense-number" class="red-text center">R$0,00</h3>
                                 <div class="left">Restante do mês</div>
-                                <div class="right">R$0,00</div>
+                                <div class="right">{{ totalRestOfMonthPay | numberFormat true }}</div>
                             </div>
                         </div>
                     </div>
@@ -145,6 +145,18 @@
             hasCashFlowsMonthly() {
                 return store.getters['cashFlow/hasCashFlowsMonthly'];
             },
+            totalTodayReceive() {
+                return store.state.billReceive.total_today;
+            },
+            totalRestOfMonthReceive() {
+                return store.state.billReceive.total_rest_of_month;
+            },
+            totalTodayPay() {
+                return store.state.billPay.total_today;
+            },
+            totalRestOfMonthPay() {
+                return store.state.billPay.total_rest_of_month;
+            },
             chartOptions() {
                 let self = this;
                 let obj = {
@@ -206,26 +218,30 @@
                 store.dispatch('cashFlow/monthly');
 
                 let self = this;
-                setTimeout(() => {
+
+                store.dispatch('billReceive/totalRestOfMonth');
+                store.dispatch('billReceive/totalToday').then(() => {
                     this.loadingRevenue = false;
-                    this.loadingExpense = false;
-
                     $('#revenue-number').animateNumber({
-                        number: 7000.00,
+                        number: self.totalTodayReceive,
                         numberStep(now, twee) {
                             let number = self.$options.filters.numberFormat.read(now, true);
                             $(twee.elem).text(number);
                         }
                     }, 1000);
+                });
 
+                store.dispatch('billPay/totalRestOfMonth');
+                store.dispatch('billPay/totalToday').then(() => {
+                    this.loadingExpense = false;
                     $('#expense-number').animateNumber({
-                        number: 1497.49,
+                        number: self.totalTodayPay,
                         numberStep(now, twee) {
                             let number = self.$options.filters.numberFormat.read(now, true);
                             $(twee.elem).text(number);
                         }
                     }, 1000);
-                }, 2000);
+                });
             },
             echo() {
                 let self = this;

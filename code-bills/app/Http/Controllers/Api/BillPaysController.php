@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 
 class BillPaysController extends Controller
 {
+    use BillControllerTrait;
+
     /**
      * @var BillPayRepository
      */

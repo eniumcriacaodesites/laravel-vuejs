@@ -46,6 +46,17 @@ trait BillRepositoryTrait
         return $this->parserResult(new BillSerializer($collection, $this->formatBillsData()));
     }
 
+    public function getTotalFromPeriod(Carbon $dateStart, Carbon $dateEnd)
+    {
+        $result = $this->getQueryTotal()
+                       ->whereBetween("date_due", [$dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d')])
+                       ->get();
+
+        return [
+            'total' => (float) $result->first()->total,
+        ];
+    }
+
     protected function repeatBill($attributes)
     {
         if (isset($attributes['repeat'])) {
@@ -73,15 +84,17 @@ trait BillRepositoryTrait
         return (float) $result->first()->total;
     }
 
-    protected function getQueryTotalByDone($done)
+    protected function getQueryTotal()
     {
         $this->resetModel();
         $this->applyCriteria();
-        $query = $this->model
-            ->selectRaw("SUM(value) AS total")
-            ->where("done", "=", $done);
 
-        return $query;
+        return $this->model->selectRaw("SUM(value) AS total");
+    }
+
+    protected function getQueryTotalByDone($done)
+    {
+        return $this->getQueryTotal()->where("done", "=", $done);
     }
 
     protected function getTotalExpired()
