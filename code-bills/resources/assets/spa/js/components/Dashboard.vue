@@ -117,6 +117,7 @@
 </template>
 
 <script type="text/javascript">
+    import {User} from "../services/resource";
     import store from "../store/store";
     import VueCharts from "vue-charts";
     import "jquery.animate-number";
@@ -135,9 +136,6 @@
         computed: {
             bankAccounts() {
                 return store.state.bankAccount.bankAccounts;
-            },
-            clientId() {
-                return store.state.auth.user.client_id;
             },
             cashFlowsMonthly() {
                 return store.state.cashFlow.cashFlowsMonthly;
@@ -245,11 +243,12 @@
             },
             echo() {
                 let self = this;
-
-                Echo.private(`client.${this.clientId}`)
-                    .listen('.CodeBills.Events.BankAccountBalanceUpdatedEvent', (e) => {
-                        self.updateBalance(e.bankAccount);
-                    });
+                User.get().then((response) => {
+                    Echo.private(`client.${response.data.client_id}`)
+                        .listen('.CodeBills.Events.BankAccountBalanceUpdatedEvent', (e) => {
+                            self.updateBalance(e.bankAccount);
+                        });
+                });
             },
             findIndexBankAccount(id) {
                 let index = this.bankAccounts.findIndex(item => {
