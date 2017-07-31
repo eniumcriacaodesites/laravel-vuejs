@@ -40,6 +40,7 @@
                 <pagination :current-page.sync="searchOptions.pagination.current_page"
                             :per-page="searchOptions.pagination.per_page"
                             :total-records="searchOptions.pagination.total"></pagination>
+                <bill-data namespace="billReceive"></bill-data>
             </div>
 
             <div class="fixed-action-btn">
@@ -110,7 +111,9 @@
     import SearchComponent from '../../Search.vue';
     import BillReceiveCreateComponent from './BillReceiveCreate.vue';
     import BillReceiveUpdateComponent from './BillReceiveUpdate.vue';
+    import BillDataComponent from '../BillData.vue';
     import store from '../../../store/store';
+    import moment from 'moment';
 
     export default {
         components: {
@@ -119,7 +122,8 @@
             pageTitle: PageTitleComponent,
             search: SearchComponent,
             billReceiveCreate: BillReceiveCreateComponent,
-            billReceiveUpdate: BillReceiveUpdateComponent
+            billReceiveUpdate: BillReceiveUpdateComponent,
+            billData: BillDataComponent
         },
         data() {
             return {
@@ -187,6 +191,7 @@
             }
         },
         created() {
+            store.commit('billReceive/setFilter', `${this.dateFilterStart()} - ${this.dateFilterEnd()}`);
             store.dispatch('billReceive/query');
             store.dispatch('bankAccount/lists');
             store.dispatch('categoryRevenue/query');
@@ -222,6 +227,12 @@
             },
             filter() {
                 store.dispatch('billReceive/queryWithFilter');
+            },
+            dateFilterStart() {
+                return moment((new Date()).setDate(1)).format('DD/MM/YYYY');
+            },
+            dateFilterEnd() {
+                return moment(new Date).endOf('month').format('DD/MM/YYYY');
             }
         },
         events: {

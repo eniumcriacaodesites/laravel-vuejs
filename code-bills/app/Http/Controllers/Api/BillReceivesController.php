@@ -7,6 +7,7 @@ use CodeBills\Criteria\FindByValueBRCriteria;
 use CodeBills\Http\Controllers\Controller;
 use CodeBills\Http\Controllers\Response;
 use CodeBills\Http\Requests\BillReceiveRequest;
+use CodeBills\Presenters\BillReceiveSerializerPresenter;
 use CodeBills\Repositories\BillReceiveRepository;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,7 @@ class BillReceivesController extends Controller
     {
         $searchParam = config('repository.criteria.params.search');
         $search = $request->get($searchParam);
+        $this->repository->setPresenter(BillReceiveSerializerPresenter::class);
         $this->repository
             ->pushCriteria(new FindBetweenDateBRCriteria($search, 'date_due'))
             ->pushCriteria(new FindByValueBRCriteria($search));

@@ -6,6 +6,11 @@ export default () => {
 
     const state = {
         bills: [],
+        billData: {
+            total_paid: 0,
+            total_to_pay: 0,
+            total_expired: 0
+        },
         billDelete: null,
         resource: null,
         searchOptions: new SearchOptions(include),
@@ -14,6 +19,9 @@ export default () => {
     const mutations = {
         set(state, bills) {
             state.bills = bills;
+        },
+        setBillData(state, billData) {
+            state.billData = billData;
         },
         setDelete(state, bill) {
             state.billDelete = bill;
@@ -43,8 +51,9 @@ export default () => {
         query(context) {
             return context.state.resource.query(context.state.searchOptions.createOptions())
                 .then((response) => {
-                    context.commit('set', response.data.data);
-                    context.commit('setPagination', response.data.meta.pagination);
+                    context.commit('set', response.data.data.bills.data);
+                    context.commit('setPagination', response.data.data.bills.meta.pagination);
+                    context.commit('setBillData', response.data.data.bill_data);
                 });
         },
         queryWithSortBy(context, key) {
