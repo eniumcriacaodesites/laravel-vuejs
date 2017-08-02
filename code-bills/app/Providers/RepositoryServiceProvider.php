@@ -32,6 +32,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\CodeBills\Repositories\CategoryExpenseRepository::class, \CodeBills\Repositories\CategoryExpenseRepositoryEloquent::class);
         $this->app->bind(\CodeBills\Repositories\CategoryRevenueRepository::class, \CodeBills\Repositories\CategoryRevenueRepositoryEloquent::class);
         $this->app->bind(\CodeBills\Repositories\StatementRepository::class, \CodeBills\Repositories\StatementRepositoryEloquent::class);
+        $this->app->bind(\CodeBills\Repositories\PlanRepository::class, \CodeBills\Repositories\PlanRepositoryEloquent::class);
         //:end-bindings:
     }
 }

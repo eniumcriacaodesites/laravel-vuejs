@@ -26,6 +26,7 @@ Route::group(['prefix' => '/', 'as' => 'site.'], function () {
 
     Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function () {
         Route::get('create', 'Site\SubscriptionsController@create')->name('create');
+        Route::post('store', 'Site\SubscriptionsController@store')->name('store');
     });
 });
 
