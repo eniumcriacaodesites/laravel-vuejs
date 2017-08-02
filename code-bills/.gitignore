@@ -11,5 +11,7 @@ Homestead.yaml
 /public/css/admin.css.map
 /public/css/spa.css
 /public/css/spa.css.map
+/public/css/site.css
+/public/css/site.css.map
 /roboto
 /resources/assets/spa/js/config.js

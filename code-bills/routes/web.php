@@ -19,6 +19,16 @@ Route::get('/client', function () {
     \Illuminate\Support\Facades\Auth::loginUsingId(2);
 });
 
+Route::group(['prefix' => '/', 'as' => 'site.'], function () {
+    Route::get('/', function () {
+        return view('site.home');
+    })->name('home');
+
+    Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function () {
+        Route::get('create', 'Site\SubscriptionsController@create')->name('create');
+    });
+});
+
 Route::get('/home', function () {
     return redirect()->route('admin.home');
 });
