@@ -65,6 +65,7 @@ $factory->define(\CodeBills\Models\BillReceive::class, function (Faker\Generator
 $factory->define(\CodeBills\Models\Client::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
     ];
 });
 
