@@ -7,6 +7,17 @@ use CodeBills\Iugu\Exceptions\IuguSubscriptionException;
 
 class IuguSubscriptionClient
 {
+    public function find($id)
+    {
+        $result = \Iugu_Subscription::fetch($id);
+
+        if (isset($result['errors'])) {
+            throw new IuguSubscriptionException($result['errors']);
+        }
+
+        return $result;
+    }
+
     public function create(array $attributes)
     {
         $paymentType = $attributes['payment_type'];
