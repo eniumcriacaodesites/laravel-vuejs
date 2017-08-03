@@ -44,13 +44,13 @@ class OrderManager
     public function create($data)
     {
         $iuguSubscription = $this->iuguSubscriptionClient->find($data['subscription_id']);
-        $subscription = $this->subscriptionRepository->findByField('code', $iuguSubscription->id);
+        $subscription = $this->subscriptionRepository->findByField('code', $iuguSubscription->id)->first();
 
         if ($subscription) {
             $invoice = $iuguSubscription->recent_invoices[0];
             $total = $this->getValue($invoice->total);
 
-            $this->orderRepository->create([
+            return $this->orderRepository->create([
                 'date_due' => $invoice->due_date,
                 'payment_date' => $invoice->status == 'paid' ? (new Carbon())->format('Y-m-d H:i:s') : null,
                 'subscription_id' => $subscription->id,
