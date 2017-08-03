@@ -5,7 +5,10 @@ namespace CodeBills\Http\Controllers\Api;
 use CodeBills\Http\Controllers\Controller;
 use CodeBills\Iugu\OrderManager;
 use CodeBills\Iugu\SubscriptionManager;
+use CodeBills\Mail\FirstSubscriptionPaid;
+use CodeBills\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class IuguController extends Controller
 {
@@ -46,7 +49,10 @@ class IuguController extends Controller
                 }
                 break;
             case 'subscription.renewed':
-                $this->subscriptionManager->renew($data);
+                $subscription = $this->subscriptionManager->renew($data);
+                if ($subscription && $subscription->orders()->where('status', Order::STATUS_PAID)->count() == 1) {
+                    Mail::to($subscription->user)->send(new FirstSubscriptionPaid($subscription));
+                }
                 break;
         }
     }
