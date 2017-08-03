@@ -11,7 +11,7 @@ require('vuex');
 Vue.http.options.root = appConfig.api_url; // app laravel
 
 require('./echo');
-require('./filters');
+require('../../_default/js/filters');
 require('./validators');
 require('./services/interceptors');
 require('./router');

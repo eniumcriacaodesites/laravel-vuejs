@@ -5,6 +5,7 @@
     </span>
         <h4>{{ plan.name }}</h4>
         <p>{{ plan.description }}</p>
+        <p>{{ plan.value | numberFormat true }}</p>
     </div>
     <div class="card-panel">
         <form id="subscription-form" method="POST" :action="action" @submit.prevent="submit">
