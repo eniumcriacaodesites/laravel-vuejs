@@ -4,9 +4,11 @@ namespace CodeBills\Providers;
 
 use CodeBills\Events\BankStoredEvent;
 use CodeBills\Events\BillStoredEvent;
+use CodeBills\Events\IuguSubscriptionCreatedEvent;
 use CodeBills\Listeners\BankAccountSetDefaultListener;
 use CodeBills\Listeners\BankAccountUpdateBalanceListener;
 use CodeBills\Listeners\BankLogoUploadListener;
+use CodeBills\Listeners\IuguSubscriptionCreatedListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Prettus\Repository\Events\RepositoryEntityCreated;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
@@ -30,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         RepositoryEntityUpdated::class => [
             BankAccountSetDefaultListener::class,
+        ],
+        IuguSubscriptionCreatedEvent::class => [
+            IuguSubscriptionCreatedListener::class,
         ],
     ];
 

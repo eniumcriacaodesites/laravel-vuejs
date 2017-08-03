@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        \Iugu::setApiKey(env('IUGU_API_KEY'));
     }
 }

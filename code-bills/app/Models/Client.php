@@ -9,6 +9,7 @@ class Client extends Model
     protected $fillable = [
         'name',
         'email',
+        'code',
     ];
 
     public function users()
