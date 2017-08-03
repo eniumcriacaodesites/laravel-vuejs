@@ -15,6 +15,11 @@ class OrderManager
     private $iuguSubscriptionClient;
 
     /**
+     * @var IuguInvoiceClient
+     */
+    private $iuguInvoiceClient;
+
+    /**
      * @var SubscriptionRepository
      */
     private $subscriptionRepository;
@@ -28,15 +33,18 @@ class OrderManager
      * OrderManager constructor.
      *
      * @param IuguSubscriptionClient $iuguSubscriptionClient
+     * @param IuguInvoiceClient $iuguInvoiceClient
      * @param SubscriptionRepository $subscriptionRepository
      * @param OrderRepository $orderRepository
      */
     public function __construct(
         IuguSubscriptionClient $iuguSubscriptionClient,
+        IuguInvoiceClient $iuguInvoiceClient,
         SubscriptionRepository $subscriptionRepository,
         OrderRepository $orderRepository
     ) {
         $this->iuguSubscriptionClient = $iuguSubscriptionClient;
+        $this->iuguInvoiceClient = $iuguInvoiceClient;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->orderRepository = $orderRepository;
     }
@@ -59,6 +67,19 @@ class OrderManager
                 'status' => $invoice->status == 'paid' ? Order::STATUS_PAID : Order::STATUS_PENDING,
                 'value' => $total,
             ]);
+        }
+    }
+
+    public function paid(array $data)
+    {
+        $invoice = $this->iuguInvoiceClient->find($data['id']);
+        $order = $this->orderRepository->findByField('code', $invoice->id)->first();
+
+        if ($order && $order->status != Order::STATUS_PAID) {
+            $this->orderRepository->update([
+                'status' => Order::STATUS_PAID,
+                'payment_date' => (new Carbon())->format('Y-m-d H:i:s'),
+            ], $order->id);
         }
     }
 

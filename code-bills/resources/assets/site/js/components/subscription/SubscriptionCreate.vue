@@ -115,7 +115,7 @@
                         }
                     });
                 } else {
-
+                    $('#subscription-form')[0].submit();
                 }
             }
         }

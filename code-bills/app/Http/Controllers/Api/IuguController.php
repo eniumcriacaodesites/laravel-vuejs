@@ -32,6 +32,11 @@ class IuguController extends Controller
             case 'invoice.created':
                 $this->orderManager->create($data);
                 break;
+            case 'invoice.status_changed':
+                if ($data['status'] == 'paid') {
+                    $this->orderManager->paid($data);
+                }
+                break;
         }
     }
 }
