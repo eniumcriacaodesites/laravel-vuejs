@@ -2,6 +2,8 @@
 
 namespace CodeBills\Iugu;
 
+use Carbon\Carbon;
+use CodeBills\Criteria\FindByUserCriteria;
 use CodeBills\Models\Subscription;
 use CodeBills\Repositories\SubscriptionRepository;
 
@@ -45,5 +47,17 @@ class SubscriptionManager
         }
 
         return $result;
+    }
+
+    public function cancel($subscriptionId)
+    {
+        $this->subscriptionRepository->pushCriteria(new FindByUserCriteria());
+        $subscription = $this->subscriptionRepository->find($subscriptionId);
+        $this->iuguSubscriptionClient->suspend($subscription->code);
+
+        $this->subscriptionRepository->update([
+            'status' => Subscription::STATUS_INATIVE,
+            'canceled_at' => (new Carbon())->format('Y-m-d'),
+        ], $subscription->id);
     }
 }

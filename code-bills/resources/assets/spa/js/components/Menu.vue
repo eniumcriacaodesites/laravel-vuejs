@@ -6,6 +6,9 @@
     </ul>
     <ul id="dropdown-logout" class="dropdown-content">
         <li>
+            <a href="#" @click.prevent="goToMyFinancial()">Meu Financeiro</a>
+        </li>
+        <li>
             <a v-link="{name: 'auth.logout'}">Sair</a>
         </li>
     </ul>
@@ -46,6 +49,8 @@
 
 <script type="text/javascript">
     import store from '../store/store';
+    import appConfig from '../services/appConfig';
+    import JwtToken from '../services/jwt-token';
 
     export default {
         data() {
@@ -57,8 +62,8 @@
                     {name: "Fluxo de caixa", routeName: 'cash-flow.list', dropdownId: ''},
                     {name: "Extrato", routeName: 'statement.list', dropdownId: ''},
                     /*{name: "Categorias", routeName: 'categories.list', dropdownId: ''},
-                    {name: "Contas a pagar", routeName: '', dropdownId: 'bill-pays'},
-                    {name: "Contas a receber", routeName: '', dropdownId: 'bill-receives'}*/
+                     {name: "Contas a pagar", routeName: '', dropdownId: 'bill-pays'},
+                     {name: "Contas a receber", routeName: '', dropdownId: 'bill-receives'}*/
                 ],
                 menusDropdown: [
                     {
@@ -100,6 +105,11 @@
         ready() {
             $('.button-collapse').sideNav();
             $('.dropdown-button').dropdown();
+        },
+        methods: {
+            goToMyFinancial() {
+                window.open(`${appConfig.my_financial_path}?token=${JwtToken.token}`, '_blank');
+            }
         }
     };
 </script>

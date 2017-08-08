@@ -36,6 +36,15 @@ Route::group(['prefix' => '/', 'as' => 'site.'], function () {
         Route::post('store', 'Site\SubscriptionsController@store')->name('store');
         Route::get('successfully', 'Site\SubscriptionsController@successfully')->name('successfully');
     });
+
+    Route::group([
+        'prefix' => 'my-financial',
+        'as' => 'my_financial.',
+        'middleware' => ['auth.from_token'],
+    ], function () {
+        Route::get('/', 'Site\MyFinancialController@index')->name('index');
+        Route::get('/cancel/{id}', 'Site\MyFinancialController@cancel')->name('cancel');
+    });
 });
 
 Route::get('/home', function () {

@@ -32,4 +32,9 @@ class Subscription extends Model implements Transformable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }
