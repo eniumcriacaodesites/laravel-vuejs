@@ -14,10 +14,12 @@
 Route::post('hooks/iugu', 'Api\IuguController@hooks');
 
 Route::group(['middleware' => 'cors', 'as' => 'api.'], function () {
-    Route::post('/access_token', 'Api\AuthController@accessToken')->name('access_token');
-    Route::post('/refresh_token', 'Api\AuthController@refreshToken')->name('refresh_token');
+    Route::group(['middleware' => 'check-subscription:after'], function () {
+        Route::post('/access_token', 'Api\AuthController@accessToken')->name('access_token');
+        Route::post('/refresh_token', 'Api\AuthController@refreshToken')->name('refresh_token');
+    });
 
-    Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => ['auth:api', 'check-subscription']], function () {
         Route::post('/logout', 'Api\AuthController@logout')->name('logout');
 
         Route::get('/user', function () {

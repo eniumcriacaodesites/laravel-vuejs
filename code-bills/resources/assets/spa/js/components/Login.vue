@@ -69,12 +69,15 @@
         },
         methods: {
             login() {
+                this.error.error = false;
+                this.error.message = '';
                 store.dispatch('login', this.user)
                     .then(() => this.$router.go({name: 'dashboard'}))
                     .catch((responseError) => {
                         switch (responseError.status) {
                             case 400:
                             case 401:
+                            case 403:
                                 this.error.message = responseError.data.message;
                                 break;
                             default:

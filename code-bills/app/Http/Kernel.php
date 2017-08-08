@@ -54,5 +54,6 @@ class Kernel extends HttpKernel
         'guest' => \CodeBills\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.from_token' => \CodeBills\Http\Middleware\AuthenticateFromToken::class,
+        'check-subscription' => \CodeBills\Http\Middleware\CheckSubscription::class,
     ];
 }
