@@ -4,6 +4,7 @@ $config = [
     'name' => \Illuminate\Support\Facades\Auth::user()->name,
     'menus' => [
         ['name' => 'Bancos', 'dropdownId' => 'banks'],
+        ['name' => 'Assinaturas', 'url' => route('admin.subscriptions.index')],
         ['name' => 'Contas a pagar', 'dropdownId' => 'bill-pays'],
         ['name' => 'Contas a receber', 'dropdownId' => 'bill-receives']
     ],

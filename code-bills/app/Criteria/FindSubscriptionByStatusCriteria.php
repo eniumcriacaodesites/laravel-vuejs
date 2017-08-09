@@ -2,17 +2,31 @@
 
 namespace CodeBills\Criteria;
 
-use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FindByUserCriteria
+ * Class FindSubscriptionByStatusCriteria
  *
  * @package namespace CodeBills\Criteria;
  */
-class FindByUserCriteria implements CriteriaInterface
+class FindSubscriptionByStatusCriteria implements CriteriaInterface
 {
+    /**
+     * @var
+     */
+    private $status;
+
+    /**
+     * FindSubscriptionByStatusCriteria constructor.
+     *
+     * @param $status
+     */
+    public function __construct($status)
+    {
+        $this->status = $status;
+    }
+
     /**
      * Apply criteria in query repository
      *
@@ -23,10 +37,10 @@ class FindByUserCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if (Auth::user()->role === 'admin') {
-            return $model;
+        if ($this->status) {
+            $model->where('status', $this->status);
         }
 
-        return $model->where('user_id', Auth::user()->id);
+        return $model;
     }
 }

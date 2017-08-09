@@ -13,6 +13,12 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class SubscriptionRepositoryEloquent extends BaseRepository implements SubscriptionRepository
 {
+    protected $fieldSearchable = [
+        'code' => 'like',
+        'user.name' => 'like',
+        'plan.name' => 'like',
+    ];
+
     /**
      * Specify Model class name
      *
