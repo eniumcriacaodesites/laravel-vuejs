@@ -79,7 +79,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse($bills as $bill)
+                    @forelse($bills->getBills() as $bill)
                         <tr>
                             <td>{{ $bill->id }}</td>
                             <td>{{ $bill->date_due }}</td>
@@ -124,7 +124,7 @@
                     @endforelse
                     </tbody>
                 </table>
-                {!! $bills->links() !!}
+                {!! $bills->getBills()->links() !!}
             </div>
         </div>
     </div>
