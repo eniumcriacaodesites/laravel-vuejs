@@ -56,12 +56,14 @@ class OrderManager
 
         if ($subscription) {
             $invoice = $iuguSubscription->recent_invoices[0];
+            $invoice = $this->iuguInvoiceClient->find($invoice->id);
             $total = $this->getValue($invoice->total);
 
             return $this->orderRepository->create([
                 'date_due' => $invoice->due_date,
                 'payment_date' => $invoice->status == 'paid' ? (new Carbon())->format('Y-m-d H:i:s') : null,
                 'subscription_id' => $subscription->id,
+                'payment_type' => $invoice->payable_with == 'bank_slip' ? Order::PAYMENT_TYPE_BANK_SLIP : Order::PAYMENT_TYPE_BANK_CARD,
                 'payment_url' => $invoice->secure_url,
                 'code' => $invoice->id,
                 'status' => $invoice->status == 'paid' ? Order::STATUS_PAID : Order::STATUS_PENDING,

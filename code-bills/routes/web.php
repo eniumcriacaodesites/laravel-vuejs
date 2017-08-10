@@ -67,6 +67,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('/banks', 'BanksController', ['except' => 'show']);
         Route::get('/subscriptions', 'SubscriptionsController@index')->name('subscriptions.index');
         Route::get('/subscriptions/cancel/{id}', 'SubscriptionsController@cancel')->name('subscriptions.cancel');
+        Route::get('/orders', 'OrdersController@index')->name('orders.index');
         Route::resource('/bill-pays', 'BillPaysController', ['except' => 'show']);
         Route::resource('/bill-receives', 'BillReceivesController', ['except' => 'show']);
     });

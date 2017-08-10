@@ -13,6 +13,10 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
+    protected $fieldSearchable = [
+        'subscription.user.name' => 'like',
+    ];
+
     /**
      * Specify Model class name
      *

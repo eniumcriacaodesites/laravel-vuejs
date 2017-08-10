@@ -123,6 +123,62 @@ $(document).ready(function () {
         }
     });
 
+    let due_from = $('#due_from').pickadate({
+        format: 'dd/mm/yyyy',
+        selectYears: true,
+        selectMonths: true,
+        onClose: function () {
+            let fromDate = createDateArray(this.get('select', 'yyyy-mm-dd'));
+            if (fromDate.length === 3) {
+                due_to.data('pickadate').set('min', fromDate);
+            } else {
+                due_to.data('pickadate').set('min', false);
+            }
+        }
+    });
+
+    let due_to = $('#due_to').pickadate({
+        format: 'dd/mm/yyyy',
+        selectYears: true,
+        selectMonths: true,
+        onClose: function () {
+            let toDate = createDateArray(this.get('select', 'yyyy-mm-dd'));
+            if (toDate.length === 3) {
+                due_from.data('pickadate').set('max', toDate);
+            } else {
+                due_from.data('pickadate').set('max', false);
+            }
+        }
+    });
+
+    let payment_from = $('#payment_from').pickadate({
+        format: 'dd/mm/yyyy',
+        selectYears: true,
+        selectMonths: true,
+        onClose: function () {
+            let fromDate = createDateArray(this.get('select', 'yyyy-mm-dd'));
+            if (fromDate.length === 3) {
+                payment_to.data('pickadate').set('min', fromDate);
+            } else {
+                payment_to.data('pickadate').set('min', false);
+            }
+        }
+    });
+
+    let payment_to = $('#payment_to').pickadate({
+        format: 'dd/mm/yyyy',
+        selectYears: true,
+        selectMonths: true,
+        onClose: function () {
+            let toDate = createDateArray(this.get('select', 'yyyy-mm-dd'));
+            if (toDate.length === 3) {
+                payment_from.data('pickadate').set('max', toDate);
+            } else {
+                payment_from.data('pickadate').set('max', false);
+            }
+        }
+    });
+
     // Create an array from the date while parsing each date unit as an integer
     function createDateArray(date) {
         date = date.split('-').map(function (value) {

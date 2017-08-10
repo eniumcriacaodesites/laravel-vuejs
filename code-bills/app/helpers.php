@@ -26,3 +26,8 @@ function dateEnToBr($date)
 
     return $date->format('d/m/Y');
 }
+
+function currencyBr($value)
+{
+    return 'R$ ' . number_format($value, 2, ',', '.');
+}

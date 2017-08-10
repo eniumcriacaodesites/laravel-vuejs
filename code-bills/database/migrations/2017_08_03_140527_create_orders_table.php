@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('payment_date')->nullable();
             $table->integer('subscription_id')->unsigned();
             $table->foreign('subscription_id')->references('id')->on('subscriptions');
+            $table->smallInteger('payment_type');
             $table->string('payment_url');
             $table->string('code');
             $table->smallInteger('status');

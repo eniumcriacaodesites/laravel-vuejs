@@ -5,6 +5,7 @@ $config = [
     'menus' => [
         ['name' => 'Bancos', 'dropdownId' => 'banks'],
         ['name' => 'Assinaturas', 'url' => route('admin.subscriptions.index')],
+        ['name' => 'Ordens', 'url' => route('admin.orders.index')],
         ['name' => 'Contas a pagar', 'dropdownId' => 'bill-pays'],
         ['name' => 'Contas a receber', 'dropdownId' => 'bill-receives']
     ],
