@@ -18,10 +18,11 @@
         "hipsterjazzbo/landlord": "2.0.4",
         "kalnoy/nestedset": "4.2.0",
         "pusher/pusher-php-server": "2.6",
-        "iugu/iugu": "1.0.6"
+        "iugu/iugu": "1.0.6",
+        "fzaninotto/faker": "^1.7",
+        "ext-intl": "*"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.0",
         "symfony/css-selector": "3.1.*",
@@ -52,7 +53,9 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "php artisan optimize",
+            "ln -sr storage/app/public public/storage",
+            "php artisan migrate"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
