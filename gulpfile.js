@@ -30,7 +30,7 @@ const argv = require('yargs').argv;
  */
 
 gulp.task('spa-config', () => {
-    if (argv._.include('watch')) {
+    if (argv._.includes('watch')) {
         env({
             file: '.env',
             type: 'ini'
@@ -81,7 +81,7 @@ elixir((mix) => {
         .copy('./node_modules/materialize-css/fonts/roboto', './public/fonts/roboto')
     ;
 
-    if (argv._.include('watch')) {
+    if (argv._.includes('watch')) {
         gulp.start('spa-config', 'webpack-dev-server');
 
         mix.browserSync({
