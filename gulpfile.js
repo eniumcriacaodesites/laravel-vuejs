@@ -1,4 +1,4 @@
-const HOST = '192.168.1.2';
+const HOST = '0.0.0.0';
 const gulp = require('gulp');
 const elixir = require('laravel-elixir');
 const webpack = require('webpack');
@@ -9,6 +9,7 @@ const webpackDevConfig = require('./webpack.dev.config');
 const env = require('gulp-env');
 const stringifyObject = require('stringify-object');
 const file = require('gulp-file');
+const argv = require('yargs').argv;
 
 // require('laravel-elixir-vue');
 // require('laravel-elixir-webpack-official');
@@ -29,10 +30,12 @@ const file = require('gulp-file');
  */
 
 gulp.task('spa-config', () => {
-    env({
-        file: '.env',
-        type: 'ini'
-    });
+    if (argv._.include('watch')) {
+        env({
+            file: '.env',
+            type: 'ini'
+        });
+    }
 
     let spaConfig = require('./spa.config');
     let string = stringifyObject(spaConfig);
@@ -78,10 +81,18 @@ elixir((mix) => {
         .copy('./node_modules/materialize-css/fonts/roboto', './public/fonts/roboto')
     ;
 
-    gulp.start('spa-config', 'webpack-dev-server');
+    if (argv._.include('watch')) {
+        gulp.start('spa-config', 'webpack-dev-server');
 
-    mix.browserSync({
-        host: HOST,
-        proxy: `http://${HOST}:8088`
-    });
+        mix.browserSync({
+            host: HOST,
+            proxy: `http://${HOST}:8088`
+        });
+    } else {
+        gulp.start('spa-config');
+        webpack(require('./webpack.config'), () => {
+            console.log("Building project...");
+        });
+    }
+
 });
