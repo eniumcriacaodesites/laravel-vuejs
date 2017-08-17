@@ -150,18 +150,18 @@ trait CashFlowRepositoryTrait
     protected function formatCashFlow($expensesCollection, $revenuesCollection, $balancePreviousMonth)
     {
         $periodList = $this->formatPeriods($expensesCollection, $revenuesCollection);
-        $expensesCollection = $this->formatCategories($expensesCollection);
-        $revenuesCollection = $this->formatCategories($revenuesCollection);
+        $expensesFormatted = $this->formatCategories($expensesCollection);
+        $revenuesFormatted = $this->formatCategories($revenuesCollection);
 
         $collectionFormatted = [
             'period_list' => $periodList,
             'balance_before_first_month' => $balancePreviousMonth,
             'categories_period' => [
                 'expenses' => [
-                    'data' => $expensesCollection,
+                    'data' => $expensesFormatted,
                 ],
                 'revenues' => [
-                    'data' => $revenuesCollection,
+                    'data' => $revenuesFormatted,
                 ],
             ],
         ];
@@ -177,7 +177,7 @@ trait CashFlowRepositoryTrait
         $firstDateStart = $dateStart->copy()->subMonth(1);
         $firstDateStartStr = $firstDateStart->format('Y-m-d');
 
-        $firstDateEnd = $dateEnd->copy()->subMonth(1);
+        $firstDateEnd = $firstDateStart->copy()->day($firstDateStart->daysInMonth);
         $firstDateEndStr = $firstDateEnd->format('Y-m-d');
 
         $firstCollection = $this->getQueryCategoriesValuesByPeriodDone(
@@ -187,7 +187,7 @@ trait CashFlowRepositoryTrait
             $firstDateEndStr
         )->get();
 
-        $mainCollection = $this->getQueryCategoriesValuesByPeriodDone(
+        $mainCollection = $this->getQueryCategoriesValuesByPeriod(
             $model,
             $billTable,
             $dateStartStr,
@@ -219,7 +219,7 @@ trait CashFlowRepositoryTrait
             ->join($billTable, "{$billTable}.category_id", "=", "childOrSelf.id")
             ->whereBetween("date_due", [$dateStart, $dateEnd])
             ->groupBy("{$table}.id", "{$table}.name", "period")
-            // ->havingRaw("depth = 0")
+            ->havingRaw("depth = 0")
             ->orderBy("period")
             ->orderBy("{$table}.name");
     }
@@ -234,10 +234,13 @@ trait CashFlowRepositoryTrait
     {
         $table = $model->getTable();
         list($lft, $rgt) = [$model->getLftName(), $model->getRgtName()];
+        $alias = "_d";
 
         return $model
+            ->newScopedQuery($alias)
             ->toBase()
             ->selectRaw("count(1) - 1")
-            ->whereRaw("{$table}.{$lft} BETWEEN {$table}.{$lft} AND {$table}.{$rgt}");
+            ->from("{$table} AS {$alias}")
+            ->whereRaw("{$table}.{$lft} BETWEEN {$alias}.{$lft} AND {$alias}.{$rgt}");
     }
 }
